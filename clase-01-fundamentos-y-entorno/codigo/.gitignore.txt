@@ -1,0 +1,16 @@
+# Plantilla de .gitignore para el proyecto (portafolio o proyecto de equipo).
+# IMPORTANTE: al copiar este archivo a tu proyecto, renómbralo a  .gitignore  (sin el .txt).
+# Un .gitignore le dice a Git qué archivos NO debe versionar.
+
+# Dependencias de npm (las agregaremos desde la Semana 4). Pesan mucho y se regeneran.
+node_modules/
+
+# Archivos de registro (logs)
+*.log
+
+# Basura del sistema operativo
+.DS_Store
+Thumbs.db
+
+# Base de datos local de pruebas (Semana 5) — opcional, según si quieren versionarla o no
+# *.sqlite

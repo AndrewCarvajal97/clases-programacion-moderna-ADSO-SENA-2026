@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Clase 0 — Instalaciones y Configuración</title>
+<style>
+/* ==== Deck del curso — autocontenido (SIN internet). Logos = SVG embebidos. ==== */
+:root{
+  --bg:#0b1020; --panel:#172033; --panel2:#1e293b; --text:#eef2ff; --muted:#93a4c4; --line:#26324b;
+  --a:#38bdf8; --a2:#a78bfa; --ok:#4ade80; --warn:#fbbf24; --pink:#f472b6;
+  --font:'Segoe UI',system-ui,-apple-system,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{font-family:var(--font);color:var(--text);overflow:hidden;
+  background:radial-gradient(1200px 700px at 85% -10%,rgba(56,189,248,.16),transparent 60%),
+    radial-gradient(900px 600px at -10% 110%,rgba(167,139,250,.16),transparent 60%),var(--bg);}
+.top{position:fixed;top:0;left:0;right:0;height:52px;display:flex;align-items:center;gap:14px;
+  padding:0 22px;z-index:20;background:linear-gradient(180deg,rgba(11,16,32,.9),transparent)}
+.brand{font-weight:800;font-size:14px;color:var(--muted)}.brand b{color:var(--a)}
+.dots{display:flex;gap:7px;margin-left:auto;flex-wrap:wrap;max-width:60vw;justify-content:flex-end}
+.dot{width:11px;height:11px;border-radius:50%;background:#2b3a5c;cursor:pointer;border:none;transition:.2s;padding:0}
+.dot:hover{transform:scale(1.25)}.dot.on{background:var(--a);box-shadow:0 0 0 3px rgba(56,189,248,.25)}.dot.seen{background:#3f5a86}
+.deck{position:absolute;inset:0}
+.slide{position:absolute;inset:0;display:none;flex-direction:column;justify-content:center;padding:8.5vh 6vw 8vh}
+.slide.active{display:flex}
+.slide.active .anim{animation:rise .5s cubic-bezier(.2,.7,.2,1) both}
+.slide.active .anim:nth-child(2){animation-delay:.06s}.slide.active .anim:nth-child(3){animation-delay:.12s}
+.slide.active .anim:nth-child(4){animation-delay:.18s}.slide.active .anim:nth-child(5){animation-delay:.24s}
+@keyframes rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+.kick{display:inline-flex;align-items:center;gap:.5em;color:var(--a2);font-weight:800;letter-spacing:.16em;
+  text-transform:uppercase;font-size:clamp(.72rem,1.4vw,1rem);margin-bottom:.55em}
+.kick::before{content:"";width:26px;height:3px;border-radius:3px;background:var(--a2)}
+h1{font-size:clamp(2.3rem,6vw,4.6rem);line-height:1.03;letter-spacing:-.02em;
+  background:linear-gradient(120deg,#fff,#9fd8ff 55%,#c7b6ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+h2{font-size:clamp(1.7rem,4vw,2.9rem);line-height:1.05;margin-bottom:.35em;display:flex;align-items:center;gap:.5em}
+p,li{font-size:clamp(1rem,1.95vw,1.45rem);line-height:1.48}
+.lead{font-size:clamp(1.15rem,2.4vw,1.75rem);color:#dbe4ff}
+.muted{color:var(--muted)}.a{color:var(--a)}.a2{color:var(--a2)}.ok{color:var(--ok)}.warn{color:var(--warn)}.pink{color:var(--pink)}
+b,strong{color:#fff}
+.grid{display:grid;gap:.9em;margin-top:.5em}
+.g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
+.g21{grid-template-columns:1.3fr 1fr}
+@media(max-width:900px){.g2,.g3,.g4,.g21{grid-template-columns:1fr}}
+.card{background:linear-gradient(180deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:16px;
+  padding:.9em 1.1em;box-shadow:0 18px 40px -26px rgba(0,0,0,.85)}
+.card.k{border-top:4px solid var(--a)}.card.k2{border-top:4px solid var(--a2)}
+.card.kok{border-top:4px solid var(--ok)}.card.kw{border-top:4px solid var(--warn)}
+.card h3{font-size:clamp(1.05rem,2vw,1.45rem);margin-bottom:.15em;display:flex;align-items:center;gap:.4em}
+.card p,.card li{font-size:clamp(.9rem,1.6vw,1.15rem);color:var(--muted)}
+.card b{color:#dbe4ff}
+.hero{display:flex;align-items:center;gap:1em}
+.logo{width:clamp(48px,7vw,84px);height:clamp(48px,7vw,84px);flex:0 0 auto}
+.logo.sm{width:clamp(32px,4vw,44px);height:clamp(32px,4vw,44px)}
+.chips{display:flex;gap:.45em;flex-wrap:wrap;margin-top:.5em}
+.chip{background:#0d1730;border:1px solid var(--line);color:var(--a);border-radius:999px;padding:.22em .75em;
+  font-size:clamp(.82rem,1.4vw,1.05rem);font-family:'Consolas',monospace}
+code{background:#0a1226;color:var(--a);padding:.1em .4em;border-radius:6px;font-family:'Consolas',monospace;font-size:.9em}
+pre{background:#0a1226;border:1px solid var(--line);border-radius:12px;padding:.8em 1em;margin-top:.4em;overflow:auto}
+pre code{background:none;color:#dbe4ff;padding:0;font-size:clamp(.88rem,1.5vw,1.15rem);line-height:1.5}
+.big{font-size:clamp(1.25rem,2.8vw,1.9rem)}
+.tag{display:inline-block;background:linear-gradient(120deg,var(--a),var(--a2));color:#04121f;font-weight:800;
+  border-radius:999px;padding:.22em 1em;font-size:.92rem;margin-bottom:.8em}
+.tag.w{background:linear-gradient(120deg,var(--warn),#f59e0b)}
+.num{display:inline-flex;align-items:center;justify-content:center;min-width:1.7em;height:1.7em;background:var(--a);
+  color:#04121f;border-radius:50%;font-weight:800;margin-right:.35em}
+.frag{opacity:0;transform:translateY(14px) scale(.98);transition:.35s cubic-bezier(.2,.7,.2,1);filter:blur(2px)}
+.frag.show{opacity:1;transform:none;filter:none}
+.win{background:#0a1226;border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-top:.4em}
+.win .h{background:#111c34;padding:.4em .8em;display:flex;gap:.4em;align-items:center;font-size:.8em;color:var(--muted)}
+.win .h i{width:10px;height:10px;border-radius:50%;display:inline-block}
+.win .b{padding:.7em 1em;font-family:'Consolas',monospace;font-size:clamp(.85rem,1.5vw,1.1rem);color:#dbe4ff;line-height:1.55}
+/* ==== maqueta VS Code (pantallazo simulado) ==== */
+.ide{border:1px solid #2b2b2b;border-radius:12px;overflow:hidden;background:#1e1e1e;
+  box-shadow:0 22px 55px -28px #000;margin-top:.3em}
+.ide .tb{height:30px;background:#323233;display:flex;align-items:center;gap:7px;padding:0 11px;color:#bbb;font-size:clamp(.72rem,1.2vw,.9rem)}
+.ide .tb .d{width:11px;height:11px;border-radius:50%}
+.ide .row{display:flex;min-height:170px}
+.ide .act{width:42px;background:#333;display:flex;flex-direction:column;align-items:center;gap:15px;padding:11px 0;color:#8a8a8a;font-size:16px}
+.ide .exp{width:145px;background:#252526;color:#cfcfcf;padding:9px 11px;font-size:clamp(.72rem,1.2vw,.92rem)}
+.ide .exp .t{color:#8a8a8a;text-transform:uppercase;font-size:.78em;letter-spacing:.08em;margin-bottom:6px}
+.ide .exp .f{padding:2px 0}.ide .exp .f.on{color:#fff;background:#37373d;margin:0 -11px;padding-left:11px}
+.ide .ed{flex:1;background:#1e1e1e;color:#d4d4d4;font-family:'Consolas',monospace;padding:10px 12px;
+  line-height:1.7;font-size:clamp(.78rem,1.35vw,1.08rem)}
+.ide .ln{color:#6a6a6a;margin-right:12px;user-select:none}
+.ide .term{background:#181818;border-top:1px solid #2b2b2b;color:#cfcfcf;font-family:'Consolas',monospace;
+  padding:8px 12px;font-size:clamp(.75rem,1.3vw,1rem);line-height:1.55}
+.ide .term .pr{color:#4ade80}
+.ide .kw{color:#569cd6}.ide .str{color:#ce9178}.ide .tg{color:#4ec9b0}.ide .com{color:#6a9955}
+.ide .fn{color:#dcdcaa}.ide .ghost{color:#6a6a6a;font-style:italic}.ide .num2{color:#b5cea8}
+.win .g{color:#4ade80}.win .y{color:#fbbf24}.win .b2{color:#38bdf8}.win .m{color:#93a4c4}
+.bar{position:fixed;left:0;bottom:0;height:5px;background:linear-gradient(90deg,var(--a),var(--a2));z-index:20;transition:width .3s}
+.hud{position:fixed;bottom:12px;right:18px;color:var(--muted);font-size:.85rem;z-index:20}
+.hint{position:fixed;bottom:12px;left:18px;color:var(--muted);font-size:.8rem;z-index:20}
+.hint kbd{background:#0d1730;border:1px solid var(--line);border-radius:5px;padding:.05em .4em;color:var(--a)}
+.grip{position:fixed;inset:0;background:rgba(6,10,20,.96);z-index:40;display:none;grid-template-columns:repeat(4,1fr);
+  gap:14px;padding:70px 5vw;overflow:auto;align-content:start}
+.grip.on{display:grid}
+.mini{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px;cursor:pointer;min-height:80px;transition:.15s;position:relative}
+.mini:hover{border-color:var(--a);transform:translateY(-3px)}
+.mini .n{position:absolute;top:6px;right:10px;color:var(--muted);font-size:12px;font-weight:800}
+.mini h4{font-size:14px;color:var(--a)}
+.center{align-items:center;text-align:center}
+</style>
+</head>
+<body>
+
+<!-- ====== LOGOS OFICIALES (SVG embebidos, sin internet) ====== -->
+<svg style="display:none" xmlns="http://www.w3.org/2000/svg">
+  <symbol id="l-node" viewBox="0 0 40 44">
+    <path fill="#539E43" d="M20 1 3 11v22l17 10 17-10V11L20 1z"/>
+    <path fill="#fff" d="M20 12c-4.5 0-8 2-8 5 0 2.4 2 3.6 5 4.3 3.6.8 4.2 1.2 4.2 2 0 .8-1 1.4-2.8 1.4-2 0-3-.7-3.2-2h-3c.2 3 2.6 4.6 6.2 4.6 4.4 0 6.8-2 6.8-4.4 0-2.6-2.2-3.7-5.6-4.5-3.2-.7-3.6-1-3.6-1.8 0-.7.8-1.3 2.6-1.3 1.7 0 2.6.6 2.9 1.8h3C26.9 14 24.6 12 20 12z"/>
+  </symbol>
+  <symbol id="l-git" viewBox="0 0 40 40">
+    <rect x="6" y="6" width="28" height="28" rx="4" transform="rotate(45 20 20)" fill="#F05032"/>
+    <g fill="#fff"><circle cx="20" cy="12.5" r="2.6"/><circle cx="20" cy="27.5" r="2.6"/><circle cx="27" cy="20" r="2.6"/>
+    <rect x="18.8" y="12" width="2.4" height="16" rx="1"/><rect x="19.5" y="19" width="8" height="2.4" rx="1"/></g>
+  </symbol>
+  <symbol id="l-github" viewBox="0 0 40 40">
+    <circle cx="20" cy="20" r="19" fill="#24292f"/>
+    <path fill="#fff" d="M20 7c-7.2 0-13 5.8-13 13 0 5.8 3.7 10.6 8.9 12.4.65.12.9-.28.9-.62v-2.2c-3.6.78-4.4-1.7-4.4-1.7-.6-1.5-1.46-1.9-1.46-1.9-1.2-.82.1-.8.1-.8 1.3.1 2 1.36 2 1.36 1.17 2 3.07 1.43 3.82 1.1.12-.85.46-1.43.83-1.76-2.88-.33-5.9-1.44-5.9-6.4 0-1.42.5-2.58 1.34-3.48-.14-.33-.58-1.66.12-3.46 0 0 1.1-.35 3.6 1.33a12.5 12.5 0 0 1 6.55 0c2.5-1.68 3.6-1.33 3.6-1.33.7 1.8.26 3.13.13 3.46.84.9 1.34 2.06 1.34 3.48 0 4.98-3.03 6.07-5.92 6.39.47.4.9 1.2.9 2.42v3.6c0 .35.24.75.9.62A13 13 0 0 0 33 20c0-7.2-5.8-13-13-13z"/>
+  </symbol>
+  <symbol id="l-vscode" viewBox="0 0 40 40">
+    <path fill="#0F8CE9" d="M29 4l-15 14-8-6-3 1.5v13L6 22l8-6 15 14 5-2.5v-25L29 4z"/>
+    <path fill="#0A66C2" opacity=".6" d="M29 4 14 18l15 14 5-2.5v-25L29 4z"/>
+  </symbol>
+  <symbol id="l-npm" viewBox="0 0 40 40"><rect width="40" height="40" rx="6" fill="#CB3837"/>
+    <path fill="#fff" d="M8 13h24v14h-7V17h-3v10h-4V17h-3v10H8z"/></symbol>
+  <symbol id="l-pnpm" viewBox="0 0 40 40">
+    <g fill="#F9AD00"><rect x="4" y="4" width="9" height="9" rx="1.5"/><rect x="15.5" y="4" width="9" height="9" rx="1.5"/><rect x="27" y="4" width="9" height="9" rx="1.5"/>
+    <rect x="15.5" y="15.5" width="9" height="9" rx="1.5"/><rect x="27" y="15.5" width="9" height="9" rx="1.5"/></g>
+    <g fill="#4E4E4E"><rect x="4" y="15.5" width="9" height="9" rx="1.5"/><rect x="15.5" y="27" width="9" height="9" rx="1.5"/><rect x="27" y="27" width="9" height="9" rx="1.5"/></g>
+  </symbol>
+  <symbol id="l-yarn" viewBox="0 0 40 40"><circle cx="20" cy="20" r="19" fill="#2C8EBB"/>
+    <path fill="none" stroke="#fff" stroke-width="2" d="M12 28c2-6 6-9 8-15m-6 15c6 1 12-1 14-4m-15-3c3 1 8 1 12-1"/></symbol>
+  <symbol id="l-bun" viewBox="0 0 44 40"><ellipse cx="22" cy="21" rx="20" ry="16" fill="#FBF0DF" stroke="#111" stroke-width="1.5"/>
+    <circle cx="15" cy="20" r="2" fill="#111"/><circle cx="29" cy="20" r="2" fill="#111"/>
+    <circle cx="12" cy="24" r="2.4" fill="#F6C6C6"/><circle cx="32" cy="24" r="2.4" fill="#F6C6C6"/>
+    <path d="M19 24c1.5 1.5 4.5 1.5 6 0" stroke="#111" stroke-width="1.4" fill="none"/></symbol>
+  <symbol id="l-js" viewBox="0 0 40 40"><rect width="40" height="40" rx="6" fill="#F7DF1E"/>
+    <text x="20" y="29" font-family="Arial" font-weight="900" font-size="16" fill="#111" text-anchor="middle">JS</text></symbol>
+  <symbol id="l-ai" viewBox="0 0 40 40"><rect width="40" height="40" rx="9" fill="#0d1730" stroke="#38bdf8" stroke-width="2"/>
+    <circle cx="14" cy="17" r="3" fill="#38bdf8"/><circle cx="26" cy="17" r="3" fill="#a78bfa"/>
+    <path d="M13 26c3 3 11 3 14 0" stroke="#4ade80" stroke-width="2.4" fill="none"/><rect x="18" y="4" width="4" height="5" rx="2" fill="#38bdf8"/></symbol>
+</svg>
+
+<div class="top"><div class="brand">Curso <b>ADSO</b> · SENA</div><div class="dots" id="dots"></div></div>
+
+<div class="deck" id="deck">
+
+  <!-- 1 · Portada -->
+  <section class="slide center" data-title="Portada">
+    <div class="kick anim">Clase 0 · Inducción</div>
+    <h1 class="anim">Instalaciones y<br>Configuración</h1>
+    <p class="lead muted anim" style="margin-top:.5em">Dejamos el equipo listo · Cuentas · Asistente de IA</p>
+    <div class="chips anim" style="justify-content:center;margin-top:1em">
+      <svg class="logo sm"><use href="#l-node"/></svg><svg class="logo sm"><use href="#l-git"/></svg>
+      <svg class="logo sm"><use href="#l-vscode"/></svg><svg class="logo sm"><use href="#l-github"/></svg>
+      <svg class="logo sm"><use href="#l-pnpm"/></svg><svg class="logo sm"><use href="#l-ai"/></svg>
+    </div>
+  </section>
+
+  <!-- 2 · Panorama -->
+  <section class="slide" data-title="¿Qué instalamos?">
+    <div class="kick anim">Panorama</div>
+    <h2 class="anim">¿Qué instalamos hoy?</h2>
+    <div class="grid g4" style="margin-top:.5em">
+      <div class="card k frag"><div class="hero"><svg class="logo"><use href="#l-node"/></svg>
+        <div><h3>Node.js</h3><p>Ejecutar JS y usar paquetes</p></div></div></div>
+      <div class="card k frag"><div class="hero"><svg class="logo"><use href="#l-git"/></svg>
+        <div><h3>Git</h3><p>Historia del código</p></div></div></div>
+      <div class="card k frag"><div class="hero"><svg class="logo"><use href="#l-vscode"/></svg>
+        <div><h3>VS Code</h3><p>El editor</p></div></div></div>
+      <div class="card k2 frag"><div class="hero"><svg class="logo"><use href="#l-ai"/></svg>
+        <div><h3>IA · OpenCode</h3><p>Un copiloto</p></div></div></div>
+    </div>
+    <p class="big frag" style="margin-top:.9em">Y creamos las <b>cuentas</b> que vamos a necesitar (GitHub + IA).</p>
+  </section>
+
+  <!-- 3 · Node -->
+  <section class="slide" data-title="Node.js">
+    <div class="kick anim">Herramienta · runtime</div>
+    <h2 class="anim"><svg class="logo"><use href="#l-node"/></svg> Node.js</h2>
+    <div class="grid g3" style="margin-top:.3em">
+      <div class="card k frag"><h3>¿Qué es?</h3><p>Permite ejecutar <b>JavaScript fuera del navegador</b>
+        (en tu máquina, como servidor).</p></div>
+      <div class="card k frag"><h3>¿Por qué?</h3><p>Es la base del <b>backend</b> del curso y trae
+        <code>npm</code> para instalar librerías.</p></div>
+      <div class="card kok frag"><h3>Instalar + verificar</h3><p>Instala la versión <b>LTS</b>. Luego:</p>
+        <pre><code>node --version
+npm --version</code></pre></div>
+    </div>
+    <p class="muted frag" style="margin-top:.5em">⚠️ Sin permisos de administrador en el aula: usa la versión <b>portable</b> de Node.</p>
+  </section>
+
+  <!-- 4 · Versiones de Node con pnpm -->
+  <section class="slide" data-title="Versiones de Node (pnpm)">
+    <div class="kick anim">Varias versiones de Node</div>
+    <h2 class="anim">pnpm también administra Node 🎯</h2>
+    <div class="grid g21" style="margin-top:.3em">
+      <div>
+        <div class="card k frag"><h3>¿Por qué?</h3><p>Distintos proyectos piden <b>distintas versiones</b> de
+          Node (uno la 18, otro la 20). Antes se usaba <b>nvm</b>… pero <b>pnpm ya lo hace por ti</b>.</p></div>
+        <div class="card kok frag" style="margin-top:.6em"><h3>pnpm = paquetes + Node</h3><p>El mismo pnpm
+          instala y cambia la versión de Node. <b>Un solo gestor</b> para todo.</p></div>
+      </div>
+      <div class="win frag"><div class="h"><i style="background:#ff5f56"></i><i style="background:#ffbd2e"></i><i style="background:#27c93f"></i> PowerShell</div>
+        <div class="b"><span class="g">PS&gt;</span> pnpm env use --global lts<br><span class="m"># instala y activa la LTS</span><br><span class="g">PS&gt;</span> pnpm env use --global 20<br><span class="g">PS&gt;</span> pnpm env list<br><span style="color:#4ade80">node v20 ✔</span></div></div>
+    </div>
+    <p class="muted frag" style="margin-top:.4em">🆕 La forma más nueva: <code>pnpm runtime set node lts -g</code>. (nvm sigue existiendo como alternativa.)</p>
+  </section>
+
+  <!-- 5 · Gestores de paquetes -->
+  <section class="slide" data-title="npm / pnpm / bun">
+    <div class="tag anim">📦 GESTORES DE PAQUETES</div>
+    <h2 class="anim">¿npm, pnpm, yarn o bun?</h2>
+    <p class="lead anim">Todos instalan las librerías de tu proyecto. Se diferencian en <b>velocidad</b>,
+       <b>espacio en disco</b> y <b>seguridad</b>.</p>
+    <div class="grid g4" style="margin-top:.5em">
+      <div class="card k frag"><div class="hero"><svg class="logo sm"><use href="#l-npm"/></svg><b>npm</b></div>
+        <p>El que viene con Node. Confiable, pero <b>más lento</b> y gasta más disco.</p></div>
+      <div class="card kok frag"><div class="hero"><svg class="logo sm"><use href="#l-pnpm"/></svg><b>pnpm ⭐</b></div>
+        <p><b>Rápido</b>, ahorra disco (guarda 1 sola copia) y es <b>estricto/seguro</b>.</p></div>
+      <div class="card k frag"><div class="hero"><svg class="logo sm"><use href="#l-yarn"/></svg><b>yarn</b></div>
+        <p>Alternativa popular a npm, similar en la práctica.</p></div>
+      <div class="card kw frag"><div class="hero"><svg class="logo sm"><use href="#l-bun"/></svg><b>bun</b></div>
+        <p>Muy rápido y nuevo; también es un runtime. Aún con detalles de compatibilidad.</p></div>
+    </div>
+    <p class="big frag" style="margin-top:.7em">👉 En el curso usamos <span class="ok">pnpm</span>: más rápido, más seguro y ligero.
+      Se activa así: <code>corepack enable pnpm</code></p>
+  </section>
+
+  <!-- 6 · Git -->
+  <section class="slide" data-title="Git">
+    <div class="kick anim">Herramienta · versiones</div>
+    <h2 class="anim"><svg class="logo"><use href="#l-git"/></svg> Git</h2>
+    <div class="grid g3" style="margin-top:.3em">
+      <div class="card k frag"><h3>¿Qué es?</h3><p>Guarda <b>toda la historia</b> de tu código y te deja
+        volver a cualquier punto. Corre en <b>tu máquina</b>.</p></div>
+      <div class="card k frag"><h3>Configurar identidad</h3>
+        <pre><code>git config --global user.name "Tu Nombre"
+git config --global user.email "correo"</code></pre></div>
+      <div class="card kok frag"><h3>Verificar</h3><p>En la terminal:</p><pre><code>git --version</code></pre>
+        <p>Responde un número = listo.</p></div>
+    </div>
+  </section>
+
+  <!-- 7 · VS Code -->
+  <section class="slide" data-title="VS Code">
+    <div class="kick anim">Herramienta · editor</div>
+    <h2 class="anim"><svg class="logo"><use href="#l-vscode"/></svg> Visual Studio Code</h2>
+    <div class="grid g2" style="margin-top:.3em">
+      <div class="card k frag"><h3>¿Qué es?</h3><p>El <b>editor de código</b> donde escribiremos todo.
+        Gratis y muy usado en la industria.</p>
+        <p class="muted" style="margin-top:.4em">Truco: <code>code .</code> abre VS Code en la carpeta actual.</p></div>
+      <div class="card k2 frag"><h3>Extensiones útiles 🧩</h3>
+        <ul><li><b>Live Server</b> — ver tu HTML con recarga automática.</li>
+        <li><b>Prettier</b> — ordena el código solo.</li>
+        <li><b>Español</b> — la interfaz en español (opcional).</li></ul></div>
+    </div>
+  </section>
+
+  <!-- 8 · GitHub -->
+  <section class="slide" data-title="GitHub + cuenta">
+    <div class="tag anim">🔑 CUENTA</div>
+    <h2 class="anim"><svg class="logo"><use href="#l-github"/></svg> GitHub</h2>
+    <div class="grid g2" style="margin-top:.3em">
+      <div class="card k frag"><h3>¿Qué es?</h3><p>Un servicio en la <b>nube</b> que aloja tus repositorios
+        para compartir, trabajar en equipo y desplegar. <b>Cuenta obligatoria.</b></p>
+        <p class="muted" style="margin-top:.3em">Crea tu cuenta en <code>github.com</code> con un usuario profesional.</p></div>
+      <div class="card kok frag"><h3>🎓 Student Pack</h3><p>Con correo institucional, pide el
+        <b>GitHub Student Developer Pack</b> en <code>education.github.com</code>:
+        <b>dominio gratis 1 año</b>, créditos y más.</p></div>
+    </div>
+  </section>
+
+  <!-- 9 · Sin correo SENA -->
+  <section class="slide" data-title="¿Sin correo SENA?">
+    <div class="tag w anim">⚠️ ¿NO TIENES CORREO SENA?</div>
+    <h2 class="anim">Sin correo institucional… no hay problema</h2>
+    <p class="lead anim">Si el SENA aún <b>no te habilitó el correo</b>, igual puedes trabajar. Tienes opciones:</p>
+    <div class="grid g3" style="margin-top:.5em">
+      <div class="card kok frag"><h3>① Verifica con documento</h3><p>El Student Pack se puede pedir
+        subiendo <b>foto del carnet</b> o una <b>constancia de estudio</b> del SENA — no solo con correo.</p></div>
+      <div class="card k frag"><h3>② No te bloquea</h3><p>GitHub es <b>gratis igual</b>. Publicas en
+        <code>usuario.github.io</code> sin dominio propio. El Pack lo pides <b>después</b>.</p></div>
+      <div class="card k2 frag"><h3>③ Agrégalo luego</h3><p>Cuando te habiliten el correo, lo
+        <b>añades a tu cuenta</b> de GitHub y solicitas el Pack en ese momento.</p></div>
+    </div>
+    <p class="muted frag" style="margin-top:.5em">Para el asistente de IA y los despliegues <b>no</b> necesitas correo institucional.</p>
+  </section>
+
+  <!-- 10 · OpenCode instalar -->
+  <section class="slide" data-title="OpenCode · instalar">
+    <div class="tag anim">🤖 ASISTENTE DE IA</div>
+    <h2 class="anim"><svg class="logo"><use href="#l-ai"/></svg> OpenCode — instalar</h2>
+    <div class="grid g21" style="margin-top:.2em">
+      <div class="card k frag"><h3>¿Qué es?</h3><p>Un <b>agente/chat en la terminal</b> que explica,
+        sugiere y hace cambios en tu código. Open-source.</p>
+        <p style="margin-top:.4em">Como ya tenemos pnpm, lo instalas así 👉</p>
+        <p class="muted" style="margin-top:.3em">🔜 Módulo futuro: modelo <b>local</b> (offline) en un server propio.</p></div>
+      <div class="win frag"><div class="h"><i style="background:#ff5f56"></i><i style="background:#ffbd2e"></i><i style="background:#27c93f"></i> PowerShell</div>
+        <div class="b"><span class="g">PS&gt;</span> pnpm add -g opencode-ai<br><span class="m">… instalando paquetes …</span><br><span class="g">✔ opencode instalado</span><br><span class="g">PS&gt;</span> opencode --version<br><span class="b2">0.x.x</span></div></div>
+    </div>
+  </section>
+
+  <!-- 10b · OpenCode conectar -->
+  <section class="slide" data-title="OpenCode · conectar">
+    <div class="kick anim">Darle "cerebro" · tier gratuito</div>
+    <h2 class="anim">Conectar OpenCode a un modelo 🧠</h2>
+    <div class="grid g21" style="margin-top:.2em">
+      <div>
+        <div class="card k frag"><p><span class="num">1</span> Crea una <b>API key</b> gratis en el proveedor
+          (el instructor te dice cuál) o usa la <b>llave compartida</b>.</p></div>
+        <div class="card k frag" style="margin-top:.5em"><p><span class="num">2</span> Abre OpenCode escribiendo
+          <code>opencode</code> y ejecuta <code>/connect</code>.</p></div>
+        <div class="card kok frag" style="margin-top:.5em"><p><span class="num">3</span> Elige el proveedor y
+          <b>pega la key</b>. ¡Listo!</p></div>
+      </div>
+      <div class="win frag"><div class="h"><i style="background:#ff5f56"></i><i style="background:#ffbd2e"></i><i style="background:#27c93f"></i> opencode</div>
+        <div class="b"><span class="g">PS&gt;</span> opencode<br><span class="m"># dentro de OpenCode:</span><br><span class="b2">/connect</span><br><span class="m">? Elige proveedor</span><br>&nbsp;&nbsp;<span class="y">› OpenCode Zen</span><br>&nbsp;&nbsp;&nbsp;&nbsp;OpenAI · Anthropic · Google…<br><span class="m">? Pega tu API key</span> <span class="b2">••••••••••</span><br><span class="g">✔ Conectado. ¡Ya puedes preguntar!</span></div></div>
+    </div>
+  </section>
+
+  <!-- 10c · OpenCode usar -->
+  <section class="slide" data-title="OpenCode · usar">
+    <div class="kick anim">Cómo se usa</div>
+    <h2 class="anim">Hablarle a OpenCode 💬</h2>
+    <div class="grid g21" style="margin-top:.2em">
+      <div class="win frag"><div class="h"><i style="background:#ff5f56"></i><i style="background:#ffbd2e"></i><i style="background:#27c93f"></i> opencode</div>
+        <div class="b"><span class="g">tú ›</span> ¿qué es una etiqueta de HTML? simple<br><span class="b2">opencode ›</span> Marca qué es cada parte de la página.<br>Ej: <span class="y">&lt;p&gt;texto&lt;/p&gt;</span> es un párrafo…<br><br><span class="g">tú ›</span> créame un index.html con un título<br><span class="b2">opencode ›</span> <span class="m">creando index.html ✔</span></div></div>
+      <div>
+        <div class="card k frag"><h3>Le puedes pedir</h3><ul>
+          <li><b>Explicar:</b> "¿qué hace esta línea?"</li>
+          <li><b>Crear:</b> "hazme un formulario de login"</li>
+          <li><b>Arreglar:</b> "¿por qué da este error?"</li></ul></div>
+        <div class="card kw frag" style="margin-top:.5em"><p>Recuerda: <b>entiende</b> lo que te da; no lo pegues a ciegas.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11 · OpenCode en VS Code -->
+  <section class="slide" data-title="OpenCode en VS Code">
+    <div class="kick anim">Dentro del editor</div>
+    <h2 class="anim">OpenCode dentro de VS Code</h2>
+    <div class="grid g21" style="margin-top:.2em">
+      <div>
+        <div class="card k frag"><p><span class="num">1</span> Abre la <b>terminal integrada</b>
+          (menú <b>Terminal → New Terminal</b>).</p></div>
+        <div class="card k frag" style="margin-top:.5em"><p><span class="num">2</span> Escribe
+          <code>opencode</code> → instala su extensión solo.</p></div>
+        <div class="card kok frag" style="margin-top:.5em"><p><span class="num">3</span>
+          <code>Ctrl+Esc</code> lo abre y comparte el archivo abierto como contexto.</p></div>
+      </div>
+      <div class="ide frag">
+        <div class="tb"><span class="d" style="background:#ff5f56"></span><span class="d" style="background:#ffbd2e"></span><span class="d" style="background:#27c93f"></span> &nbsp;index.html — VS Code</div>
+        <div class="row">
+          <div class="act">📄<br>🔍<br>🔀<br>🧩</div>
+          <div class="exp"><div class="t">Explorador</div><div class="f on">index.html</div><div class="f">styles.css</div></div>
+          <div class="ed"><span class="ln">1</span><span class="tg">&lt;h1&gt;</span>Hola<span class="tg">&lt;/h1&gt;</span></div>
+        </div>
+        <div class="term"><span class="pr">PS&gt;</span> opencode<br><span class="pr">tú ›</span> explícame este archivo</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11b · Configurar VS Code -->
+  <section class="slide" data-title="Configurar VS Code">
+    <div class="tag anim">⚙️ CONFIGURAR VS CODE</div>
+    <h2 class="anim">Déjalo cómodo para programar</h2>
+    <div class="grid g21" style="margin-top:.2em">
+      <div class="grid g2" style="gap:.55em">
+        <div class="card k frag"><h3>🎨 Tema</h3><p>File → Preferences → Theme. Uno oscuro cansa menos la vista.</p></div>
+        <div class="card k frag"><h3>💾 Auto Save</h3><p>File → Auto Save. Nunca pierdes cambios.</p></div>
+        <div class="card k2 frag"><h3>✨ Format on Save</h3><p>Con Prettier, ordena el código al guardar.</p></div>
+        <div class="card kok frag"><h3>🧩 Extensiones</h3><p>Live Server · Prettier · Español.</p></div>
+      </div>
+      <div class="ide frag">
+        <div class="tb">⚙️ &nbsp;Settings — VS Code</div>
+        <div class="ed" style="line-height:2.1">
+          <div>Color Theme <span class="com">·········</span> <span class="str">Dark+</span></div>
+          <div>Files: Auto Save <span class="com">····</span> <span class="tg">afterDelay</span></div>
+          <div>Format On Save <span class="com">·····</span> <span class="tg">✔</span></div>
+          <div>Default Formatter <span class="com">··</span> <span class="str">Prettier</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11c · Autocompletado -->
+  <section class="slide" data-title="Autocompletado">
+    <div class="kick anim">Dudas vs autocompletado</div>
+    <h2 class="anim">Autocompletado gratis ✨</h2>
+    <div class="grid g21" style="margin-top:.2em">
+      <div>
+        <div class="card kw frag"><p><b>OpenCode</b> resuelve <b>dudas</b> y hace tareas (en la terminal).
+          <b>No</b> es autocompletado inline.</p></div>
+        <div class="card kok frag" style="margin-top:.5em"><h3>Para autocompletar al escribir:</h3>
+          <ul><li><b>GitHub Copilot</b> — plan gratuito / gratis para estudiantes.</li>
+          <li><b>Continue</b> — extensión open-source con un modelo gratis.</li></ul></div>
+      </div>
+      <div class="ide frag">
+        <div class="tb">📄 &nbsp;app.js</div>
+        <div class="ed">
+          <div><span class="ln">1</span><span class="kw">function</span> <span class="fn">suma</span>(a, b) {</div>
+          <div><span class="ln">2</span>&nbsp;&nbsp;<span class="ghost">return a + b;&nbsp;&nbsp;← sugerencia · Tab para aceptar</span></div>
+          <div><span class="ln">3</span>}</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 12 · Reglas IA -->
+  <section class="slide" data-title="Reglas de la IA">
+    <div class="tag w anim">⚠️ IMPORTANTE</div>
+    <h2 class="anim">La IA es un tutor, no un reemplazo</h2>
+    <div class="grid g2" style="margin-top:.4em">
+      <div class="card k frag"><p>① <b>Primero intenta tú.</b> Usa la IA cuando te atasques.</p></div>
+      <div class="card k frag"><p>② <b>Pide que te explique</b>, no solo que te dé el código.</p></div>
+      <div class="card kw frag"><p>③ <b>Nunca pegues código que no entiendes.</b></p></div>
+      <div class="card kok frag"><p>④ <b>Verifica:</b> la IA se equivoca; prueba que funcione.</p></div>
+    </div>
+    <p class="muted frag" style="margin-top:.5em">En la Demo Day tendrás que <b>explicar</b> lo que hiciste. 😉</p>
+  </section>
+
+  <!-- 13 · Checklist -->
+  <section class="slide" data-title="Checklist">
+    <div class="kick anim">Antes de irte</div>
+    <h2 class="anim">Checklist final ✅</h2>
+    <div class="grid g2" style="margin-top:.4em">
+      <div class="card kok frag"><p>☑️ <code>node</code>, <code>npm</code> y <code>pnpm</code> responden</p></div>
+      <div class="card kok frag"><p>☑️ <code>git --version</code> y configuré mi identidad</p></div>
+      <div class="card kok frag"><p>☑️ VS Code abre y puedo crear un archivo</p></div>
+      <div class="card kok frag"><p>☑️ Tengo (o crearé) mi cuenta de GitHub</p></div>
+      <div class="card kok frag"><p>☑️ <code>opencode</code> responde y le hice una pregunta</p></div>
+      <div class="card kok frag"><p>☑️ Entiendo las reglas de oro de la IA</p></div>
+    </div>
+  </section>
+
+  <!-- 14 · Cierre -->
+  <section class="slide center" data-title="Cierre">
+    <h1 class="anim">¡Equipo listo! 🚀</h1>
+    <p class="lead muted anim" style="margin-top:.5em">Siguiente: <span class="a">Clase 01 — Fundamentos y Entorno</span></p>
+    <p class="muted anim" style="margin-top:1.1em">Pulsa <kbd style="color:var(--a)">O</kbd> para ver todas las diapositivas.</p>
+  </section>
+
+</div>
+
+<div class="grip" id="grip"></div>
+<div class="bar" id="bar"></div>
+<div class="hud"><span id="cur">1</span> / <span id="tot">1</span></div>
+<div class="hint"><kbd>←</kbd> <kbd>→</kbd> avanzar · <kbd>O</kbd> rejilla · clic para seguir</div>
+
+<script>
+(function(){
+  const deck=document.getElementById('deck');
+  const slides=[...deck.querySelectorAll('.slide')];
+  const tot=slides.length; let i=0,f=0;
+  document.getElementById('tot').textContent=tot;
+  const frags=slides.map(s=>[...s.querySelectorAll('.frag')]);
+  const dotsWrap=document.getElementById('dots');
+  slides.forEach((s,k)=>{const b=document.createElement('button');b.className='dot';
+    b.title=s.dataset.title||('Slide '+(k+1));b.onclick=()=>goto(k);dotsWrap.appendChild(b);});
+  const dots=[...dotsWrap.children];
+  function render(){
+    slides.forEach((s,k)=>s.classList.toggle('active',k===i));
+    frags[i].forEach((el,k)=>el.classList.toggle('show',k<f));
+    dots.forEach((d,k)=>{d.classList.toggle('on',k===i);d.classList.toggle('seen',k<i);});
+    document.getElementById('cur').textContent=i+1;
+    const prog=frags[i].length?f/frags[i].length:1;
+    document.getElementById('bar').style.width=((i+prog)/tot*100)+'%';
+  }
+  function goto(n){i=Math.max(0,Math.min(tot-1,n));f=frags[i].length;render();}
+  function next(){if(f<frags[i].length){f++;render();return;}if(i<tot-1){i++;f=0;render();}}
+  function prev(){if(f>0){f--;render();return;}if(i>0){i--;f=frags[i].length;render();}}
+  const grip=document.getElementById('grip');
+  slides.forEach((s,k)=>{const m=document.createElement('div');m.className='mini';
+    m.innerHTML='<span class="n">'+(k+1)+'</span><h4>'+(s.dataset.title||'')+'</h4>';
+    m.onclick=()=>{goto(k);grip.classList.remove('on');};grip.appendChild(m);});
+  document.addEventListener('keydown',e=>{
+    if(e.key==='o'||e.key==='O'){grip.classList.toggle('on');return;}
+    if(grip.classList.contains('on')){if(e.key==='Escape')grip.classList.remove('on');return;}
+    if(['ArrowRight',' ','PageDown','Enter'].includes(e.key)){e.preventDefault();next();}
+    else if(['ArrowLeft','PageUp','Backspace'].includes(e.key)){e.preventDefault();prev();}
+    else if(e.key==='Home')goto(0); else if(e.key==='End')goto(tot-1);
+  });
+  document.addEventListener('click',e=>{
+    if(e.target.closest('.grip')||e.target.closest('.dot'))return;
+    if(e.clientX<innerWidth*0.22)prev();else next();
+  });
+  render();
+})();
+</script>
+</body>
+</html>

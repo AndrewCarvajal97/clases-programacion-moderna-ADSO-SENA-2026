@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Clase 01 — Fundamentos y Entorno</title>
+<style>
+/* ============================================================
+   Deck del curso — autocontenido (SIN internet).
+   Interactivo: revelado por pasos (fragmentos), diagramas
+   animados, comparación clicable, vista rejilla (O) y puntos.
+   Reutilizable: copia el <head> y el <script>; cambia las slides.
+   ============================================================ */
+:root{
+  --bg:#0b1020; --bg2:#0f172a; --panel:#172033; --panel2:#1e293b;
+  --text:#eef2ff; --muted:#93a4c4; --line:#26324b;
+  --a:#38bdf8; --a2:#a78bfa; --ok:#4ade80; --warn:#fbbf24; --pink:#f472b6;
+  --font:'Segoe UI',system-ui,-apple-system,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{font-family:var(--font);color:var(--text);overflow:hidden;
+  background:
+    radial-gradient(1200px 700px at 85% -10%, rgba(56,189,248,.16), transparent 60%),
+    radial-gradient(900px 600px at -10% 110%, rgba(167,139,250,.16), transparent 60%),
+    var(--bg);}
+/* ---- barra superior ---- */
+.top{position:fixed;top:0;left:0;right:0;height:52px;display:flex;align-items:center;
+  gap:14px;padding:0 22px;z-index:20;background:linear-gradient(180deg,rgba(11,16,32,.9),transparent)}
+.brand{font-weight:800;letter-spacing:.04em;font-size:14px;color:var(--muted)}
+.brand b{color:var(--a)}
+.dots{display:flex;gap:7px;margin-left:auto;flex-wrap:wrap;max-width:60vw;justify-content:flex-end}
+.dot{width:11px;height:11px;border-radius:50%;background:#2b3a5c;cursor:pointer;
+  border:none;transition:.2s;padding:0}
+.dot:hover{transform:scale(1.25)}
+.dot.on{background:var(--a);box-shadow:0 0 0 3px rgba(56,189,248,.25)}
+.dot.seen{background:#3f5a86}
+/* ---- slides ---- */
+.deck{position:absolute;inset:0}
+.slide{position:absolute;inset:0;display:none;flex-direction:column;justify-content:center;
+  padding:9vh 7vw 8vh}
+.slide.active{display:flex}
+.slide.active .anim{animation:rise .5s cubic-bezier(.2,.7,.2,1) both}
+.slide.active .anim:nth-child(2){animation-delay:.06s}
+.slide.active .anim:nth-child(3){animation-delay:.12s}
+.slide.active .anim:nth-child(4){animation-delay:.18s}
+.slide.active .anim:nth-child(5){animation-delay:.24s}
+@keyframes rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+/* ---- tipografía ---- */
+.kick{display:inline-flex;align-items:center;gap:.5em;color:var(--a2);font-weight:800;
+  letter-spacing:.18em;text-transform:uppercase;font-size:clamp(.72rem,1.4vw,1rem);margin-bottom:.7em}
+.kick::before{content:"";width:26px;height:3px;border-radius:3px;background:var(--a2)}
+h1{font-size:clamp(2.4rem,6.5vw,5rem);line-height:1.02;letter-spacing:-.02em;
+  background:linear-gradient(120deg,#fff,#9fd8ff 55%,#c7b6ff);-webkit-background-clip:text;
+  background-clip:text;color:transparent}
+h2{font-size:clamp(1.7rem,4.2vw,3rem);line-height:1.05;letter-spacing:-.01em;margin-bottom:.5em}
+p,li{font-size:clamp(1.05rem,2.05vw,1.55rem);line-height:1.5}
+.lead{font-size:clamp(1.2rem,2.6vw,1.9rem);color:#dbe4ff}
+.muted{color:var(--muted)} .a{color:var(--a)} .a2{color:var(--a2)} .ok{color:var(--ok)}
+.warn{color:var(--warn)} .pink{color:var(--pink)}
+b,strong{color:#fff}
+/* ---- tarjetas / rejillas ---- */
+.grid{display:grid;gap:1em;margin-top:.4em}
+.g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
+@media(max-width:900px){.g2,.g3,.g4{grid-template-columns:1fr}}
+.card{background:linear-gradient(180deg,var(--panel),var(--panel2));border:1px solid var(--line);
+  border-radius:18px;padding:1.05em 1.25em;box-shadow:0 18px 40px -24px rgba(0,0,0,.8)}
+.card.k{border-top:4px solid var(--a)} .card.k2{border-top:4px solid var(--a2)}
+.card.kok{border-top:4px solid var(--ok)} .card.kw{border-top:4px solid var(--warn)}
+.card h3{font-size:clamp(1.1rem,2.2vw,1.6rem);margin-bottom:.15em;display:flex;align-items:center;gap:.4em}
+.card p{font-size:clamp(.95rem,1.7vw,1.25rem);color:var(--muted)}
+.ico{font-size:clamp(1.6rem,3vw,2.4rem);line-height:1}
+.chips{display:flex;gap:.5em;flex-wrap:wrap;margin-top:.6em}
+.chip{background:#0d1730;border:1px solid var(--line);color:var(--a);border-radius:999px;
+  padding:.25em .8em;font-size:clamp(.85rem,1.5vw,1.05rem);font-family:'Consolas',monospace}
+code{background:#0a1226;color:var(--a);padding:.1em .4em;border-radius:6px;font-family:'Consolas',monospace;font-size:.9em}
+pre{background:#0a1226;border:1px solid var(--line);border-radius:14px;padding:1em 1.2em;margin-top:.5em;overflow:auto}
+pre code{background:none;color:#dbe4ff;padding:0;font-size:clamp(.9rem,1.6vw,1.2rem);line-height:1.55}
+.big{font-size:clamp(1.3rem,3vw,2.1rem)}
+.tag{display:inline-block;background:linear-gradient(120deg,var(--a),var(--a2));color:#04121f;
+  font-weight:800;border-radius:999px;padding:.25em 1em;font-size:.95rem;margin-bottom:1em}
+/* ---- fragmentos (revelado por pasos) ---- */
+.frag{opacity:0;transform:translateY(14px) scale(.98);transition:.35s cubic-bezier(.2,.7,.2,1);filter:blur(2px)}
+.frag.show{opacity:1;transform:none;filter:none}
+/* ---- diagrama flujo ---- */
+.flow{display:flex;align-items:center;gap:1em;flex-wrap:wrap;margin:.4em 0}
+.node{position:relative;background:linear-gradient(180deg,var(--panel),var(--panel2));
+  border:2px solid var(--a);border-radius:16px;padding:.7em 1.1em;text-align:center;font-weight:700;min-width:130px}
+.node small{display:block;color:var(--muted);font-weight:400;font-size:.75em}
+.node.ok{border-color:var(--ok)} .node.p{border-color:var(--a2)} .node.w{border-color:var(--warn)} .node.pink{border-color:var(--pink)}
+.link{position:relative;flex:1;min-width:90px;height:4px;background:var(--line);border-radius:4px}
+.link .pkt{position:absolute;top:50%;left:0;width:14px;height:14px;border-radius:50%;
+  background:var(--a);box-shadow:0 0 14px var(--a);transform:translate(-50%,-50%)}
+.slide.active .link .pkt{animation:go 1.8s linear infinite}
+.slide.active .link.rev .pkt{animation:goback 1.8s linear infinite}
+.slide.active .link.two .pkt{animation:pingpong 2.2s ease-in-out infinite}
+@keyframes go{from{left:0}to{left:100%}}
+@keyframes goback{from{left:100%}to{left:0}}
+@keyframes pingpong{0%{left:0}50%{left:100%}100%{left:0}}
+.pulse{animation:pulse 1.6s ease-in-out infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(251,191,36,.5)}50%{box-shadow:0 0 0 14px rgba(251,191,36,0)}}
+/* ---- comparación interactiva ---- */
+.tabs{display:flex;gap:.6em;margin:.3em 0 .7em;flex-wrap:wrap}
+.tab{background:#0d1730;border:1px solid var(--line);color:var(--text);border-radius:12px;
+  padding:.5em 1.1em;font-size:clamp(1rem,1.9vw,1.3rem);cursor:pointer;transition:.2s;font-weight:700}
+.tab:hover{border-color:var(--a)}
+.tab.on{background:linear-gradient(120deg,var(--a),var(--a2));color:#04121f;border-color:transparent}
+.pane{display:none} .pane.on{display:block;animation:rise .35s both}
+/* ==== diagrama "visualizado" estilo infografía (clic para enfocar) ==== */
+.viz{display:flex;flex-direction:column;gap:14px;margin-top:.5em}
+.vp{position:relative;border:1px solid var(--line);border-left:6px solid var(--c);border-radius:18px;
+  padding:18px 30px 30px;background:linear-gradient(180deg,rgba(23,32,51,.8),rgba(15,23,42,.72));
+  transition:.25s;cursor:pointer}
+.vp:hover,.vp.on{border-color:var(--c);box-shadow:0 0 0 1px var(--c),0 0 55px -16px var(--c)}
+.vp.dim{opacity:.38}
+.vhead{display:flex;justify-content:space-between;align-items:center;gap:1.2em}
+.vt{font-size:clamp(1.4rem,3vw,2.3rem);font-weight:800;color:var(--c);line-height:1;display:flex;align-items:center;gap:.35em}
+.vs{color:var(--muted);font-size:clamp(.82rem,1.5vw,1.15rem);margin-top:.25em}
+.vbest{border:1.5px solid var(--c);border-radius:14px;padding:.5em 1.15em;text-align:center;background:#0d1730;flex:0 0 auto}
+.vbest small{color:var(--muted);text-transform:uppercase;font-size:.62em;letter-spacing:.12em;display:block;margin-bottom:.15em}
+.vbest b{color:var(--c);font-size:clamp(1.05rem,1.9vw,1.4rem)}
+.vdiag{display:flex;align-items:center;gap:.3em;margin-top:1.3em;margin-bottom:.3em}
+.vn{background:#0b1226;border:2.5px solid var(--c);border-radius:14px;padding:.65em 1.3em;
+  font-size:clamp(1rem,1.9vw,1.4rem);font-weight:800;color:#eaf2ff;text-align:center;white-space:nowrap;flex:0 0 auto}
+.vn small{display:block;color:var(--muted);font-weight:400;font-size:.68em;margin-top:.1em}
+.vln{position:relative;flex:1;min-width:44px;height:3px;background:#33456b;border-radius:3px}
+.vln .p{position:absolute;top:50%;width:12px;height:12px;border-radius:50%;background:var(--c);
+  box-shadow:0 0 14px var(--c);transform:translate(-50%,-50%)}
+.slide.active .vln .p{animation:go 1.9s linear infinite}
+.slide.active .vln.rev .p{animation:goback 1.9s linear infinite}
+.slide.active .vln.two .p{animation:pingpong 2.2s ease-in-out infinite}
+.vstack{display:flex;flex-direction:column;gap:8px;flex:0 0 auto}
+.vmini{background:#0b1226;border:2px solid var(--c);border-radius:10px;padding:.35em 1em;
+  font-size:clamp(.85rem,1.5vw,1.15rem);font-family:'Consolas',monospace;color:#dbe4ff;text-align:center}
+.vtags{position:absolute;bottom:10px;left:30px;color:var(--muted);font-size:clamp(.75rem,1.3vw,.98rem);font-family:'Consolas',monospace}
+.vcap{margin-top:.7em;border:1.5px dashed #3a4a6b;border-radius:12px;padding:.7em 1.1em;
+  color:#dbe4ff;font-family:'Consolas',monospace;font-size:clamp(.9rem,1.6vw,1.2rem)}
+.vcap b{color:var(--a)}
+/* ---- barra progreso + ayudas ---- */
+.bar{position:fixed;left:0;bottom:0;height:5px;background:linear-gradient(90deg,var(--a),var(--a2));z-index:20;transition:width .3s}
+.hud{position:fixed;bottom:12px;right:18px;color:var(--muted);font-size:.85rem;z-index:20}
+.hint{position:fixed;bottom:12px;left:18px;color:var(--muted);font-size:.8rem;z-index:20}
+.hint kbd{background:#0d1730;border:1px solid var(--line);border-radius:5px;padding:.05em .4em;color:var(--a)}
+/* ---- vista rejilla (overview) ---- */
+.grip{position:fixed;inset:0;background:rgba(6,10,20,.96);z-index:40;display:none;
+  grid-template-columns:repeat(4,1fr);gap:14px;padding:70px 5vw;overflow:auto;align-content:start}
+.grip.on{display:grid}
+.mini{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px;cursor:pointer;
+  min-height:90px;transition:.15s;position:relative;overflow:hidden}
+.mini:hover{border-color:var(--a);transform:translateY(-3px)}
+.mini .n{position:absolute;top:6px;right:10px;color:var(--muted);font-size:12px;font-weight:800}
+.mini h4{font-size:15px;color:var(--a);margin-bottom:4px}
+.mini p{font-size:12px;color:var(--muted)}
+.center{align-items:center;text-align:center}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <div class="brand">Curso <b>ADSO</b> · SENA</div>
+  <div class="dots" id="dots"></div>
+</div>
+
+<div class="deck" id="deck">
+
+  <!-- 1 · Portada -->
+  <section class="slide center" data-title="Portada">
+    <div class="kick anim">Clase 01</div>
+    <h1 class="anim">Fundamentos<br>y Entorno</h1>
+    <p class="lead muted anim" style="margin-top:.6em">Cómo funciona la web · Protocolos · Git &amp; GitHub · Equipos</p>
+    <div class="chips anim" style="justify-content:center;margin-top:1.2em">
+      <span class="chip">HTTP</span><span class="chip">WebSocket</span><span class="chip">SSE</span>
+      <span class="chip">git</span><span class="chip">GitHub</span>
+    </div>
+  </section>
+
+  <!-- 2 · Programar -->
+  <section class="slide" data-title="¿Qué es programar?">
+    <div class="kick anim">Idea de arranque</div>
+    <h2 class="anim">¿Qué es programar?</h2>
+    <p class="lead anim">Escribir <span class="a">instrucciones muy precisas</span> para una máquina
+       rapidísima pero <span class="warn">literal</span>.</p>
+    <div class="grid g2" style="margin-top:1em">
+      <div class="card k frag"><h3><span class="ico">🍳</span> Como una receta</h3>
+        <p>Si dices "agrega sal" sin decir cuánta… se rompe. La máquina hace <b>exactamente</b> lo que dices.</p></div>
+      <div class="card k2 frag"><h3><span class="ico">🧭</span> No es memorizar</h3>
+        <p>Es <b>resolver problemas</b> y <b>buscar bien</b>. Los mejores consultan documentación todo el día.</p></div>
+    </div>
+  </section>
+
+  <!-- 3 · Cliente/Servidor -->
+  <section class="slide" data-title="Cliente y Servidor">
+    <div class="kick anim">La web</div>
+    <h2 class="anim">Cliente y Servidor</h2>
+    <div class="flow anim" style="margin-top:.6em">
+      <div class="node">💻 Cliente<small>tu navegador</small></div>
+      <div class="link"><span class="pkt"></span></div>
+      <div class="node p">🌐 Protocolo<small>las reglas</small></div>
+      <div class="link"><span class="pkt"></span></div>
+      <div class="node ok">🖥️ Servidor<small>responde</small></div>
+    </div>
+    <p class="lead frag" style="margin-top:1em">El <span class="a">cliente pide</span>, el
+       <span class="ok">servidor responde</span>. El paquete que ves moverse son los <b>datos</b> viajando.</p>
+    <div class="card k frag" style="margin-top:.6em"><p>🍽️ <b>Restaurante:</b> el comensal (cliente) pide,
+       la cocina (servidor) prepara, y el mesero (protocolo) lleva y trae con reglas.</p></div>
+  </section>
+
+  <!-- 4 · Protocolo -->
+  <section class="slide" data-title="¿Qué es un protocolo?">
+    <div class="tag anim">📡 PROTOCOLOS</div>
+    <h2 class="anim">¿Qué es un protocolo?</h2>
+    <p class="lead anim">Un conjunto de <span class="a">reglas acordadas</span> para comunicarse
+       — como el "aló" y el "chao" de una llamada.</p>
+    <p class="big frag" style="margin-top:1em">En la web hay tres que debes conocer:</p>
+    <div class="grid g3 frag" style="margin-top:.4em">
+      <div class="card k"><h3>📩 HTTP</h3><p>Pregunta y respuesta</p></div>
+      <div class="card k2"><h3>📻 SSE</h3><p>El servidor transmite</p></div>
+      <div class="card kw"><h3>📞 WebSocket</h3><p>Conexión viva</p></div>
+    </div>
+  </section>
+
+  <!-- 5 · HTTP -->
+  <section class="slide" data-title="HTTP">
+    <div class="kick anim">Protocolo 1 · 📩</div>
+    <h2 class="anim">HTTP — pregunta y respuesta</h2>
+    <div class="flow anim"><div class="node">Cliente</div>
+      <div class="link"><span class="pkt"></span></div><div class="node ok">Servidor</div>
+      <span class="muted">→ te pido</span></div>
+    <div class="flow frag"><div class="node">Cliente</div>
+      <div class="link rev"><span class="pkt"></span></div><div class="node ok">Servidor</div>
+      <span class="muted">← te respondo, y cierro</span></div>
+    <p class="lead frag" style="margin-top:.8em">Cada cosa es <b>una petición nueva</b>. Métodos:
+       <span class="chip">GET</span> <span class="chip">POST</span></p>
+    <div class="card k frag" style="margin-top:.4em"><p>Ejemplos: cargar una página, pedir datos a una API.</p></div>
+  </section>
+
+  <!-- 6 · WebSocket -->
+  <section class="slide" data-title="WebSocket">
+    <div class="kick anim">Protocolo 2 · 📞</div>
+    <h2 class="anim">WebSocket — conexión viva</h2>
+    <div class="flow anim"><div class="node w pulse">Cliente</div>
+      <div class="link two"><span class="pkt" style="background:var(--warn);box-shadow:0 0 14px var(--warn)"></span></div>
+      <div class="node w pulse">Servidor</div></div>
+    <p class="lead frag" style="margin-top:.9em">La conexión queda <span class="warn">abierta en los dos
+       sentidos</span>. El servidor manda cosas <b>sin que el cliente pida</b>.</p>
+    <div class="grid g2 frag" style="margin-top:.5em">
+      <div class="card kw"><h3><span class="ico">📞</span> Como una llamada</h3><p>Que no se cuelga.</p></div>
+      <div class="card kw"><h3><span class="ico">⚡</span> Tiempo real</h3><p>Chat, juegos, colaboración en vivo. Lo usaremos con Socket.IO.</p></div>
+    </div>
+  </section>
+
+  <!-- 7 · SSE -->
+  <section class="slide" data-title="SSE">
+    <div class="kick anim">Protocolo 3 · 📻</div>
+    <h2 class="anim">SSE — el servidor te va contando</h2>
+    <div class="flow anim"><div class="node p">Cliente</div>
+      <div class="link rev"><span class="pkt" style="background:var(--a2);box-shadow:0 0 14px var(--a2)"></span></div>
+      <div class="node p">Servidor</div><span class="muted">← flujo (una sola vía)</span></div>
+    <p class="lead frag" style="margin-top:.9em">El servidor <span class="a2">transmite</span> un flujo
+       de mensajes; el cliente solo <b>escucha</b>.</p>
+    <div class="card k2 frag" style="margin-top:.5em"><p>📻 Como oír la <b>radio</b>. Ideal para
+       <b>notificaciones</b>, feeds en vivo y barras de progreso. Más simple que WebSocket.</p></div>
+  </section>
+
+  <!-- 8 · Comparación visualizada (estilo infografía) -->
+  <section class="slide" data-title="Protocolos · visualizado">
+    <div class="kick anim">Protocolos · visualizado · haz clic en un panel 👆</div>
+    <h2 class="anim">HTTP vs SSE vs WebSocket</h2>
+    <div class="viz anim">
+      <div class="vp on" style="--c:var(--a)" data-cap="<b>HTTP:</b> el cliente pregunta, el servidor responde y la conexión se CIERRA. Para cada dato nuevo, otro viaje.">
+        <div class="vhead">
+          <div><div class="vt">📩 HTTP</div><div class="vs">pregunta y respuesta · sin memoria</div></div>
+          <div class="vbest"><small>Mejor para</small><b>Páginas y APIs</b></div>
+        </div>
+        <div class="vdiag">
+          <div class="vn">APP<small>cliente</small></div>
+          <div class="vln"><span class="p"></span></div>
+          <div class="vn">HTTP</div>
+          <div class="vln"><span class="p"></span></div>
+          <div class="vstack"><span class="vmini">/páginas</span><span class="vmini">/datos</span><span class="vmini">/login</span></div>
+        </div>
+        <div class="vtags">va y vuelve · se cierra · cacheable</div>
+      </div>
+      <div class="vp dim" style="--c:var(--a2)" data-cap="<b>SSE:</b> el servidor abre un canal y TRANSMITE un flujo de mensajes; el cliente solo escucha (una sola vía).">
+        <div class="vhead">
+          <div><div class="vt">📻 SSE</div><div class="vs">el servidor transmite · una sola vía</div></div>
+          <div class="vbest"><small>Mejor para</small><b>Notificaciones</b></div>
+        </div>
+        <div class="vdiag">
+          <div class="vn">SERVIDOR</div>
+          <div class="vln rev"><span class="p"></span></div>
+          <div class="vn" style="opacity:.7;border-style:dashed">⋯ flujo ⋯</div>
+          <div class="vln rev"><span class="p"></span></div>
+          <div class="vn">CLIENTE<small>solo escucha</small></div>
+        </div>
+        <div class="vtags">flujo · en vivo · liviano</div>
+      </div>
+      <div class="vp dim" style="--c:var(--warn)" data-cap="<b>WebSocket:</b> una conexión queda ABIERTA en los dos sentidos; ambos hablan cuando quieran. Tiempo real puro.">
+        <div class="vhead">
+          <div><div class="vt">📞 WebSocket</div><div class="vs">conexión viva · los dos sentidos</div></div>
+          <div class="vbest"><small>Mejor para</small><b>Chat y juegos</b></div>
+        </div>
+        <div class="vdiag">
+          <div class="vn">CLIENTE</div>
+          <div class="vln two"><span class="p"></span></div>
+          <div class="vn" style="opacity:.75">↔ abierto</div>
+          <div class="vln two"><span class="p"></span></div>
+          <div class="vn">SERVIDOR</div>
+        </div>
+        <div class="vtags">bidireccional · instantáneo · tiempo real</div>
+      </div>
+    </div>
+    <div class="vcap"><b>HTTP:</b> el cliente pregunta, el servidor responde y la conexión se CIERRA. Para cada dato nuevo, otro viaje.</div>
+  </section>
+
+  <!-- 9 · Front vs Back -->
+  <section class="slide" data-title="Frontend vs Backend">
+    <div class="kick anim">Las dos mitades</div>
+    <h2 class="anim">Frontend vs Backend</h2>
+    <div class="grid g2" style="margin-top:.6em">
+      <div class="card k frag"><h3><span class="ico">🎨</span> Frontend — la cara</h3>
+        <p>Lo que se ve y se toca. Vive en el navegador.</p>
+        <div class="chips"><span class="chip">HTML</span><span class="chip">CSS</span><span class="chip">JS</span></div></div>
+      <div class="card k2 frag"><h3><span class="ico">🧠</span> Backend — el cerebro</h3>
+        <p>La lógica y los datos. Vive en el servidor.</p>
+        <div class="chips"><span class="chip">Node.js</span><span class="chip">base de datos</span></div></div>
+    </div>
+    <p class="muted frag" style="margin-top:.8em">Uno sin el otro no sirve: maniquí bonito 🆚 cerebro en un frasco.</p>
+  </section>
+
+  <!-- 10 · Terminal -->
+  <section class="slide" data-title="La terminal">
+    <div class="kick anim">Herramienta</div>
+    <h2 class="anim">La terminal ⌨️</h2>
+    <p class="lead anim">Darle órdenes al computador <b>escribiendo</b> en vez de hacer clic.</p>
+    <div class="grid g2" style="margin-top:.6em">
+      <div class="frag"><pre><code>pwd     → ¿dónde estoy?
+ls      → lista archivos
+cd x    → entra a la carpeta x</code></pre></div>
+      <div class="frag"><pre><code>mkdir y → crea la carpeta y
+code .  → abre VS Code aquí
+clear   → limpia la pantalla</code></pre></div>
+    </div>
+  </section>
+
+  <!-- 10b · Terminal más -->
+  <section class="slide" data-title="Terminal · más">
+    <div class="kick anim">Herramienta · más comandos</div>
+    <h2 class="anim">La terminal — un poco más ⌨️</h2>
+    <div class="grid g3" style="margin-top:.3em">
+      <div class="frag"><pre><code># Moverte
+cd ..    subir un nivel
+cd ~     a tu usuario
+ls       ver qué hay</code></pre></div>
+      <div class="frag"><pre><code># Crear / borrar
+mkdir sala   crear carpeta
+ni app.js    crear archivo
+del app.js   borrar</code></pre></div>
+      <div class="card k2 frag"><h3>Atajos ⚡</h3><ul>
+        <li><b>Tab</b> → autocompleta nombres</li>
+        <li><b>↑ / ↓</b> → comandos anteriores</li>
+        <li><b>Ctrl + C</b> → cancela lo que corre</li>
+        <li><b>cls</b> → limpia la pantalla</li></ul></div>
+    </div>
+    <p class="muted frag" style="margin-top:.5em">💡 En Windows usamos <b>PowerShell</b>; algunos comandos cambian frente a Linux/Mac.</p>
+  </section>
+
+  <!-- 11 · Git tiempo -->
+  <section class="slide" data-title="Git = máquina del tiempo">
+    <div class="tag anim">🌿 GIT</div>
+    <h2 class="anim">Git = máquina del tiempo ⏳</h2>
+    <p class="lead anim">Adiós a <code>trabajo_final_ESTE_SI.doc</code>. Git guarda <b>toda la historia</b>.</p>
+    <div class="flow frag" style="margin-top:.8em">
+      <div class="node">✏️ Editas</div><div class="link"><span class="pkt"></span></div>
+      <div class="node">📦 <code>git add</code><small>preparas</small></div>
+      <div class="link"><span class="pkt"></span></div>
+      <div class="node ok">📸 <code>git commit</code><small>foto guardada</small></div>
+    </div>
+    <p class="muted frag" style="margin-top:.6em">Commits <b>pequeños y frecuentes</b> &gt; uno gigante al final.</p>
+  </section>
+
+  <!-- 12 · Git vs GitHub -->
+  <section class="slide" data-title="Git vs GitHub">
+    <div class="kick anim">La distinción clave</div>
+    <h2 class="anim">Git (local) vs GitHub (nube) ☁️</h2>
+    <div class="grid g2" style="margin-top:.5em">
+      <div class="card kok frag"><h3><span class="ico">📓</span> Git — tu máquina</h3>
+        <p>La <b>herramienta</b>. Guarda la historia local. <b>Funciona sin internet.</b></p></div>
+      <div class="card k2 frag"><h3><span class="ico">☁️</span> GitHub — la nube</h3>
+        <p>Un <b>servicio</b> que aloja una copia del repo para compartir y desplegar.</p></div>
+    </div>
+    <p class="lead frag" style="margin-top:.8em">Puente: <span class="chip">git push</span> (subir) ·
+       <span class="chip">git pull</span> (bajar)</p>
+  </section>
+
+  <!-- 13 · Ramas -->
+  <section class="slide" data-title="Ramas">
+    <div class="kick anim">Colaboración</div>
+    <h2 class="anim">Ramas (branches) 🌿</h2>
+    <p class="lead anim">Una línea de trabajo paralela: avanzas <b>sin dañar</b> lo que ya funciona.</p>
+    <div class="flow frag" style="margin-top:.8em">
+      <div class="node ok">main<small>siempre funciona</small></div>
+      <div class="link"><span class="pkt" style="background:var(--ok);box-shadow:0 0 14px var(--ok)"></span></div>
+      <div class="node">feature/login<small>tu tarea</small></div>
+      <div class="link rev"><span class="pkt" style="background:var(--ok);box-shadow:0 0 14px var(--ok)"></span></div>
+      <div class="node ok">merge</div>
+    </div>
+    <p class="muted frag" style="margin-top:.6em">Terminaste → <b>Pull Request</b>: que revisen antes de unir.</p>
+  </section>
+
+  <!-- 13b · Git comandos -->
+  <section class="slide" data-title="Git · comandos">
+    <div class="kick anim">Chuleta 🌿</div>
+    <h2 class="anim">Comandos de Git que usarás</h2>
+    <div class="grid g4" style="margin-top:.3em">
+      <div class="card k frag"><h3>Día a día</h3><pre><code>git status
+git add .
+git commit -m ""
+git log --oneline</code></pre></div>
+      <div class="card k frag"><h3>Ramas</h3><pre><code>git branch
+git switch -c rama
+git switch main
+git merge rama</code></pre></div>
+      <div class="card k2 frag"><h3>Con la nube</h3><pre><code>git clone url
+git pull
+git push</code></pre></div>
+      <div class="card kw frag"><h3>Deshacer</h3><pre><code>git diff
+git restore arch.
+git log</code></pre></div>
+    </div>
+    <p class="muted frag" style="margin-top:.5em">No hay que memorizarlos: con el uso salen solos. Esta es tu <b>chuleta</b>.</p>
+  </section>
+
+  <!-- 14 · Estrategia ramas -->
+  <section class="slide" data-title="Estrategia de ramas">
+    <div class="kick anim">Metodología profesional</div>
+    <h2 class="anim">Estrategia de ramas</h2>
+    <div class="flow anim" style="margin-top:.5em">
+      <div class="node">feature/*<small>una tarea</small></div>
+      <div class="link"><span class="pkt"></span></div>
+      <div class="node p">development<small>se integra</small></div>
+      <div class="link"><span class="pkt"></span></div>
+      <div class="node w">staging<small>se prueba</small></div>
+      <div class="link"><span class="pkt"></span></div>
+      <div class="node ok">main<small>producción</small></div>
+    </div>
+    <div class="grid g4 frag" style="margin-top:.8em">
+      <div class="card"><p><b class="a">feature</b> cada tarea</p></div>
+      <div class="card"><p><b class="a2">development</b> juntar trabajo</p></div>
+      <div class="card"><p><b class="warn">staging</b> pruebas finales</p></div>
+      <div class="card"><p><b class="ok">main</b> lo estable</p></div>
+    </div>
+  </section>
+
+  <!-- 15 · Crear/vincular + auth -->
+  <section class="slide" data-title="Crear y vincular repo">
+    <div class="kick anim">Conectar local ↔ nube</div>
+    <h2 class="anim">Crear el repo y vincularlo</h2>
+    <div class="frag"><pre><code>git remote add origin git@github.com:usuario/repo.git
+git branch -M main
+git push -u origin main</code></pre></div>
+    <p class="big frag" style="margin-top:.6em">¿Cómo te autenticas con GitHub?</p>
+    <div class="grid g3 frag">
+      <div class="card kok"><h3>gh ✅</h3><p><code>gh auth login</code> — lo más fácil</p></div>
+      <div class="card k"><h3>SSH 🔑</h3><p><code>ssh-keygen -t ed25519</code> + llave en GitHub</p></div>
+      <div class="card k2"><h3>HTTPS 🔒</h3><p>usuario + token personal (PAT)</p></div>
+    </div>
+  </section>
+
+  <!-- 15b · SSH paso a paso -->
+  <section class="slide" data-title="SSH paso a paso">
+    <div class="tag anim">🔑 SSH · PASO A PASO</div>
+    <h2 class="anim">Conectarte a GitHub con SSH</h2>
+    <div class="grid g2" style="margin-top:.2em">
+      <div>
+        <div class="card k frag"><h3><span class="num">1</span> Crea tu llave (una vez)</h3>
+          <pre><code>ssh-keygen -t ed25519 -C "tu-correo"</code></pre>
+          <p>Presiona <b>Enter</b> en todo (sin contraseña está bien para empezar).</p></div>
+        <div class="card k frag" style="margin-top:.5em"><h3><span class="num">2</span> Copia la llave PÚBLICA</h3>
+          <pre><code>cat ~/.ssh/id_ed25519.pub</code></pre>
+          <p>Copia todo (empieza con <code>ssh-ed25519</code>).</p></div>
+      </div>
+      <div>
+        <div class="card k2 frag"><h3><span class="num">3</span> Pégala en GitHub</h3>
+          <p>Settings → <b>SSH and GPG keys</b> → <b>New SSH key</b> → pega y guarda.</p></div>
+        <div class="card kok frag" style="margin-top:.5em"><h3><span class="num">4</span> Prueba la conexión</h3>
+          <pre><code>ssh -T git@github.com</code></pre>
+          <p>Debe decir: <span class="ok">"Hi usuario! You've successfully authenticated"</span>.</p></div>
+      </div>
+    </div>
+    <p class="muted frag" style="margin-top:.4em">Listo: ya usas URLs <code>git@github.com:...</code> sin escribir contraseña cada vez. 🎉</p>
+  </section>
+
+  <!-- 16 · Actions -->
+  <section class="slide" data-title="GitHub Actions">
+    <div class="kick anim">Automatización</div>
+    <h2 class="anim">GitHub Actions 🤖</h2>
+    <p class="lead anim">Un <span class="a">robot</span> que, cuando haces <code>push</code>, prueba tu
+       código y lo <b>despliega</b> solo. Eso es <b>CI/CD</b>.</p>
+    <div class="frag"><pre><code># .github/workflows/deploy.yml
+on: [push]           # cuando subo código...
+jobs:
+  build:
+    steps:
+      - run: pnpm install &amp;&amp; pnpm test   # ...prueba y publica</code></pre></div>
+    <p class="muted frag">No hace falta dominarlo hoy: lo veremos a fondo más adelante.</p>
+  </section>
+
+  <!-- 17 · Hackathon roles -->
+  <section class="slide" data-title="Hackathon y roles">
+    <div class="tag anim">🏆 HACKATHON</div>
+    <h2 class="anim">Equipos y roles</h2>
+    <p class="lead anim">Construyen <span class="a">su propio proyecto</span>, lo despliegan y compiten por un premio.</p>
+    <div class="grid g4 frag" style="margin-top:.6em">
+      <div class="card k"><h3>⚙️</h3><p><b>DevOps</b><br>Repo, CI/CD</p></div>
+      <div class="card k"><h3>🎨</h3><p><b>Frontend</b><br>Pantallas</p></div>
+      <div class="card k"><h3>🔧</h3><p><b>Backend</b><br>Servidor, datos</p></div>
+      <div class="card k2"><h3>🧭</h3><p><b>PM</b><br>Cliente, QA</p></div>
+    </div>
+    <p class="muted frag" style="margin-top:.5em">Datos y la feature clave son de <b>todo el equipo</b>. Todos programan.</p>
+  </section>
+
+  <!-- 18 · Práctica -->
+  <section class="slide" data-title="Práctica de hoy">
+    <div class="kick anim">Práctica de hoy ✍️</div>
+    <h2 class="anim">Manos a la obra</h2>
+    <div class="grid g2" style="margin-top:.5em">
+      <div class="card k frag"><p>① Crear tu repo (<code>git init</code>) y hacer 2 commits.</p></div>
+      <div class="card k frag"><p>② Probar una <b>rama</b> y unirla a <code>main</code>.</p></div>
+      <div class="card k2 frag"><p>③ Confirmar equipo, roles y nombre del proyecto.</p></div>
+      <div class="card kok frag"><p>④ Vincular a GitHub y <b>publicar la primera página</b> 🚀</p></div>
+    </div>
+    <p class="muted frag" style="margin-top:.6em">Desde hoy: <b>cada clase cierra desplegando</b>.</p>
+  </section>
+
+  <!-- 19 · Cierre -->
+  <section class="slide center" data-title="Cierre">
+    <h1 class="anim">¿Preguntas? 🙌</h1>
+    <p class="lead muted anim" style="margin-top:.6em">Siguiente: <span class="a">Clase 02 — HTML</span> y tu portafolio.</p>
+    <p class="muted anim" style="margin-top:1.2em">Pulsa <kbd style="color:var(--a)">O</kbd> para ver todas las diapositivas.</p>
+  </section>
+
+</div>
+
+<div class="grip" id="grip"></div>
+<div class="bar" id="bar"></div>
+<div class="hud"><span id="cur">1</span> / <span id="tot">1</span></div>
+<div class="hint"><kbd>←</kbd> <kbd>→</kbd> avanzar · <kbd>O</kbd> rejilla · clic para seguir</div>
+
+<script>
+(function(){
+  const deck=document.getElementById('deck');
+  const slides=[...deck.querySelectorAll('.slide')];
+  const tot=slides.length;
+  let i=0, f=0; // slide actual, fragmento actual
+  document.getElementById('tot').textContent=tot;
+
+  // fragmentos por slide
+  const frags=slides.map(s=>[...s.querySelectorAll('.frag')]);
+
+  // puntos de progreso
+  const dotsWrap=document.getElementById('dots');
+  slides.forEach((s,k)=>{const b=document.createElement('button');b.className='dot';
+    b.title=s.dataset.title||('Slide '+(k+1));b.onclick=()=>goto(k);dotsWrap.appendChild(b);});
+  const dots=[...dotsWrap.children];
+
+  function render(){
+    slides.forEach((s,k)=>s.classList.toggle('active',k===i));
+    frags[i].forEach((el,k)=>el.classList.toggle('show',k<f));
+    dots.forEach((d,k)=>{d.classList.toggle('on',k===i);d.classList.toggle('seen',k<i);});
+    document.getElementById('cur').textContent=i+1;
+    document.getElementById('bar').style.width=(((i+ (frags[i].length?f/ (frags[i].length):0))+1)/tot*100)+'%';
+  }
+  function goto(n){ i=Math.max(0,Math.min(tot-1,n)); f=frags[i].length; render(); } // saltar: todo revelado
+  function next(){
+    if(f<frags[i].length){f++;render();return;}
+    if(i<tot-1){i++;f=0;render();}
+  }
+  function prev(){
+    if(f>0){f--;render();return;}
+    if(i>0){i--;f=frags[i].length;render();}
+  }
+
+  // interacción: comparaciones (tabs) y paneles "visualizados" (.vp)
+  deck.addEventListener('click',e=>{
+    const t=e.target.closest('.tab');
+    if(t){const root=t.closest('.slide');
+      root.querySelectorAll('.tab').forEach(x=>x.classList.toggle('on',x===t));
+      root.querySelectorAll('.pane').forEach(p=>p.classList.toggle('on',p.dataset.pane===t.dataset.tab));
+      e.stopPropagation();return;}
+    const vp=e.target.closest('.vp');
+    if(vp){const root=vp.closest('.slide');
+      root.querySelectorAll('.vp').forEach(x=>{x.classList.toggle('on',x===vp);x.classList.toggle('dim',x!==vp);});
+      const cap=root.querySelector('.vcap'); if(cap&&vp.dataset.cap)cap.innerHTML=vp.dataset.cap;
+      e.stopPropagation();return;}
+  });
+
+  // vista rejilla
+  const grip=document.getElementById('grip');
+  slides.forEach((s,k)=>{const m=document.createElement('div');m.className='mini';
+    m.innerHTML='<span class="n">'+(k+1)+'</span><h4>'+(s.dataset.title||'')+'</h4>';
+    m.onclick=()=>{goto(k);toggleGrip(false);};grip.appendChild(m);});
+  function toggleGrip(v){grip.classList.toggle('on',v);}
+
+  document.addEventListener('keydown',e=>{
+    if(e.key==='o'||e.key==='O'){toggleGrip(!grip.classList.contains('on'));return;}
+    if(grip.classList.contains('on')){if(e.key==='Escape')toggleGrip(false);return;}
+    if(['ArrowRight',' ','PageDown','Enter'].includes(e.key)){e.preventDefault();next();}
+    else if(['ArrowLeft','PageUp','Backspace'].includes(e.key)){e.preventDefault();prev();}
+    else if(e.key==='Home')goto(0);
+    else if(e.key==='End')goto(tot-1);
+  });
+  // clic para avanzar (zona izq retrocede); ignora clics en tabs/minis
+  document.addEventListener('click',e=>{
+    if(e.target.closest('.tab')||e.target.closest('.vp')||e.target.closest('.grip')||e.target.closest('.dot'))return;
+    if(e.clientX<innerWidth*0.22)prev();else next();
+  });
+  render();
+})();
+</script>
+</body>
+</html>
