@@ -221,6 +221,31 @@ Le puedes pedir: **explicar** ("¿qué hace esta línea?"), **crear** ("hazme un
 - **Format on Save** con Prettier (ordena el código al guardar).
 - Extensiones: **Live Server**, **Prettier**, **Español**.
 
+### 6.7. OpenCode a fondo: comandos, modos y contexto
+
+**Comandos (escribe `/` en la TUI):**
+- `/init` — analiza el proyecto y crea un **`AGENTS.md`** (contexto para la IA).
+- `/connect` — conectar el modelo (API key del proveedor).
+- `/undo` — **deshacer** los cambios que hizo (repetible) · `/redo` — rehacer.
+- `/share` — genera un **link** para compartir la sesión · `/help` — ver todos.
+
+**Dos modos (se cambian con la tecla `Tab`):**
+- **📋 Plan** — solo **propone y explica**, no toca tus archivos. Ideal para **aprender**
+  ("¿cómo harías esto?").
+- **🔨 Build** — sí **hace los cambios** en el código. Para cuando ya entendiste y quieres que lo haga.
+- El modo actual se ve abajo a la derecha.
+
+**Sacarle provecho:**
+- **`AGENTS.md`** — el archivo que crea `/init` con la info de tu proyecto. **Súbelo a Git** para que
+  todo el equipo comparta el mismo contexto (es como un `CLAUDE.md`).
+- **Ahorrar tokens** (importante en el tier gratis): sé **claro y concreto** en el prompt, y abre una
+  **sesión nueva** cuando cambies de tema (así no arrastras historial que gasta tokens).
+- **Sin miedo a romper:** con `/undo` reviertes lo que haga; prueba tranquilo.
+
+> 🔜 **Para explorar después** (en el video de referencia o `opencode.ai/docs`): agentes, crear
+> **comandos propios** con argumentos, **compartir sesiones**, **conectar tu suscripción** (Claude/
+> ChatGPT) en vez de una API key, y **skills**. No hace falta para empezar.
+
 ---
 
 ## 7. Cómo usar la IA sin dejar de aprender <a name="7-uso-ia"></a>
