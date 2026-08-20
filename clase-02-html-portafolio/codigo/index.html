@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <!-- ===== METADATOS: info que NO se ve, pero el navegador y Google usan ===== -->
+  <meta charset="UTF-8">                                <!-- acentos y ñ correctos -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- responsive (celular) -->
+  <meta name="description" content="Portafolio de Tu Nombre, aprendiz de ADSO en el SENA.">
+  <meta name="author" content="Tu Nombre">
+  <title>Portafolio — Tu Nombre</title>                 <!-- texto de la pestaña -->
+</head>
+
+<body>
+  <!-- ===== ENCABEZADO: nombre + menú de navegación ===== -->
+  <header>
+    <h1>Tu Nombre</h1>
+    <p>Aprendiz de Análisis y Desarrollo de Software — SENA Bucaramanga</p>
+    <nav>
+      <!-- los enlaces con # saltan a las secciones por su id -->
+      <a href="#sobre-mi">Sobre mí</a>
+      <a href="#proyectos">Proyectos</a>
+      <a href="#habilidades">Habilidades</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
+  </header>
+
+  <!-- ===== CONTENIDO PRINCIPAL ===== -->
+  <main>
+
+    <!-- Sección "Sobre mí": incluye una imagen con figure/figcaption -->
+    <section id="sobre-mi" class="seccion">
+      <h2>Sobre mí</h2>
+      <figure>
+        <!-- Pon tu foto real (archivo "foto.jpg" en esta misma carpeta).
+             La etiqueta <img> NO lleva cierre. SIEMPRE con alt (texto alterno). -->
+        <img src="foto.jpg" alt="Foto de Tu Nombre" width="180">
+        <figcaption>Esta soy/este soy yo 👋</figcaption>
+      </figure>
+      <p>Escribe un párrafo corto: quién eres, qué aprendes y qué te <strong>apasiona</strong>.
+         Puedes usar <em>énfasis</em> con &lt;em&gt;.</p>
+    </section>
+
+    <!-- Sección "Proyectos": una lista -->
+    <section id="proyectos" class="seccion">
+      <h2>Proyectos</h2>
+      <ul>
+        <li>Proyecto de equipo (en construcción) 🚧</li>
+        <li>Portafolio personal (¡este!)</li>
+      </ul>
+    </section>
+
+    <!-- Sección "Multimedia" de ejemplo: video y audio locales -->
+    <section id="multimedia" class="seccion">
+      <h2>Multimedia</h2>
+      <!-- video y audio necesitan un archivo local (demo.mp4 / tema.mp3).
+           'controls' muestra los botones de reproducir. -->
+      <video src="demo.mp4" width="320" controls>Tu navegador no soporta video.</video>
+      <audio src="tema.mp3" controls>Tu navegador no soporta audio.</audio>
+    </section>
+
+    <!-- Sección "Habilidades": otra lista -->
+    <section id="habilidades" class="seccion">
+      <h2>Habilidades</h2>
+      <ul>
+        <li>HTML</li>
+        <!-- Irás sumando: CSS, JavaScript, Git... -->
+      </ul>
+    </section>
+
+    <!-- Sección "Contacto": un formulario -->
+    <section id="contacto" class="seccion">
+      <h2>Contacto</h2>
+      <form>
+        <label>Nombre: <input type="text" name="nombre"></label>
+        <label>Correo: <input type="email" name="correo"></label>
+        <label>Mensaje: <textarea name="mensaje"></textarea></label>
+        <button type="submit">Enviar</button>
+      </form>
+      <!-- Enlace externo: target="_blank" lo abre en otra pestaña -->
+      <p>Mi GitHub: <a href="https://github.com/tu-usuario" target="_blank">github.com/tu-usuario</a></p>
+    </section>
+
+  </main>
+
+  <!-- ===== PIE DE PÁGINA ===== -->
+  <footer>
+    <hr> <!-- línea separadora, etiqueta sin cierre -->
+    <p>© 2026 Tu Nombre — Portafolio hecho en el curso de ADSO.</p>
+  </footer>
+</body>
+</html>

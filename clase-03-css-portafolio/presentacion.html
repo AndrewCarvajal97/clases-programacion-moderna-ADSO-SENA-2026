@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Clase 03 — CSS</title>
+<style>
+/* ==== Deck del curso — autocontenido (SIN internet) ==== */
+:root{--bg:#0b1020;--panel:#172033;--panel2:#1e293b;--text:#eef2ff;--muted:#93a4c4;--line:#26324b;
+  --a:#38bdf8;--a2:#a78bfa;--ok:#4ade80;--warn:#fbbf24;--pink:#f472b6;--font:'Segoe UI',system-ui,sans-serif;}
+*{box-sizing:border-box;margin:0;padding:0}html,body{height:100%}
+body{font-family:var(--font);color:var(--text);overflow:hidden;
+  background:radial-gradient(1200px 700px at 85% -10%,rgba(56,189,248,.16),transparent 60%),
+  radial-gradient(900px 600px at -10% 110%,rgba(167,139,250,.16),transparent 60%),var(--bg);}
+.top{position:fixed;top:0;left:0;right:0;height:52px;display:flex;align-items:center;gap:14px;padding:0 22px;z-index:20;
+  background:linear-gradient(180deg,rgba(11,16,32,.9),transparent)}
+.brand{font-weight:800;font-size:14px;color:var(--muted)}.brand b{color:var(--a)}
+.dots{display:flex;gap:7px;margin-left:auto;flex-wrap:wrap;max-width:60vw;justify-content:flex-end}
+.dot{width:11px;height:11px;border-radius:50%;background:#2b3a5c;cursor:pointer;border:none;transition:.2s;padding:0}
+.dot:hover{transform:scale(1.25)}.dot.on{background:var(--a);box-shadow:0 0 0 3px rgba(56,189,248,.25)}.dot.seen{background:#3f5a86}
+.deck{position:absolute;inset:0}
+.slide{position:absolute;inset:0;display:none;flex-direction:column;justify-content:center;padding:8.5vh 6vw 8vh}
+.slide.active{display:flex}
+.slide.active .anim{animation:rise .5s cubic-bezier(.2,.7,.2,1) both}
+.slide.active .anim:nth-child(2){animation-delay:.06s}.slide.active .anim:nth-child(3){animation-delay:.12s}
+.slide.active .anim:nth-child(4){animation-delay:.18s}.slide.active .anim:nth-child(5){animation-delay:.24s}
+@keyframes rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+.kick{display:inline-flex;align-items:center;gap:.5em;color:var(--a2);font-weight:800;letter-spacing:.16em;
+  text-transform:uppercase;font-size:clamp(.72rem,1.4vw,1rem);margin-bottom:.55em}
+.kick::before{content:"";width:26px;height:3px;border-radius:3px;background:var(--a2)}
+h1{font-size:clamp(2.3rem,6vw,4.6rem);line-height:1.03;letter-spacing:-.02em;
+  background:linear-gradient(120deg,#fff,#9fd8ff 55%,#c7b6ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+h2{font-size:clamp(1.7rem,4vw,2.9rem);line-height:1.05;margin-bottom:.35em}
+p,li{font-size:clamp(1rem,1.95vw,1.45rem);line-height:1.48}
+.lead{font-size:clamp(1.15rem,2.4vw,1.75rem);color:#dbe4ff}
+.muted{color:var(--muted)}.a{color:var(--a)}.a2{color:var(--a2)}.ok{color:var(--ok)}.warn{color:var(--warn)}.pink{color:var(--pink)}
+b,strong{color:#fff}
+.grid{display:grid;gap:.9em;margin-top:.5em}
+.g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
+.g21{grid-template-columns:1.25fr 1fr}
+@media(max-width:900px){.g2,.g3,.g4,.g21{grid-template-columns:1fr}}
+.card{background:linear-gradient(180deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:16px;
+  padding:.9em 1.1em;box-shadow:0 18px 40px -26px rgba(0,0,0,.85)}
+.card.k{border-top:4px solid var(--a)}.card.k2{border-top:4px solid var(--a2)}
+.card.kok{border-top:4px solid var(--ok)}.card.kw{border-top:4px solid var(--warn)}
+.card h3{font-size:clamp(1.05rem,2vw,1.45rem);margin-bottom:.15em;display:flex;align-items:center;gap:.4em}
+.card p,.card li{font-size:clamp(.9rem,1.6vw,1.15rem);color:var(--muted)}
+.card b{color:#dbe4ff}
+.chips{display:flex;gap:.45em;flex-wrap:wrap;margin-top:.5em}
+.chip{background:#0d1730;border:1px solid var(--line);color:var(--a);border-radius:999px;padding:.22em .8em;
+  font-size:clamp(.82rem,1.4vw,1.05rem);font-family:'Consolas',monospace}
+code{background:#0a1226;color:var(--a);padding:.1em .4em;border-radius:6px;font-family:'Consolas',monospace;font-size:.9em}
+pre{background:#0a1226;border:1px solid var(--line);border-radius:12px;padding:.85em 1.1em;margin-top:.4em;overflow:auto}
+pre code{background:none;padding:0;font-size:clamp(.88rem,1.5vw,1.18rem);line-height:1.6}
+.big{font-size:clamp(1.25rem,2.8vw,1.9rem)}
+.tag{display:inline-block;background:linear-gradient(120deg,var(--a),var(--a2));color:#04121f;font-weight:800;
+  border-radius:999px;padding:.22em 1em;font-size:.92rem;margin-bottom:.8em}
+.num{display:inline-flex;align-items:center;justify-content:center;min-width:1.7em;height:1.7em;background:var(--a);
+  color:#04121f;border-radius:50%;font-weight:800;margin-right:.35em}
+.frag{opacity:0;transform:translateY(14px) scale(.98);transition:.35s cubic-bezier(.2,.7,.2,1);filter:blur(2px)}
+.frag.show{opacity:1;transform:none;filter:none}
+/* código CSS coloreado */
+.sel{color:#d7ba7d}.prop{color:#9cdcfe}.val{color:#ce9178}.cm{color:#6a9955}.br{color:#eaf2ff}
+/* anatomía de una regla */
+.anat{background:#0a1226;border:1px solid var(--line);border-radius:14px;padding:1.1em 1.3em;font-family:'Consolas',monospace;
+  font-size:clamp(1.05rem,2.4vw,1.8rem);text-align:center;margin-top:.3em;overflow:auto}
+.mark{position:relative;padding-bottom:1.6em;display:inline-block}
+.mark::after{content:attr(data-l);position:absolute;left:50%;bottom:0;transform:translateX(-50%);
+  font-family:var(--font);font-size:.5em;color:var(--muted);white-space:nowrap}
+/* esquema tipo infografía (clic) */
+.viz{display:flex;flex-direction:column;gap:12px;margin-top:.4em}
+.vp{position:relative;border:1px solid var(--line);border-left:6px solid var(--c);border-radius:16px;padding:14px 24px 20px;
+  background:linear-gradient(180deg,rgba(23,32,51,.8),rgba(15,23,42,.72));transition:.25s;cursor:pointer}
+.vp:hover,.vp.on{border-color:var(--c);box-shadow:0 0 0 1px var(--c),0 0 50px -16px var(--c)}.vp.dim{opacity:.42}
+.vhead{display:flex;justify-content:space-between;align-items:center;gap:1em}
+.vt{font-size:clamp(1.2rem,2.6vw,1.9rem);font-weight:800;color:var(--c);line-height:1}
+.vs{color:var(--muted);font-size:clamp(.8rem,1.4vw,1.1rem);margin-top:.2em}
+.vbody{margin-top:.7em;font-size:clamp(.92rem,1.65vw,1.2rem)}
+.vbadge{border:1.5px solid var(--c);border-radius:12px;padding:.4em 1em;color:var(--c);font-weight:800;background:#0d1730;flex:0 0 auto;font-size:clamp(.85rem,1.5vw,1.1rem)}
+/* box model */
+.bm{max-width:560px;margin:.4em auto 0;text-align:center;font-family:'Consolas',monospace;font-size:clamp(.78rem,1.4vw,1.05rem)}
+.bm .lyr{border-radius:10px;padding:.55em}
+.bm .mg{background:rgba(251,191,36,.13);border:2px dashed var(--warn);color:var(--warn)}
+.bm .bd{background:rgba(167,139,250,.14);border:2px solid var(--a2);color:var(--a2);margin-top:.35em}
+.bm .pd{background:rgba(74,222,128,.14);border:2px dashed var(--ok);color:var(--ok);margin-top:.35em}
+.bm .ct{background:rgba(56,189,248,.22);border:2px solid var(--a);color:#fff;padding:1.1em;margin-top:.35em;font-weight:800}
+/* flex demo */
+.flexrow{display:flex;gap:.6em;background:#0d1730;border:1px dashed var(--line);border-radius:12px;padding:.7em;margin-top:.3em}
+.flexrow.center{justify-content:center}.flexrow.between{justify-content:space-between}.flexrow.around{justify-content:space-around}
+.fitem{background:linear-gradient(120deg,var(--a),var(--a2));color:#04121f;font-weight:800;border-radius:9px;padding:.6em 1.1em}
+/* swatches de color */
+.sw{display:inline-block;width:clamp(80px,12vw,130px);height:clamp(55px,7vw,80px);border-radius:12px;margin:.25em;
+  position:relative;border:1px solid rgba(255,255,255,.15);vertical-align:top}
+.sw span{position:absolute;bottom:5px;left:0;right:0;text-align:center;font-family:'Consolas',monospace;font-size:.72em;
+  color:#0b1020;background:rgba(255,255,255,.72);padding:2px;border-radius:4px;margin:0 6px}
+.bar{position:fixed;left:0;bottom:0;height:5px;background:linear-gradient(90deg,var(--a),var(--a2));z-index:20;transition:width .3s}
+.hud{position:fixed;bottom:12px;right:18px;color:var(--muted);font-size:.85rem;z-index:20}
+.hint{position:fixed;bottom:12px;left:18px;color:var(--muted);font-size:.8rem;z-index:20}
+.hint kbd{background:#0d1730;border:1px solid var(--line);border-radius:5px;padding:.05em .4em;color:var(--a)}
+.grip{position:fixed;inset:0;background:rgba(6,10,20,.96);z-index:40;display:none;grid-template-columns:repeat(4,1fr);gap:14px;padding:70px 5vw;overflow:auto;align-content:start}
+.grip.on{display:grid}
+.mini{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px;cursor:pointer;min-height:80px;transition:.15s;position:relative}
+.mini:hover{border-color:var(--a);transform:translateY(-3px)}.mini .n{position:absolute;top:6px;right:10px;color:var(--muted);font-size:12px;font-weight:800}.mini h4{font-size:14px;color:var(--a)}
+.center{align-items:center;text-align:center}
+</style>
+</head>
+<body>
+<div class="top"><div class="brand">Curso <b>ADSO</b> · SENA · Clase 03</div><div class="dots" id="dots"></div></div>
+<div class="deck" id="deck">
+
+  <!-- 1 -->
+  <section class="slide center" data-title="Portada">
+    <div class="kick anim">Clase 03 · Frontend</div>
+    <h1 class="anim">CSS</h1>
+    <p class="lead muted anim" style="margin-top:.5em">El estilo de la web · Ponemos bonito tu portafolio (v2)</p>
+    <div class="chips anim" style="justify-content:center;margin-top:1em">
+      <span class="chip">selectores</span><span class="chip">colores</span><span class="chip">tipografía</span>
+      <span class="chip">box model</span><span class="chip">flexbox</span><span class="chip">responsive</span></div>
+  </section>
+
+  <!-- 2 -->
+  <section class="slide" data-title="¿Qué es CSS?">
+    <div class="kick anim">Concepto</div>
+    <h2 class="anim">¿Qué es CSS?</h2>
+    <p class="lead anim">Si HTML es el <span class="a">esqueleto</span>, CSS es la <span class="a2">ropa y el
+      maquillaje</span>: colores, tamaños, espacios y <b>dónde se coloca</b> cada cosa.</p>
+    <div class="grid g2" style="margin-top:.6em">
+      <div class="card k frag"><h3>🎨 Estilo, no estructura</h3><p>Cascading <b>Style</b> Sheets. El HTML dice
+        <i>qué es</i>; el CSS dice <i>cómo se ve</i>.</p></div>
+      <div class="card k2 frag"><h3>👕 Analogía</h3><p>El mismo cuerpo (HTML) con distinta ropa (CSS) se ve
+        totalmente diferente. Cambias el CSS y cambia todo el look.</p></div>
+    </div>
+  </section>
+
+  <!-- 3 · Cómo se conecta -->
+  <section class="slide" data-title="Cómo se conecta CSS">
+    <div class="tag anim">🔌 3 FORMAS</div>
+    <h2 class="anim">Cómo se conecta CSS al HTML</h2>
+    <div class="viz anim">
+      <div class="vp dim" style="--c:var(--warn)" data-cap="">
+        <div class="vhead"><div><div class="vt">1 · Inline</div><div class="vs">en el atributo style del elemento</div></div><div class="vbadge">evítalo</div></div>
+        <div class="vbody"><code>&lt;p <span class="prop">style</span>=<span class="val">"color:red"</span>&gt;</code> — se desordena rápido.</div>
+      </div>
+      <div class="vp dim" style="--c:var(--a2)" data-cap="">
+        <div class="vhead"><div><div class="vt">2 · Interno</div><div class="vs">dentro de &lt;style&gt; en el head</div></div><div class="vbadge">ok para pruebas</div></div>
+        <div class="vbody"><code>&lt;style&gt; p { color: red } &lt;/style&gt;</code></div>
+      </div>
+      <div class="vp on" style="--c:var(--ok)" data-cap="">
+        <div class="vhead"><div><div class="vt">3 · Externo ⭐</div><div class="vs">archivo styles.css aparte</div></div><div class="vbadge">lo que usamos</div></div>
+        <div class="vbody"><code>&lt;link <span class="prop">rel</span>=<span class="val">"stylesheet"</span> <span class="prop">href</span>=<span class="val">"styles.css"</span>&gt;</code> — ordenado y reutilizable.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 · Anatomía de una regla -->
+  <section class="slide" data-title="Anatomía de una regla">
+    <div class="kick anim">Anatomía</div>
+    <h2 class="anim">Partes de una regla CSS</h2>
+    <div class="anat anim">
+      <span class="sel mark" data-l="selector (a quién)">p</span>
+      <span class="br">{</span>
+      <span class="prop mark" data-l="propiedad">color</span><span class="br">:</span>
+      <span class="val mark" data-l="valor"> blue</span><span class="br">;</span>
+      <span class="br">}</span>
+    </div>
+    <div class="grid g3" style="margin-top:1.6em">
+      <div class="card frag" style="border-top:4px solid #d7ba7d"><h3 style="color:#d7ba7d">Selector</h3><p>A qué elemento(s) le aplico el estilo.</p></div>
+      <div class="card frag" style="border-top:4px solid #9cdcfe"><h3 style="color:#9cdcfe">Propiedad</h3><p>Qué quiero cambiar (color, tamaño…).</p></div>
+      <div class="card frag" style="border-top:4px solid #ce9178"><h3 style="color:#ce9178">Valor</h3><p>El valor concreto. Termina en <code>;</code></p></div>
+    </div>
+  </section>
+
+  <!-- 5 · Selectores -->
+  <section class="slide" data-title="Selectores">
+    <div class="kick anim">Selectores</div>
+    <h2 class="anim">¿A quién le aplico el estilo?</h2>
+    <div class="grid g3" style="margin-top:.3em">
+      <div class="card k frag"><h3>Por etiqueta</h3><pre><code><span class="sel">p</span> { <span class="prop">color</span>: <span class="val">gray</span> }</code></pre><p>Todos los <code>&lt;p&gt;</code>.</p></div>
+      <div class="card k2 frag"><h3>Por clase <code>.</code></h3><pre><code><span class="sel">.card</span> { <span class="prop">padding</span>: <span class="val">1em</span> }</code></pre><p>Los que tengan <code>class="card"</code>.</p></div>
+      <div class="card kok frag"><h3>Por id <code>#</code></h3><pre><code><span class="sel">#logo</span> { <span class="prop">width</span>: <span class="val">80px</span> }</code></pre><p>El elemento con <code>id="logo"</code>.</p></div>
+    </div>
+    <p class="muted frag" style="margin-top:.5em">💡 La <b>clase</b> (con <code>.</code>) es la que más se usa: reutilizable y flexible.</p>
+  </section>
+
+  <!-- 5b · Combinadores -->
+  <section class="slide" data-title="Combinadores">
+    <div class="tag anim">🔗 COMBINADORES</div>
+    <h2 class="anim">Seleccionar por relación</h2>
+    <div class="grid g2" style="margin-top:.2em">
+      <div class="card k frag"><h3><code>A B</code> — descendiente</h3><pre><code><span class="sel">.nav a</span> { … }</code></pre><p>Las <code>&lt;a&gt;</code> <b>dentro de</b> <code>.nav</code> (a cualquier nivel).</p></div>
+      <div class="card k2 frag"><h3><code>A &gt; B</code> — hijo directo</h3><pre><code><span class="sel">.lista &gt; li</span> { … }</code></pre><p>Solo los <code>li</code> <b>hijos directos</b>.</p></div>
+      <div class="card kok frag"><h3><code>A + B</code> — hermano siguiente</h3><pre><code><span class="sel">h2 + p</span> { … }</code></pre><p>El <code>p</code> que va <b>justo después</b> de un <code>h2</code>.</p></div>
+      <div class="card kw frag"><h3><code>A ~ B</code> — hermanos siguientes</h3><pre><code><span class="sel">h2 ~ p</span> { … }</code></pre><p><b>Todos</b> los <code>p</code> hermanos que sigan al <code>h2</code>.</p></div>
+    </div>
+  </section>
+
+  <!-- 5c · Pseudoclases -->
+  <section class="slide" data-title="Pseudoclases">
+    <div class="tag anim">✨ PSEUDOCLASES</div>
+    <h2 class="anim">Seleccionar por estado o posición</h2>
+    <p class="lead anim">Empiezan con <code>:</code> y apuntan a un <b>estado</b> o una <b>posición</b>.</p>
+    <div class="grid g3" style="margin-top:.3em">
+      <div class="card k frag"><h3>Estado</h3><pre><code><span class="sel">a:hover</span>   <span class="cm">/* mouse encima */</span>
+<span class="sel">input:focus</span> <span class="cm">/* activo */</span></code></pre></div>
+      <div class="card k2 frag"><h3>Posición</h3><pre><code><span class="sel">li:first-child</span>
+<span class="sel">li:last-child</span>
+<span class="sel">li:nth-child(2)</span></code></pre></div>
+      <div class="card kok frag"><h3>Negación</h3><pre><code><span class="sel">p:not(:last-child)</span>
+<span class="cm">/* todos menos el último */</span></code></pre></div>
+    </div>
+    <p class="muted frag" style="margin-top:.4em">También existen los <b>pseudo-elementos</b> con <code>::</code> — <code>::before</code> y <code>::after</code> crean adornos.</p>
+  </section>
+
+  <!-- 5d · Especificidad -->
+  <section class="slide" data-title="Especificidad">
+    <div class="tag anim">⚖️ ESPECIFICIDAD</div>
+    <h2 class="anim">¿Quién gana si hay varias reglas?</h2>
+    <p class="lead anim">El navegador suma "puntos". Gana el selector <b>más específico</b>:</p>
+    <div class="flow anim" style="margin-top:.5em;display:flex;gap:.5em;align-items:center;flex-wrap:wrap;font-family:Consolas">
+      <span class="chip">etiqueta<br><small class="muted">0,0,1</small></span> <span class="a2">&lt;</span>
+      <span class="chip">.clase<br><small class="muted">0,1,0</small></span> <span class="a2">&lt;</span>
+      <span class="chip">#id<br><small class="muted">1,0,0</small></span> <span class="a2">&lt;</span>
+      <span class="chip">style=""<br><small class="muted">en línea</small></span> <span class="a2">&lt;</span>
+      <span class="chip" style="border-color:var(--warn);color:var(--warn)">!important</span>
+    </div>
+    <div class="card kok frag" style="margin-top:.6em"><p>Ej.: <code>.proyecto.destacado</code> (2 clases) le gana a <code>.proyecto</code> (1 clase).</p></div>
+    <p class="muted frag" style="margin-top:.3em">💡 Consejo: usa <b>clases</b>. Evita <code>#id</code> e <code>!important</code> para estilos (rompen el orden).</p>
+  </section>
+
+  <!-- 5e · Herencia -->
+  <section class="slide" data-title="Herencia">
+    <div class="kick anim">Herencia</div>
+    <h2 class="anim">Propiedades que se heredan</h2>
+    <div class="grid g2" style="margin-top:.2em">
+      <div class="card kok frag"><h3>✅ Se heredan</h3><p>Del padre a los hijos, sin repetir: <code>color</code>,
+        <code>font-family</code>, <code>font-size</code>, <code>line-height</code>.</p>
+        <pre><code><span class="sel">body</span> { <span class="prop">color</span>: <span class="val">white</span>; }
+<span class="cm">// todos los textos heredan blanco</span></code></pre></div>
+      <div class="card kr frag" style="border-top:4px solid var(--warn)"><h3>❌ No se heredan</h3><p>Los de "caja":
+        <code>margin</code>, <code>padding</code>, <code>border</code>, <code>width</code>, <code>background</code>.</p></div>
+    </div>
+    <p class="muted frag" style="margin-top:.4em">Por eso en el portafolio el <code>color</code> se pone una vez en <code>body</code>. Con <code>inherit</code> puedes forzar la herencia.</p>
+  </section>
+
+  <!-- 5e2 · Herencia: valores especiales -->
+  <section class="slide" data-title="Herencia: valores especiales">
+    <div class="kick anim">Herencia · a fondo</div>
+    <h2 class="anim">Valores especiales de herencia</h2>
+    <div class="grid g4" style="margin-top:.3em">
+      <div class="card k frag"><h3><code>inherit</code></h3><p>Fuerza <b>heredar</b> del padre.</p></div>
+      <div class="card k2 frag"><h3><code>initial</code></h3><p>Vuelve al valor <b>por defecto</b> de la propiedad.</p></div>
+      <div class="card kok frag"><h3><code>unset</code></h3><p>Hereda si es heredable; si no, <code>initial</code>.</p></div>
+      <div class="card kw frag"><h3><code>revert</code></h3><p>Vuelve al estilo del <b>navegador</b>.</p></div>
+    </div>
+  </section>
+
+  <!-- 5f · Fallbacks -->
+  <section class="slide" data-title="Fallbacks">
+    <div class="tag anim">🛟 FALLBACKS</div>
+    <h2 class="anim">Planes B por si algo falla</h2>
+    <div class="grid g3" style="margin-top:.2em">
+      <div class="card k frag"><h3>Fuentes</h3><pre><code><span class="prop">font-family</span>:
+  <span class="val">"Sora", system-ui, sans-serif</span>;</code></pre><p>Si la 1ª no carga, usa la siguiente.</p></div>
+      <div class="card k2 frag"><h3>Variables</h3><pre><code><span class="prop">color</span>: <span class="val">var(--x, #eee)</span>;</code></pre><p>Si <code>--x</code> no existe, usa <code>#eee</code>.</p></div>
+      <div class="card kok frag"><h3><code>@supports</code></h3><pre><code><span class="sel">@supports (backdrop-filter:blur(1px))</span> { … }</code></pre><p>Aplica solo si el navegador lo soporta.</p></div>
+    </div>
+    <p class="muted frag" style="margin-top:.4em">Los fallbacks hacen que tu página <b>no se rompa</b> en navegadores viejos.</p>
+  </section>
+
+  <!-- 5g · La cascada -->
+  <section class="slide" data-title="La cascada">
+    <div class="tag anim">💧 LA "C" DE CSS</div>
+    <h2 class="anim">¿Qué es la cascada?</h2>
+    <p class="lead anim">CSS = <b>Cascading</b> Style Sheets. Si varias reglas afectan lo mismo, el navegador
+       decide cuál gana en este orden:</p>
+    <div class="grid g3" style="margin-top:.3em">
+      <div class="card kw frag"><h3>1. Importancia</h3><p><code>!important</code> gana (evítalo).</p></div>
+      <div class="card k2 frag"><h3>2. Especificidad</h3><p>Más específico gana (id &gt; clase &gt; etiqueta).</p></div>
+      <div class="card kok frag"><h3>3. Orden</h3><p>Si empatan, gana la <b>última</b> regla escrita.</p></div>
+    </div>
+    <p class="muted frag" style="margin-top:.3em">Por eso el orden importa: lo de abajo puede sobrescribir lo de arriba.</p>
+  </section>
+
+  <!-- 6 · Colores -->
+  <section class="slide" data-title="Colores">
+    <div class="kick anim">Colores</div>
+    <h2 class="anim">Colores 🎨</h2>
+    <div class="anim">
+      <span class="sw" style="background:#38bdf8"><span>#38bdf8</span></span>
+      <span class="sw" style="background:#a78bfa"><span>#a78bfa</span></span>
+      <span class="sw" style="background:#4ade80"><span>#4ade80</span></span>
+      <span class="sw" style="background:#fbbf24"><span>#fbbf24</span></span>
+      <span class="sw" style="background:#f472b6"><span>rgb(244,114,182)</span></span>
+    </div>
+    <div class="grid g3 frag" style="margin-top:.7em">
+      <div class="card k"><h3>Por nombre</h3><p><code>red</code>, <code>blue</code>, <code>tomato</code>…</p></div>
+      <div class="card k2"><h3>Hex</h3><p><code>#38bdf8</code> — mezcla de rojo, verde y azul.</p></div>
+      <div class="card kok"><h3>RGB</h3><p><code>rgb(56,189,248)</code> — lo mismo, en números.</p></div>
+    </div>
+    <p class="muted frag" style="margin-top:.4em"><code>color</code> = texto · <code>background-color</code> = fondo.</p>
+  </section>
+
+  <!-- 7 · Tipografía -->
+  <section class="slide" data-title="Tipografía / fuentes">
+    <div class="kick anim">Tipografía</div>
+    <h2 class="anim">Tipografía y fuentes 🔤</h2>
+    <div class="grid g21" style="margin-top:.2em">
+      <div class="frag"><pre><code><span class="sel">body</span> {
+  <span class="prop">font-family</span>: <span class="val">system-ui, sans-serif</span>;
+  <span class="prop">font-size</span>: <span class="val">16px</span>;
+  <span class="prop">line-height</span>: <span class="val">1.5</span>;
+}
+<span class="sel">h1</span> { <span class="prop">font-weight</span>: <span class="val">800</span>; }</code></pre></div>
+      <div>
+        <div class="card k frag"><h3>Propiedades</h3><p><code>font-family</code> (tipo de letra), <code>font-size</code>
+          (tamaño), <code>font-weight</code> (grosor), <code>line-height</code> (interlineado).</p></div>
+        <div class="card kw frag" style="margin-top:.5em"><h3>⚠️ Sin internet</h3><p>Usa <b>fuentes del sistema</b>
+          (<code>system-ui</code>, <code>Arial</code>). Para una fuente propia offline: <code>@font-face</code>
+          con un archivo de fuente local.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7b · Unidades -->
+  <section class="slide" data-title="Unidades">
+    <div class="tag anim">📏 UNIDADES</div>
+    <h2 class="anim">Absolutas vs relativas</h2>
+    <div class="grid g2" style="margin-top:.2em">
+      <div class="card k frag"><h3>Absolutas</h3><p><code>px</code> — píxeles fijos. Precisas, pero no se adaptan.</p></div>
+      <div class="card k2 frag"><h3>Relativas ⭐</h3><ul>
+        <li><code>%</code> — respecto al padre.</li>
+        <li><code>em</code> — respecto a la fuente del elemento.</li>
+        <li><code>rem</code> — respecto a la raíz (la mejor para tamaños).</li>
+        <li><code>vw</code> / <code>vh</code> — % del ancho / alto de la pantalla.</li></ul></div>
+    </div>
+    <p class="muted frag" style="margin-top:.3em">Para diseños que se adaptan, prefiere <b>rem</b>, <b>%</b> y <code>clamp()</code> sobre <code>px</code>.</p>
+  </section>
+
+  <!-- 8 · Box model -->
+  <section class="slide" data-title="Box model">
+    <div class="tag anim">📦 EL BOX MODEL</div>
+    <h2 class="anim">Toda etiqueta es una caja</h2>
+    <div class="grid g21" style="margin-top:.2em;align-items:center">
+      <div class="bm anim">
+        <div class="lyr mg">margin — espacio POR FUERA
+          <div class="lyr bd">border — el borde
+            <div class="lyr pd">padding — espacio POR DENTRO
+              <div class="lyr ct">CONTENIDO</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="card kw frag"><b>margin</b> — separa la caja de las <b>de al lado</b> (por fuera).</div>
+        <div class="card k2 frag" style="margin-top:.5em"><b>border</b> — la línea del borde.</div>
+        <div class="card kok frag" style="margin-top:.5em"><b>padding</b> — aire entre el borde y el <b>contenido</b> (por dentro).</div>
+        <div class="card k frag" style="margin-top:.5em"><b>content</b> — el texto o la imagen.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8b · box-sizing -->
+  <section class="slide" data-title="box-sizing">
+    <div class="kick anim">Modelo de caja · truco clave</div>
+    <h2 class="anim">box-sizing: border-box</h2>
+    <p class="lead anim">Por defecto, el <code>padding</code> y el <code>border</code> <b>agrandan</b> la caja.
+       Con <code>border-box</code>, el ancho que pones es el ancho <b>final</b>.</p>
+    <div class="frag"><pre><code><span class="sel">*</span> { <span class="prop">box-sizing</span>: <span class="val">border-box</span>; }  <span class="cm">/* se pone una vez, al inicio */</span></code></pre></div>
+    <p class="muted frag" style="margin-top:.3em">Es el primer "reset" que casi todos aplican: hace el tamaño <b>predecible</b>.</p>
+  </section>
+
+  <!-- 8c · border vs outline -->
+  <section class="slide" data-title="border vs outline">
+    <div class="kick anim">Bordes</div>
+    <h2 class="anim">border vs outline</h2>
+    <div class="grid g2" style="margin-top:.2em">
+      <div class="card k frag"><h3><code>border</code></h3><p><b>Ocupa espacio</b> (es parte de la caja). Cada lado se configura.</p></div>
+      <div class="card k2 frag"><h3><code>outline</code></h3><p><b>No</b> ocupa espacio (se dibuja por fuera). Ideal para el <b>foco</b> de accesibilidad.</p></div>
+    </div>
+  </section>
+
+  <!-- 8d · Overflow -->
+  <section class="slide" data-title="Overflow">
+    <div class="kick anim">Cuando el contenido no cabe</div>
+    <h2 class="anim">Overflow y text-overflow</h2>
+    <div class="grid g2" style="margin-top:.2em">
+      <div class="card k frag"><h3><code>overflow</code></h3><p><code>visible</code> (se sale), <code>hidden</code> (se corta), <code>scroll</code>/<code>auto</code> (barra).</p></div>
+      <div class="card k2 frag"><h3>Texto con "…"</h3><pre><code><span class="prop">white-space</span>:<span class="val">nowrap</span>;
+<span class="prop">overflow</span>:<span class="val">hidden</span>;
+<span class="prop">text-overflow</span>:<span class="val">ellipsis</span>;</code></pre></div>
+    </div>
+  </section>
+
+  <!-- 8e · Position -->
+  <section class="slide" data-title="Position">
+    <div class="tag anim">📌 POSITION</div>
+    <h2 class="anim">Colocar elementos</h2>
+    <div class="grid g2" style="margin-top:.2em">
+      <div class="card k frag"><ul>
+        <li><code>static</code> — normal (por defecto).</li>
+        <li><code>relative</code> — se mueve respecto a su lugar; sirve de "ancla".</li>
+        <li><code>absolute</code> — respecto al ancestro con <code>position</code>.</li></ul></div>
+      <div class="card k2 frag"><ul>
+        <li><code>fixed</code> — fijo en la pantalla (no se va con el scroll).</li>
+        <li><code>sticky</code> — normal, pero se "pega" al hacer scroll.</li></ul></div>
+    </div>
+    <p class="muted frag" style="margin-top:.3em">Con <code>top / right / bottom / left</code> ajustas la posición.</p>
+  </section>
+
+  <!-- 8f · z-index -->
+  <section class="slide" data-title="z-index">
+    <div class="kick anim">Capas</div>
+    <h2 class="anim">z-index: quién va encima</h2>
+    <p class="lead anim">Cuando dos elementos se superponen, el de <b>mayor <code>z-index</code></b> va delante.</p>
+    <div class="frag"><pre><code><span class="sel">.modal</span> { <span class="prop">position</span>:<span class="val">fixed</span>; <span class="prop">z-index</span>:<span class="val">100</span>; }</code></pre></div>
+    <p class="muted frag" style="margin-top:.3em">Solo funciona en elementos con <code>position</code> (no <code>static</code>).</p>
+  </section>
+
+  <!-- 8g · Reset / Normalize -->
+  <section class="slide" data-title="Reset / Normalize">
+    <div class="kick anim">Punto de partida</div>
+    <h2 class="anim">Reset y Normalize</h2>
+    <p class="lead anim">Cada navegador trae estilos por defecto distintos. Para partir parejo:</p>
+    <div class="grid g2" style="margin-top:.2em">
+      <div class="card k frag"><h3>Reset mínimo</h3><pre><code><span class="sel">*</span> {
+  <span class="prop">margin</span>:<span class="val">0</span>; <span class="prop">padding</span>:<span class="val">0</span>;
+  <span class="prop">box-sizing</span>:<span class="val">border-box</span>;
+}</code></pre></div>
+      <div class="card k2 frag"><h3>Normalize.css</h3><p>Una hoja que <b>empareja</b> los estilos entre navegadores (en vez de borrarlos del todo).</p></div>
+    </div>
+  </section>
+
+  <!-- 9 · Flexbox -->
+  <section class="slide" data-title="Flexbox">
+    <div class="tag anim">🧲 FLEXBOX</div>
+    <h2 class="anim">Acomodar cosas en fila</h2>
+    <p class="lead anim">Con <code>display: flex</code> pones elementos en fila y los alineas fácil.</p>
+    <div class="anim" style="margin-top:.4em">
+      <div class="muted" style="font-family:Consolas;font-size:.9em">justify-content: <span class="a">flex-start</span></div>
+      <div class="flexrow"><span class="fitem">1</span><span class="fitem">2</span><span class="fitem">3</span></div>
+    </div>
+    <div class="frag" style="margin-top:.5em">
+      <div class="muted" style="font-family:Consolas;font-size:.9em">justify-content: <span class="a">center</span></div>
+      <div class="flexrow center"><span class="fitem">1</span><span class="fitem">2</span><span class="fitem">3</span></div>
+    </div>
+    <div class="frag" style="margin-top:.5em">
+      <div class="muted" style="font-family:Consolas;font-size:.9em">justify-content: <span class="a">space-between</span></div>
+      <div class="flexrow between"><span class="fitem">1</span><span class="fitem">2</span><span class="fitem">3</span></div>
+    </div>
+  </section>
+
+  <!-- 9b · Flexbox a fondo -->
+  <section class="slide" data-title="Flexbox a fondo">
+    <div class="tag anim">🧲 FLEXBOX A FONDO</div>
+    <h2 class="anim">Todas las propiedades de Flexbox</h2>
+    <div class="grid g2" style="margin-top:.2em">
+      <div class="card k frag"><h3>En el contenedor</h3><ul>
+        <li><code>flex-direction</code> — row / column</li>
+        <li><code>flex-wrap</code> — que bajen de línea</li>
+        <li><code>justify-content</code> — eje principal</li>
+        <li><code>align-items</code> — eje cruzado</li>
+        <li><code>gap</code> — separación</li></ul></div>
+      <div class="card k2 frag"><h3>En cada hijo</h3><ul>
+        <li><code>flex-grow</code> — crecer</li>
+        <li><code>flex-shrink</code> — encoger</li>
+        <li><code>flex-basis</code> — tamaño base</li>
+        <li><code>order</code> — cambiar el orden</li></ul></div>
+    </div>
+    <p class="muted frag" style="margin-top:.3em">Atajos: <code>flex: 1</code> (grow/shrink/basis) · <code>flex-flow</code> (direction + wrap).</p>
+  </section>
+
+  <!-- 9c · GRID: qué es -->
+  <section class="slide" data-title="GRID: qué es">
+    <div class="tag anim">▦ GRID</div>
+    <h2 class="anim">CSS Grid: rejillas en 2D</h2>
+    <p class="lead anim">Flexbox acomoda en <b>una</b> dirección (fila o columna). <b>Grid</b> acomoda en
+       <b>dos</b> a la vez: filas <b>y</b> columnas. Es lo mejor para <b>layouts</b>.</p>
+    <div class="grid g2 frag" style="margin-top:.3em">
+      <div class="card k"><h3>Flex → 1D</h3><p>Una fila o una columna.</p></div>
+      <div class="card k2"><h3>Grid → 2D</h3><p>Una cuadrícula (filas y columnas).</p></div>
+    </div>
+  </section>
+
+  <!-- 9d · GRID: columnas y fr -->
+  <section class="slide" data-title="GRID: columnas y fr">
+    <div class="kick anim">Grid en código</div>
+    <h2 class="anim">Columnas y la unidad fr</h2>
+    <div class="frag"><pre><code><span class="sel">.rejilla</span> {
+  <span class="prop">display</span>: <span class="val">grid</span>;
+  <span class="prop">grid-template-columns</span>: <span class="val">1fr 1fr 1fr</span>;  <span class="cm">/* 3 columnas iguales */</span>
+  <span class="prop">gap</span>: <span class="val">1rem</span>;
+}</code></pre></div>
+    <p class="muted frag" style="margin-top:.3em"><code>fr</code> = "fracción" del espacio libre. <code>1fr 2fr</code> = la 2ª el doble de ancha.</p>
+  </section>
+
+  <!-- 9e · GRID: repeat/auto-fit -->
+  <section class="slide" data-title="GRID: repeat/auto-fit">
+    <div class="kick anim">Grid responsivo</div>
+    <h2 class="anim">repeat() y auto-fit</h2>
+    <div class="frag"><pre><code><span class="prop">grid-template-columns</span>:
+  <span class="val">repeat(auto-fit, minmax(200px, 1fr))</span>;</code></pre></div>
+    <p class="lead frag" style="margin-top:.3em">Crea <b>tantas columnas como quepan</b> (mínimo 200px) y se reacomodan solas en el celular. ✨</p>
+    <p class="muted frag">Es la línea mágica para galerías y tarjetas responsivas — ¡sin media queries!</p>
+  </section>
+
+  <!-- 9f · GRID: áreas/layout -->
+  <section class="slide" data-title="GRID: áreas/layout">
+    <div class="kick anim">Layouts con Grid</div>
+    <h2 class="anim">grid-template-areas</h2>
+    <div class="frag"><pre><code><span class="prop">grid-template-areas</span>:
+  <span class="val">"header header"</span>
+  <span class="val">"aside  main"</span>
+  <span class="val">"footer footer"</span>;</code></pre></div>
+    <p class="muted frag" style="margin-top:.3em">Dibujas el layout con palabras y asignas cada zona con <code>grid-area</code>. Muy legible.</p>
+  </section>
+
+  <!-- 10 · Más propiedades -->
+  <section class="slide" data-title="Más propiedades">
+    <div class="kick anim">Más propiedades útiles</div>
+    <h2 class="anim">Para que se vea pro ✨</h2>
+    <div class="grid g4" style="margin-top:.3em">
+      <div class="card k frag"><h3>background</h3><p>Color o imagen de fondo.</p></div>
+      <div class="card k frag"><h3>border-radius</h3><p>Esquinas redondeadas.</p></div>
+      <div class="card k2 frag"><h3>box-shadow</h3><p>Sombra (da profundidad).</p></div>
+      <div class="card kok frag"><h3>:hover</h3><p>Cambia al pasar el mouse.</p></div>
+    </div>
+    <div class="frag" style="margin-top:.5em"><pre><code><span class="sel">.boton</span> { <span class="prop">border-radius</span>: <span class="val">8px</span>; <span class="prop">transition</span>: <span class="val">.2s</span>; }
+<span class="sel">.boton</span><span class="sel">:hover</span> { <span class="prop">background</span>: <span class="val">#38bdf8</span>; }</code></pre></div>
+  </section>
+
+  <!-- 10b · CSS moderno (anidamiento) -->
+  <section class="slide" data-title="CSS moderno (&)">
+    <div class="tag anim">✨ CSS MODERNO</div>
+    <h2 class="anim">Anidamiento con &amp;</h2>
+    <p class="lead anim">Puedes <b>anidar</b> reglas dentro de otras con <code>&amp;</code> (nativo en navegadores modernos).</p>
+    <div class="grid g21" style="margin-top:.2em">
+      <div class="frag"><pre><code><span class="sel">.card</span> {
+  <span class="prop">padding</span>: <span class="val">1em</span>;
+
+  <span class="sel">&amp;:hover</span> {          <span class="cm">/* estado */</span>
+    <span class="prop">transform</span>: <span class="val">translateY(-4px)</span>;
+  }
+  <span class="sel">&amp; h3</span> {            <span class="cm">/* subelemento */</span>
+    <span class="prop">color</span>: <span class="val">blue</span>;
+  }
+  <span class="sel">&amp;.destacada</span> {      <span class="cm">/* subclase */</span>
+    <span class="prop">border</span>: <span class="val">2px solid gold</span>;
+  }
+}</code></pre></div>
+      <div>
+        <div class="card k frag"><h3><code>&amp;:hover</code></h3><p>Un <b>estado</b>, anidado dentro.</p></div>
+        <div class="card k2 frag" style="margin-top:.45em"><h3><code>&amp; h3</code></h3><p>Un <b>subelemento</b> de la tarjeta.</p></div>
+        <div class="card kok frag" style="margin-top:.45em"><h3><code>&amp;.destacada</code></h3><p>Una <b>subclase</b> (variante).</p></div>
+      </div>
+    </div>
+    <p class="muted frag" style="margin-top:.4em">Más limpio: todo lo de <code>.card</code> en un solo bloque. Así está el <code>styles.css</code> del portafolio.</p>
+  </section>
+
+  <!-- 10c · Transiciones -->
+  <section class="slide" data-title="Transiciones">
+    <div class="tag anim">🎬 TRANSICIONES</div>
+    <h2 class="anim">Transiciones: cambios suaves</h2>
+    <p class="lead anim">Animan el cambio entre dos estados (ej. al <code>:hover</code>).</p>
+    <div class="frag"><pre><code><span class="sel">.boton</span> {
+  <span class="prop">background</span>: <span class="val">blue</span>;
+  <span class="prop">transition</span>: <span class="val">background .3s ease</span>;  <span class="cm">/* qué, cuánto, cómo */</span>
+}
+<span class="sel">.boton:hover</span> { <span class="prop">background</span>: <span class="val">coral</span>; }</code></pre></div>
+    <p class="muted frag" style="margin-top:.3em">⚠️ Evita <code>transition: all</code> (anima de más y va lento). Anima <b>solo</b> lo que necesitas.</p>
+  </section>
+
+  <!-- 10d · Animaciones @keyframes -->
+  <section class="slide" data-title="Animaciones (@keyframes)">
+    <div class="kick anim">Animaciones</div>
+    <h2 class="anim">@keyframes: tu propia animación</h2>
+    <div class="frag"><pre><code><span class="sel">@keyframes</span> <span class="fn">aparecer</span> {
+  <span class="val">from</span> { <span class="prop">opacity</span>: <span class="val">0</span>; <span class="prop">transform</span>: <span class="val">translateY(20px)</span>; }
+  <span class="val">to</span>   { <span class="prop">opacity</span>: <span class="val">1</span>; }
+}
+<span class="sel">.tarjeta</span> { <span class="prop">animation</span>: <span class="val">aparecer .6s ease both</span>; }</code></pre></div>
+    <p class="muted frag" style="margin-top:.3em">Atajo <code>animation</code>: nombre, duración, curva, repeticiones, y <code>animation-fill-mode</code> (<code>both</code> mantiene el estado final).</p>
+  </section>
+
+  <!-- 10e · Animaciones con scroll y rendimiento -->
+  <section class="slide" data-title="Scroll y rendimiento">
+    <div class="tag anim">🆕 SCROLL · FPS</div>
+    <h2 class="anim">Scroll y rendimiento</h2>
+    <p class="lead anim">Lo más nuevo: animar según el <b>scroll</b> con CSS puro (<code>animation-timeline: view()</code>).</p>
+    <div class="card kok frag" style="margin-top:.3em"><p>⚡ <b>Rendimiento (60 FPS):</b> anima <code>transform</code> y <code>opacity</code> (son las más rápidas).
+      <b>Evita</b> animar <code>width</code>, <code>height</code> o <code>margin</code> (obligan a recalcular todo).</p></div>
+    <p class="muted frag" style="margin-top:.3em">El scroll con CSS aún no funciona en todos los navegadores → en el portafolio lo hacemos con JS (IntersectionObserver, Clase 04) para máxima compatibilidad.</p>
+  </section>
+
+  <!-- 11 · Responsive -->
+  <section class="slide" data-title="Responsive">
+    <div class="tag anim">📱 RESPONSIVE</div>
+    <h2 class="anim">Que se vea bien en el celular</h2>
+    <p class="lead anim">Una <b>media query</b> aplica estilos solo cuando la pantalla es de cierto tamaño.</p>
+    <div class="frag" style="margin-top:.4em"><pre><code><span class="cm">/* cuando el ancho sea 600px o menos (celular) */</span>
+<span class="sel">@media</span> (max-width: 600px) {
+  <span class="sel">.menu</span> { <span class="prop">flex-direction</span>: <span class="val">column</span>; }
+}</code></pre></div>
+    <p class="muted frag" style="margin-top:.4em">💡 Pruébalo en el navegador: F12 → modo celular, y ve cómo cambia.</p>
+  </section>
+
+  <!-- 12 · Documentación -->
+  <section class="slide" data-title="Documentación">
+    <div class="tag anim">📚 DOCUMENTACIÓN</div>
+    <h2 class="anim">Dónde buscar propiedades</h2>
+    <div class="grid g3" style="margin-top:.4em">
+      <div class="card k frag"><h3>MDN ⭐</h3><p>developer.mozilla.org/es — la referencia oficial. Busca "MDN flexbox".</p></div>
+      <div class="card k2 frag"><h3>web.dev/learn/css</h3><p>web.dev/learn/css?hl=es — curso de CSS moderno de Google (en español).</p></div>
+      <div class="card kok frag"><h3>lenguajecss.com</h3><p>Curso de CSS en español (Manz), claro y actualizado.</p></div>
+    </div>
+    <p class="muted frag" style="margin-top:.4em">Extra: <b>css-tricks.com</b> ("A Guide to Flexbox"). Y tu <b>asistente de IA</b> para dudas puntuales.</p>
+  </section>
+
+  <!-- 13 · Práctica -->
+  <section class="slide" data-title="Práctica">
+    <div class="tag anim">✍️ PRÁCTICA</div>
+    <h2 class="anim">Portafolio v2 (con estilo)</h2>
+    <div class="grid g2" style="margin-top:.3em">
+      <div class="card k frag"><p>① Crea <code>styles.css</code> y enlázalo con <code>&lt;link&gt;</code> en el <code>&lt;head&gt;</code>.</p></div>
+      <div class="card k frag"><p>② Colores, tipografía y <b>padding/margin</b> a tus secciones.</p></div>
+      <div class="card k2 frag"><p>③ Usa <b>Flexbox</b> para el menú de navegación.</p></div>
+      <div class="card kok frag"><p>④ Una <b>media query</b> para que se vea bien en celular.</p></div>
+    </div>
+    <p class="muted frag" style="margin-top:.5em">Cierra: <code>git add . &amp;&amp; git commit -m "Portafolio v2: estilos con CSS"</code></p>
+  </section>
+
+  <!-- 14 · Cierre -->
+  <section class="slide center" data-title="Cierre">
+    <h1 class="anim">¿Preguntas? 🙌</h1>
+    <p class="lead muted anim" style="margin-top:.5em">Siguiente: <span class="a">Clase 04 — JavaScript</span> (¡a darle vida!)</p>
+    <p class="muted anim" style="margin-top:1.1em">Pulsa <kbd style="color:var(--a)">O</kbd> para ver todas las diapositivas.</p>
+  </section>
+
+</div>
+
+<div class="grip" id="grip"></div>
+<div class="bar" id="bar"></div>
+<div class="hud"><span id="cur">1</span> / <span id="tot">1</span></div>
+<div class="hint"><kbd>←</kbd> <kbd>→</kbd> avanzar · <kbd>O</kbd> rejilla · clic para seguir</div>
+
+<script>
+(function(){
+  const deck=document.getElementById('deck');
+  const slides=[...deck.querySelectorAll('.slide')];
+  const tot=slides.length;let i=0,f=0;
+  document.getElementById('tot').textContent=tot;
+  const frags=slides.map(s=>[...s.querySelectorAll('.frag')]);
+  const dotsWrap=document.getElementById('dots');
+  slides.forEach((s,k)=>{const b=document.createElement('button');b.className='dot';
+    b.title=s.dataset.title||('Slide '+(k+1));b.onclick=()=>goto(k);dotsWrap.appendChild(b);});
+  const dots=[...dotsWrap.children];
+  function render(){
+    slides.forEach((s,k)=>s.classList.toggle('active',k===i));
+    frags[i].forEach((el,k)=>el.classList.toggle('show',k<f));
+    dots.forEach((d,k)=>{d.classList.toggle('on',k===i);d.classList.toggle('seen',k<i);});
+    document.getElementById('cur').textContent=i+1;
+    const prog=frags[i].length?f/frags[i].length:1;
+    document.getElementById('bar').style.width=((i+prog)/tot*100)+'%';
+  }
+  function goto(n){i=Math.max(0,Math.min(tot-1,n));f=frags[i].length;render();}
+  function next(){if(f<frags[i].length){f++;render();return;}if(i<tot-1){i++;f=0;render();}}
+  function prev(){if(f>0){f--;render();return;}if(i>0){i--;f=frags[i].length;render();}}
+  const grip=document.getElementById('grip');
+  slides.forEach((s,k)=>{const m=document.createElement('div');m.className='mini';
+    m.innerHTML='<span class="n">'+(k+1)+'</span><h4>'+(s.dataset.title||'')+'</h4>';
+    m.onclick=()=>{goto(k);grip.classList.remove('on');};grip.appendChild(m);});
+  deck.addEventListener('click',e=>{
+    const vp=e.target.closest('.vp'); if(!vp)return;
+    const root=vp.closest('.slide');
+    root.querySelectorAll('.vp').forEach(x=>{x.classList.toggle('on',x===vp);x.classList.toggle('dim',x!==vp);});
+    e.stopPropagation();
+  });
+  document.addEventListener('keydown',e=>{
+    if(e.key==='o'||e.key==='O'){grip.classList.toggle('on');return;}
+    if(grip.classList.contains('on')){if(e.key==='Escape')grip.classList.remove('on');return;}
+    if(['ArrowRight',' ','PageDown','Enter'].includes(e.key)){e.preventDefault();next();}
+    else if(['ArrowLeft','PageUp','Backspace'].includes(e.key)){e.preventDefault();prev();}
+    else if(e.key==='Home')goto(0);else if(e.key==='End')goto(tot-1);
+  });
+  document.addEventListener('click',e=>{
+    if(e.target.closest('.vp')||e.target.closest('.grip')||e.target.closest('.dot'))return;
+    if(e.clientX<innerWidth*0.22)prev();else next();
+  });
+  render();
+})();
+</script>
+</body>
+</html>

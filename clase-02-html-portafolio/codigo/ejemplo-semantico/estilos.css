@@ -1,0 +1,57 @@
+/* ============================================================
+   MISMA hoja de estilos para los DOS archivos:
+   - divititis.html  (todo con <div>)
+   - semantico.html  (con <header>, <nav>, <main>, <article>, <footer>)
+
+   TRUCO: aquí seleccionamos POR ETIQUETA (header, nav, main…).
+   Como el navegador solo tiene esas etiquetas en el archivo SEMÁNTICO,
+   los estilos SOLO se aplican ahí. El de <div> sale plano.
+   ➡️ Abre los dos en el navegador y compara.
+   ============================================================ */
+
+body {
+  font-family: system-ui, "Segoe UI", sans-serif;
+  background: #eef2f9;
+  color: #1f2937;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Estos selectores solo "existen" en el archivo semántico */
+header {
+  background: #2563eb;
+  color: white;
+  padding: 1.5rem 2rem;
+}
+header h1 { margin: 0; }
+
+nav {
+  display: flex;
+  gap: 1.5rem;
+  margin-top: .6rem;
+}
+nav a {
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+main {
+  max-width: 640px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+article {
+  background: white;
+  border-radius: 14px;
+  padding: 1.8rem;
+  box-shadow: 0 8px 24px rgba(0,0,0,.08);
+}
+article h2 { color: #2563eb; margin-top: 0; }
+
+footer {
+  text-align: center;
+  color: #6b7280;
+  padding: 2rem;
+}

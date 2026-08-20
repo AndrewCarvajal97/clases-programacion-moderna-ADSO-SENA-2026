@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ejemplo: transiciones y animaciones</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: system-ui, sans-serif; background: #0b0f1e; color: #eaeefb;
+           display: grid; place-items: center; min-height: 100vh; gap: 2rem; padding: 2rem; }
+
+    /* ============ 1) TRANSICIÓN al :hover ============ */
+    .boton {
+      padding: .9rem 1.6rem; border: none; border-radius: 999px; cursor: pointer;
+      background: #ff6b5c; color: #1a0b08; font-weight: 700; font-size: 1rem;
+      transition: transform .25s ease, box-shadow .25s ease;   /* solo lo que anima */
+    }
+    .boton:hover {
+      transform: translateY(-4px) scale(1.05);
+      box-shadow: 0 14px 30px -8px #ff6b5c;
+    }
+
+    /* ============ 2) ANIMACIÓN con @keyframes ============ */
+    @keyframes flotar {
+      0%, 100% { transform: translateY(0); }
+      50%      { transform: translateY(-18px); }
+    }
+    .caja {
+      width: 90px; height: 90px; border-radius: 20px;
+      background: linear-gradient(135deg, #ff6b5c, #ffb15c);
+      /* nombre  duración  curva      repetición */
+      animation: flotar 2s ease-in-out infinite;
+    }
+
+    /* ============ 3) Entrada con animation-fill-mode: both ============ */
+    @keyframes aparecer {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: none; }
+    }
+    .tarjeta {
+      background: #131a30; border: 1px solid #26314f; border-radius: 16px;
+      padding: 1.4rem 1.8rem; max-width: 320px; text-align: center;
+      animation: aparecer .7s ease both;   /* 'both' mantiene el estado inicial y final */
+    }
+
+    /* Respeta a quien prefiere menos movimiento */
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <button class="boton">Pásame el mouse (transición)</button>
+
+  <div class="caja"></div>
+
+  <div class="tarjeta">
+    <h2>¡Aparecí con animación!</h2>
+    <p style="color:#93a0c4">Con <code>@keyframes</code> + <code>animation</code>.</p>
+  </div>
+
+</body>
+</html>

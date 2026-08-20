@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Portafolio de Tu Nombre — aprendiz ADSO, SENA Bucaramanga.">
+  <title>Tu Nombre · Dev</title>
+
+  <link rel="stylesheet" href="styles.css">
+  <!-- Tipografías modernas (Google Fonts). Si la red falla, caen a las del sistema. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Sora:wght@500;700;800&family=JetBrains+Mono:wght@500&display=swap">
+
+  <!-- Esta clase es SOLO CSS (sin JavaScript). El tema claro/oscuro
+       se ajusta solo según la preferencia del sistema (media query). -->
+</head>
+<body>
+
+  <!-- Navegación (sticky, siempre visible) -->
+  <nav class="nav" aria-label="Principal">
+    <a href="#inicio" class="nav__logo">&lt;/&gt;</a>
+    <ul class="nav__links">
+      <li><a href="#sobre-mi">Sobre mí</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#proyectos">Proyectos</a></li>
+      <li><a href="#contacto">Contacto</a></li>
+    </ul>
+  </nav>
+
+  <!-- ===== HERO ===== -->
+  <header class="hero" id="inicio">
+    <div class="hero__aurora" aria-hidden="true"></div>
+    <div class="hero__inner">
+      <p class="eyebrow">Aprendiz ADSO · SENA Bucaramanga</p>
+      <h1 class="hero__title">Hola, soy <span class="grad">Tu Nombre</span></h1>
+      <p class="hero__lead">Desarrollador de software en formación. Construyo interfaces limpias con
+         HTML y CSS.</p>
+      <div class="hero__cta">
+        <a href="#proyectos" class="btn btn--primary">Ver proyectos</a>
+        <a href="#contacto" class="btn btn--ghost">Contáctame</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- ===== SOBRE MÍ ===== -->
+    <section class="section" id="sobre-mi">
+      <p class="eyebrow">01 — Quién soy</p>
+      <div class="about">
+        <figure class="about__photo">
+          <img src="foto.jpg" alt="Foto de Tu Nombre">
+        </figure>
+        <div class="about__text">
+          <h2>Sobre mí</h2>
+          <p>Escribe un párrafo real sobre ti: qué te trajo al desarrollo y a dónde quieres llegar.</p>
+          <p class="muted">Ahora aprendo <code>HTML</code> y <code>CSS</code>.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== SKILLS (una lista: sirve para :first-child, :last-child, etc.) ===== -->
+    <section class="section" id="skills">
+      <p class="eyebrow">02 — Lo que sé</p>
+      <h2>Skills</h2>
+      <ul class="skills">
+        <li class="skill"><span>HTML</span><div class="bar"><i style="--pct:90%"></i></div></li>
+        <li class="skill"><span>CSS</span><div class="bar"><i style="--pct:80%"></i></div></li>
+        <li class="skill"><span>Git</span><div class="bar"><i style="--pct:60%"></i></div></li>
+      </ul>
+    </section>
+
+    <!-- ===== PROYECTOS (grid de tarjetas hermanas) ===== -->
+    <section class="section" id="proyectos">
+      <p class="eyebrow">03 — Mi trabajo</p>
+      <h2>Proyectos</h2>
+      <div class="proyectos">
+        <article class="proyecto destacado">
+          <h3>Proyecto de equipo 🏆</h3>
+          <p>Mi proyecto del hackathon (en construcción).</p>
+        </article>
+        <article class="proyecto">
+          <h3>Este portafolio</h3>
+          <p>Diseñado con CSS moderno desde cero.</p>
+        </article>
+        <article class="proyecto">
+          <h3>Próximamente…</h3>
+          <p>Aquí irán más proyectos.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- ===== CONTACTO ===== -->
+    <section class="section" id="contacto">
+      <p class="eyebrow">04 — Hablemos</p>
+      <h2>Contacto</h2>
+      <form class="form">
+        <div class="form__row">
+          <label>Nombre <input type="text" name="nombre"></label>
+          <label>Correo <input type="email" name="correo"></label>
+        </div>
+        <label>Mensaje <textarea name="mensaje" rows="4"></textarea></label>
+        <button type="submit" class="btn btn--primary">Enviar</button>
+      </form>
+      <address class="social">
+        <a href="https://github.com/tu-usuario" target="_blank">GitHub</a>
+        <a href="mailto:tucorreo@ejemplo.com">Correo</a>
+      </address>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>Hecho con <span class="grad">HTML · CSS</span> en el curso de ADSO · SENA</p>
+    <p class="muted">© 2026 Tu Nombre</p>
+  </footer>
+
+</body>
+</html>

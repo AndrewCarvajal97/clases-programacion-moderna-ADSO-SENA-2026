@@ -1,0 +1,192 @@
+/* ============================================================
+   Portafolio — Diseño "Dev, estudio nocturno" (Clase 03, SOLO CSS)
+   Enseña, USÁNDOLOS: variables, herencia, pseudoclases,
+   combinadores (> + ~), :first-child/:last-child, fallbacks,
+   especificidad, anidamiento &, Grid, y animaciones (sin JS).
+   El tema claro/oscuro se ajusta según la preferencia del sistema.
+   ============================================================ */
+
+/* ---- TOKENS (variables globales). Por defecto: OSCURO ---- */
+:root {
+  --bg:#0b0f1e; --surface:#131a30; --elevated:#1a2340;
+  --text:#eaeefb; --muted:#93a0c4; --border:#26314f;
+  --accent:#ff6b5c;   /* coral: único acento */
+  --accent-2:#ffb15c; /* ámbar: solo para la aurora */
+  --link:#62d0ff;     /* cian: enlaces */
+  --shadow:0 22px 50px -24px rgba(0,0,0,.75);
+  --r:16px; --ease:cubic-bezier(.2,.7,.2,1);
+  color-scheme: dark;
+}
+/* TEMA CLARO automático si el sistema lo prefiere (sin botón, sin JS) */
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg:#f6f7fc; --surface:#ffffff; --elevated:#ffffff; --text:#151b30;
+    --muted:#5b6480; --border:#e5e8f2; --link:#0a84c2;
+    --shadow:0 22px 50px -28px rgba(20,30,60,.25); color-scheme: light;
+  }
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+
+/* ---- HERENCIA: color y font se definen aquí y los HIJOS los HEREDAN ----
+   (no hace falta repetir color en cada elemento). */
+body {
+  font-family: "Segoe UI", system-ui, sans-serif; /* FALLBACKS: si una falla, usa la siguiente */
+  background: var(--bg);
+  color: var(--text);          /* lo heredan h1, p, li, a... */
+  line-height: 1.65;
+  overflow-x: hidden;
+  transition: background .4s var(--ease), color .4s var(--ease);
+}
+
+/* Tipografías con fallback si no cargan los webfonts */
+h1, h2, .hero__title { font-family: "Sora", "Segoe UI", system-ui, sans-serif; }
+.eyebrow, code, .nav__logo { font-family: "JetBrains Mono", ui-monospace, Consolas, monospace; }
+
+h2 { font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 800; letter-spacing: -.02em; text-wrap: balance; margin-bottom:.5em; }
+code { color: var(--link); background: color-mix(in srgb, var(--link) 12%, transparent); padding:.1em .4em; border-radius:6px; font-size:.88em; }
+.muted { color: var(--muted); }
+.grad { background: linear-gradient(100deg, var(--accent), var(--accent-2)); -webkit-background-clip:text; background-clip:text; color:transparent; }
+.eyebrow { text-transform:uppercase; letter-spacing:.22em; font-size:.75rem; color: var(--accent); display:inline-block; margin-bottom:1rem; }
+
+/* ---- NAV: COMBINADOR DESCENDIENTE (.nav a = las <a> dentro de .nav) ---- */
+.nav {
+  position: sticky; top:0; z-index:40;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:.9rem clamp(1rem,5vw,3rem);
+  background: color-mix(in srgb, var(--bg) 82%, transparent);
+  backdrop-filter: blur(12px); border-bottom:1px solid var(--border);
+}
+.nav__logo { color: var(--accent); font-weight:700; text-decoration:none; font-size:1.2rem; }
+.nav__links { display:flex; gap:1.6rem; list-style:none; }
+.nav a { color: var(--muted); text-decoration:none; font-weight:600; transition: color .2s; }
+.nav a:hover { color: var(--text); }                 /* PSEUDOCLASE :hover */
+/* :first-child y :last-child → el primer y el último enlace del menú */
+.nav__links li:first-child a { color: var(--accent); }
+.nav__links li:last-child  a { font-weight:700; }
+@media (max-width:640px){ .nav__links{ display:none; } }
+
+/* ============================================================
+   HERO con aurora animada (animación pura CSS, sin JS)
+   ============================================================ */
+.hero { position:relative; min-height:92vh; display:flex; flex-direction:column;
+  align-items:center; justify-content:center; text-align:center; padding:2rem clamp(1rem,5vw,3rem); overflow:hidden; }
+.hero__aurora {
+  position:absolute; inset:-30%; z-index:0; filter:blur(70px); opacity:.55;
+  background:
+    radial-gradient(38% 42% at 25% 30%, var(--accent) 0%, transparent 60%),
+    radial-gradient(34% 40% at 78% 35%, var(--accent-2) 0%, transparent 60%),
+    radial-gradient(45% 45% at 55% 80%, var(--link) 0%, transparent 60%);
+  animation: aurora 18s var(--ease) infinite alternate;
+}
+@keyframes aurora {
+  0%{ transform:translate3d(-4%,-2%,0) scale(1); }
+  50%{ transform:translate3d(5%,4%,0) scale(1.12); }
+  100%{ transform:translate3d(-3%,6%,0) scale(1.05); }
+}
+.hero__inner { position:relative; z-index:1; max-width:760px; animation: subir .7s var(--ease) both; }
+.hero__title { font-size: clamp(2.4rem,8vw,5rem); font-weight:800; line-height:1.05; letter-spacing:-.03em; margin:.3em 0 .4em; text-wrap:balance; }
+.hero__lead { font-size: clamp(1.05rem,2.3vw,1.4rem); color: var(--muted); max-width:36ch; margin:0 auto 2rem; }
+.hero__cta { display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; }
+
+/* ---- Botones. SUBCLASES .btn--primary / .btn--ghost ---- */
+.btn { display:inline-flex; align-items:center; gap:.5rem; padding:.8rem 1.4rem; border-radius:999px;
+  font-weight:700; text-decoration:none; cursor:pointer; border:1px solid transparent;
+  transition: transform .2s var(--ease), box-shadow .2s, border-color .2s; }
+.btn--primary { background: var(--accent); color:#1a0b08; }
+.btn--primary:hover { transform: translateY(-3px); box-shadow: 0 14px 30px -10px var(--accent); }
+.btn--ghost { background:transparent; color: var(--text); border-color: var(--border); }
+.btn--ghost:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-3px); }
+
+/* ============================================================
+   SECCIONES — con animación de entrada escalonada (CSS puro)
+   ============================================================ */
+main { max-width:1000px; margin:0 auto; padding:0 clamp(1rem,5vw,2rem); }
+.section { padding: clamp(4rem,10vw,7rem) 0; animation: subir .7s var(--ease) both; }
+/* :nth-child para escalonar la entrada de cada sección */
+.section:nth-child(2){ animation-delay:.05s; }
+.section:nth-child(3){ animation-delay:.10s; }
+.section:nth-child(4){ animation-delay:.15s; }
+@keyframes subir { from{ opacity:0; transform:translateY(26px); } to{ opacity:1; transform:none; } }
+
+/* COMBINADOR HERMANO ADYACENTE (+): el <p> que va JUSTO DESPUÉS de un h2 */
+h2 + p { color: var(--muted); }
+
+/* Sobre mí */
+.about { display:grid; grid-template-columns:220px 1fr; gap:2.5rem; align-items:center; }
+.about__photo img { width:100%; border-radius:24px; border:1px solid var(--border); box-shadow: var(--shadow); }
+.about__text p:not(:last-child){ margin-bottom:1rem; }   /* :not() → todos menos el último */
+@media (max-width:680px){ .about{ grid-template-columns:1fr; } .about__photo{ max-width:180px; } }
+
+/* Skills: COMBINADOR HIJO DIRECTO (>) y :last-child */
+.skills { list-style:none; display:grid; gap:1.4rem; max-width:620px; }
+.skills > .skill { }                                     /* solo hijos directos .skill */
+.skill span { font-weight:600; display:block; margin-bottom:.5rem; }
+.skill:last-child span { color: var(--accent); }         /* la última skill, destacada */
+.bar { height:10px; border-radius:999px; background: var(--elevated); overflow:hidden; border:1px solid var(--border); }
+.bar i { display:block; height:100%; width: var(--pct); border-radius:999px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  animation: crecer 1.2s var(--ease) both; }             /* se llenan al cargar */
+@keyframes crecer { from{ width:0; } }
+
+/* Proyectos: PSEUDO-ELEMENTO ::before (barrita de color al hover) */
+.proyectos { display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:1.1rem; }
+.proyecto {
+  position:relative; overflow:hidden; background: var(--surface); border:1px solid var(--border);
+  border-radius: var(--r); padding:1.3rem; transition: transform .25s var(--ease), border-color .25s, box-shadow .25s;
+}
+.proyecto::before { content:""; position:absolute; inset:0 0 auto 0; height:3px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2)); transform:scaleX(0); transform-origin:left; transition: transform .3s var(--ease); }
+.proyecto:hover { transform: translateY(-6px); box-shadow: var(--shadow); border-color: color-mix(in srgb, var(--accent) 50%, var(--border)); }
+.proyecto:hover::before { transform: scaleX(1); }
+.proyecto h3 { font-size:1.05rem; margin-bottom:.4rem; }
+.proyecto p { color: var(--muted); font-size:.9rem; }
+/* .proyecto.destacado → SUBCLASE (más específica que .proyecto). Sobre especificidad, abajo. */
+.proyecto.destacado { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 6%, transparent); }
+
+/* Contacto */
+.form { display:grid; gap:1rem; max-width:620px; }
+.form__row { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+@media (max-width:560px){ .form__row{ grid-template-columns:1fr; } }
+.form label { display:grid; gap:.4rem; font-size:.85rem; color: var(--muted); font-weight:600; }
+.form input, .form textarea { padding:.8rem 1rem; border-radius:12px; border:1px solid var(--border);
+  background: var(--surface); color: var(--text); font-family: inherit; /* HEREDA la fuente del body */ font-size:1rem;
+  transition: border-color .2s, box-shadow .2s; }
+.form input:focus, .form textarea:focus {                /* PSEUDOCLASE :focus */
+  outline:none; border-color: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 25%, transparent);
+}
+.social { display:flex; gap:1rem; margin-top:1.5rem; font-style:normal; }
+.social a { color: var(--text); text-decoration:none; padding:.5rem .9rem; border:1px solid var(--border);
+  border-radius:10px; transition: color .2s, border-color .2s, transform .2s; }
+.social a:hover { color: var(--accent); border-color: var(--accent); transform: translateY(-3px); }
+
+/* Footer */
+.footer { text-align:center; padding:3rem 1rem; border-top:1px solid var(--border); color: var(--muted); }
+
+/* Foco visible para teclado (accesibilidad) */
+a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible {
+  outline:2px solid var(--accent); outline-offset:3px; border-radius:6px;
+}
+
+/* ============================================================
+   ESPECIFICIDAD (quién gana cuando hay varias reglas):
+   etiqueta (0,0,1)  <  clase (0,1,0)  <  id (1,0,0)  <  style=""  <  !important
+   Ejemplo: .proyecto.destacado (0,2,0) le gana a .proyecto (0,1,0).
+   Consejo: usa CLASES; evita ids e !important para estilos.
+
+   FALLBACKS: si el navegador no entiende algo, ponemos una alternativa antes:
+   ============================================================ */
+.hero__inner { color: #eee; }              /* 1) valor simple por si var() falla */
+.hero__inner { color: var(--text, #eee); } /* 2) var() con fallback incluido      */
+
+@supports (backdrop-filter: blur(1px)) {   /* @supports: solo si el navegador lo soporta */
+  .nav { background: color-mix(in srgb, var(--bg) 70%, transparent); }
+}
+
+/* Respeta a quien prefiere menos movimiento */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation:none !important; transition:none !important; }
+  html { scroll-behavior:auto; }
+}

@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Clase 02 — HTML</title>
+<style>
+/* ==== Deck del curso — autocontenido (SIN internet) ==== */
+:root{--bg:#0b1020;--panel:#172033;--panel2:#1e293b;--text:#eef2ff;--muted:#93a4c4;--line:#26324b;
+  --a:#38bdf8;--a2:#a78bfa;--ok:#4ade80;--warn:#fbbf24;--pink:#f472b6;--font:'Segoe UI',system-ui,sans-serif;}
+*{box-sizing:border-box;margin:0;padding:0}html,body{height:100%}
+body{font-family:var(--font);color:var(--text);overflow:hidden;
+  background:radial-gradient(1200px 700px at 85% -10%,rgba(56,189,248,.16),transparent 60%),
+  radial-gradient(900px 600px at -10% 110%,rgba(167,139,250,.16),transparent 60%),var(--bg);}
+.top{position:fixed;top:0;left:0;right:0;height:52px;display:flex;align-items:center;gap:14px;padding:0 22px;z-index:20;
+  background:linear-gradient(180deg,rgba(11,16,32,.9),transparent)}
+.brand{font-weight:800;font-size:14px;color:var(--muted)}.brand b{color:var(--a)}
+.dots{display:flex;gap:7px;margin-left:auto;flex-wrap:wrap;max-width:60vw;justify-content:flex-end}
+.dot{width:11px;height:11px;border-radius:50%;background:#2b3a5c;cursor:pointer;border:none;transition:.2s;padding:0}
+.dot:hover{transform:scale(1.25)}.dot.on{background:var(--a);box-shadow:0 0 0 3px rgba(56,189,248,.25)}.dot.seen{background:#3f5a86}
+.deck{position:absolute;inset:0}
+.slide{position:absolute;inset:0;display:none;flex-direction:column;justify-content:center;padding:8.5vh 6vw 8vh}
+.slide.active{display:flex}
+.slide.active .anim{animation:rise .5s cubic-bezier(.2,.7,.2,1) both}
+.slide.active .anim:nth-child(2){animation-delay:.06s}.slide.active .anim:nth-child(3){animation-delay:.12s}
+.slide.active .anim:nth-child(4){animation-delay:.18s}.slide.active .anim:nth-child(5){animation-delay:.24s}
+@keyframes rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+.kick{display:inline-flex;align-items:center;gap:.5em;color:var(--a2);font-weight:800;letter-spacing:.16em;
+  text-transform:uppercase;font-size:clamp(.72rem,1.4vw,1rem);margin-bottom:.55em}
+.kick::before{content:"";width:26px;height:3px;border-radius:3px;background:var(--a2)}
+h1{font-size:clamp(2.3rem,6vw,4.6rem);line-height:1.03;letter-spacing:-.02em;
+  background:linear-gradient(120deg,#fff,#9fd8ff 55%,#c7b6ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+h2{font-size:clamp(1.7rem,4vw,2.9rem);line-height:1.05;margin-bottom:.35em}
+p,li{font-size:clamp(1rem,1.95vw,1.45rem);line-height:1.48}
+.lead{font-size:clamp(1.15rem,2.4vw,1.75rem);color:#dbe4ff}
+.muted{color:var(--muted)}.a{color:var(--a)}.a2{color:var(--a2)}.ok{color:var(--ok)}.warn{color:var(--warn)}.pink{color:var(--pink)}
+b,strong{color:#fff}
+.grid{display:grid;gap:.9em;margin-top:.5em}
+.g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
+.g21{grid-template-columns:1.25fr 1fr}
+@media(max-width:900px){.g2,.g3,.g4,.g21{grid-template-columns:1fr}}
+.card{background:linear-gradient(180deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:16px;
+  padding:.9em 1.1em;box-shadow:0 18px 40px -26px rgba(0,0,0,.85)}
+.card.k{border-top:4px solid var(--a)}.card.k2{border-top:4px solid var(--a2)}
+.card.kok{border-top:4px solid var(--ok)}.card.kw{border-top:4px solid var(--warn)}
+.card h3{font-size:clamp(1.05rem,2vw,1.45rem);margin-bottom:.15em;display:flex;align-items:center;gap:.4em}
+.card p,.card li{font-size:clamp(.9rem,1.6vw,1.15rem);color:var(--muted)}
+.card b{color:#dbe4ff}
+.chips{display:flex;gap:.45em;flex-wrap:wrap;margin-top:.5em}
+.chip{background:#0d1730;border:1px solid var(--line);color:var(--a);border-radius:999px;padding:.22em .8em;
+  font-size:clamp(.82rem,1.4vw,1.05rem);font-family:'Consolas',monospace}
+code{background:#0a1226;color:var(--a);padding:.1em .4em;border-radius:6px;font-family:'Consolas',monospace;font-size:.9em}
+pre{background:#0a1226;border:1px solid var(--line);border-radius:12px;padding:.85em 1.1em;margin-top:.4em;overflow:auto}
+pre code{background:none;padding:0;font-size:clamp(.88rem,1.5vw,1.18rem);line-height:1.6}
+.big{font-size:clamp(1.25rem,2.8vw,1.9rem)}
+.tag{display:inline-block;background:linear-gradient(120deg,var(--a),var(--a2));color:#04121f;font-weight:800;
+  border-radius:999px;padding:.22em 1em;font-size:.92rem;margin-bottom:.8em}
+.num{display:inline-flex;align-items:center;justify-content:center;min-width:1.7em;height:1.7em;background:var(--a);
+  color:#04121f;border-radius:50%;font-weight:800;margin-right:.35em}
+.frag{opacity:0;transform:translateY(14px) scale(.98);transition:.35s cubic-bezier(.2,.7,.2,1);filter:blur(2px)}
+.frag.show{opacity:1;transform:none;filter:none}
+/* colores de código HTML */
+.hcode{font-family:'Consolas',monospace}.tg{color:#4ec9b0}.at{color:#9cdcfe}.st{color:#ce9178}.cm{color:#6a9955}.tx{color:#eaf2ff}
+/* anatomía de una etiqueta */
+.anat{background:#0a1226;border:1px solid var(--line);border-radius:14px;padding:1.1em 1.3em;font-family:'Consolas',monospace;
+  font-size:clamp(1.1rem,2.6vw,2rem);text-align:center;margin-top:.3em;overflow:auto}
+.mark{position:relative;padding-bottom:1.6em}
+.mark::after{content:attr(data-l);position:absolute;left:50%;bottom:0;transform:translateX(-50%);
+  font-family:var(--font);font-size:.5em;color:var(--muted);white-space:nowrap}
+.mark.o::after{color:#4ec9b0}.mark.at2::after{color:#9cdcfe}.mark.v::after{color:#ce9178}.mark.c::after{color:#eaf2ff}.mark.cl::after{color:#4ec9b0}
+/* esquema tipo infografía (clic) */
+.viz{display:flex;flex-direction:column;gap:12px;margin-top:.4em}
+.vp{position:relative;border:1px solid var(--line);border-left:6px solid var(--c);border-radius:16px;padding:14px 24px 26px;
+  background:linear-gradient(180deg,rgba(23,32,51,.8),rgba(15,23,42,.72));transition:.25s;cursor:pointer}
+.vp:hover,.vp.on{border-color:var(--c);box-shadow:0 0 0 1px var(--c),0 0 50px -16px var(--c)}.vp.dim{opacity:.4}
+.vhead{display:flex;justify-content:space-between;align-items:center;gap:1em}
+.vt{font-size:clamp(1.25rem,2.7vw,2rem);font-weight:800;color:var(--c);line-height:1}
+.vs{color:var(--muted);font-size:clamp(.8rem,1.4vw,1.1rem);margin-top:.2em}
+.vbody{margin-top:.8em;font-size:clamp(.95rem,1.7vw,1.25rem)}
+.vbadge{border:1.5px solid var(--c);border-radius:12px;padding:.4em 1em;color:var(--c);font-weight:800;background:#0d1730;flex:0 0 auto;font-size:clamp(.85rem,1.5vw,1.1rem)}
+/* estructura anidada */
+.tree{font-family:'Consolas',monospace;font-size:clamp(.85rem,1.6vw,1.2rem);margin-top:.3em}
+.tnode{border:1px solid var(--line);border-left:4px solid var(--a);border-radius:10px;padding:.4em .8em;margin:.35em 0}
+.tnode.head{border-left-color:var(--a2)}.tnode.body{border-left-color:var(--ok)}
+.tnode .in{margin-left:1.4em}
+.bar{position:fixed;left:0;bottom:0;height:5px;background:linear-gradient(90deg,var(--a),var(--a2));z-index:20;transition:width .3s}
+.hud{position:fixed;bottom:12px;right:18px;color:var(--muted);font-size:.85rem;z-index:20}
+.hint{position:fixed;bottom:12px;left:18px;color:var(--muted);font-size:.8rem;z-index:20}
+.hint kbd{background:#0d1730;border:1px solid var(--line);border-radius:5px;padding:.05em .4em;color:var(--a)}
+.grip{position:fixed;inset:0;background:rgba(6,10,20,.96);z-index:40;display:none;grid-template-columns:repeat(4,1fr);gap:14px;padding:70px 5vw;overflow:auto;align-content:start}
+.grip.on{display:grid}
+.mini{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px;cursor:pointer;min-height:80px;transition:.15s;position:relative}
+.mini:hover{border-color:var(--a);transform:translateY(-3px)}.mini .n{position:absolute;top:6px;right:10px;color:var(--muted);font-size:12px;font-weight:800}.mini h4{font-size:14px;color:var(--a)}
+.center{align-items:center;text-align:center}
+a.link{color:var(--a);text-decoration:none;border-bottom:1px dashed var(--a)}
+</style>
+</head>
+<body>
+<div class="top"><div class="brand">Curso <b>ADSO</b> · SENA · Clase 02</div><div class="dots" id="dots"></div></div>
+<div class="deck" id="deck">
+
+  <!-- 1 -->
+  <section class="slide center" data-title="Portada">
+    <div class="kick anim">Clase 02 · Frontend</div>
+    <h1 class="anim">HTML</h1>
+    <p class="lead muted anim" style="margin-top:.5em">El esqueleto de la web · Construimos tu portafolio (v1)</p>
+    <div class="chips anim" style="justify-content:center;margin-top:1em">
+      <span class="chip">etiquetas</span><span class="chip">atributos</span><span class="chip">semántico</span>
+      <span class="chip">metadatos</span><span class="chip">multimedia</span></div>
+  </section>
+
+  <!-- 2 -->
+  <section class="slide" data-title="¿Qué es HTML?">
+    <div class="kick anim">Concepto</div>
+    <h2 class="anim">¿Qué es HTML?</h2>
+    <p class="lead anim">El <span class="a">esqueleto</span> de toda página. No programa: <b>marca</b> qué es cada cosa.</p>
+    <div class="grid g2" style="margin-top:.6em">
+      <div class="card k frag"><h3>📦 Lenguaje de marcado</h3><p>HyperText <b>Markup</b> Language. Etiquetas que
+        rotulan el contenido: "esto es un título", "esto es una imagen".</p></div>
+      <div class="card k2 frag"><h3>🍱 Analogía</h3><p>Como los rótulos de una mudanza: no cambian lo de
+        adentro, dicen <b>qué es</b> cada cosa para ordenarlo.</p></div>
+    </div>
+  </section>
+
+  <!-- 3 · Anatomía -->
+  <section class="slide" data-title="Anatomía de una etiqueta">
+    <div class="kick anim">Anatomía</div>
+    <h2 class="anim">Partes de una etiqueta</h2>
+    <div class="anat anim">
+      <span class="tg mark o" data-l="etiqueta de apertura">&lt;a</span>
+      <span class="at mark at2" data-l="atributo (propiedad)"> href</span><span class="tg">=</span><span class="st mark v" data-l="valor">"pagina.html"</span><span class="tg">&gt;</span>
+      <span class="tx mark c" data-l="contenido">Clic aquí</span>
+      <span class="tg mark cl" data-l="cierre">&lt;/a&gt;</span>
+    </div>
+    <div class="grid g4" style="margin-top:1.6em">
+      <div class="card k frag"><h3 class="tg">Apertura</h3><p>Abre la etiqueta: <code>&lt;a&gt;</code></p></div>
+      <div class="card frag" style="border-top:4px solid #9cdcfe"><h3 style="color:#9cdcfe">Atributo = valor</h3><p>Info extra. En HTML se llaman <b>atributos</b> (mucha gente les dice "propiedades").</p></div>
+      <div class="card frag" style="border-top:4px solid #eaf2ff"><h3>Contenido</h3><p>Lo que va entre apertura y cierre.</p></div>
+      <div class="card k frag"><h3 class="tg">Cierre</h3><p><code>&lt;/a&gt;</code> — con la barra <code>/</code></p></div>
+    </div>
+  </section>
+
+  <!-- 3b · Elemento vs etiqueta -->
+  <section class="slide" data-title="Elemento vs etiqueta">
+    <div class="kick anim">Vocabulario preciso</div>
+    <h2 class="anim">Etiqueta ≠ Elemento</h2>
+    <div class="grid g2" style="margin-top:.3em">
+      <div class="card k frag"><h3>Etiqueta (tag)</h3><p>La <b>marca</b> entre <code>&lt; &gt;</code>. Hay de apertura y de cierre.</p>
+        <pre class="hcode"><code><span class="tg">&lt;p&gt;</span>  …  <span class="tg">&lt;/p&gt;</span></code></pre></div>
+      <div class="card k2 frag"><h3>Elemento</h3><p>El <b>conjunto completo</b>: apertura + contenido + cierre. Es lo que existe en la página.</p>
+        <pre class="hcode"><code><span class="tg">&lt;p&gt;</span><span class="tx">Hola mundo</span><span class="tg">&lt;/p&gt;</span></code></pre></div>
+    </div>
+    <p class="muted frag" style="margin-top:.4em">La <b>etiqueta</b> es el rótulo; el <b>elemento</b> es la caja entera con lo que lleva dentro.</p>
+  </section>
+
+  <!-- 4 · Con cierre vs sin cierre -->
+  <section class="slide" data-title="Con cierre vs sin cierre">
+    <div class="tag anim">🔑 CLAVE</div>
+    <h2 class="anim">Etiquetas con cierre vs sin cierre</h2>
+    <div class="viz anim">
+      <div class="vp on" style="--c:var(--a)" data-cap="">
+        <div class="vhead"><div><div class="vt">Con cierre (en par)</div>
+          <div class="vs">envuelven contenido: apertura + contenido + cierre</div></div>
+          <div class="vbadge">la mayoría</div></div>
+        <div class="vbody hcode"><span class="tg">&lt;p&gt;</span><span class="tx">Hola mundo</span><span class="tg">&lt;/p&gt;</span>
+          &nbsp;&nbsp;<span class="tg">&lt;h1&gt;</span>Título<span class="tg">&lt;/h1&gt;</span>
+          &nbsp;&nbsp;<span class="tg">&lt;div&gt;</span>…<span class="tg">&lt;/div&gt;</span></div>
+      </div>
+      <div class="vp dim" style="--c:var(--warn)" data-cap="">
+        <div class="vhead"><div><div class="vt">Sin cierre (vacías / void)</div>
+          <div class="vs">no envuelven nada; se cierran solas</div></div>
+          <div class="vbadge">img · br · hr · input · meta · link</div></div>
+        <div class="vbody hcode"><span class="tg">&lt;img <span class="at">src</span>=<span class="st">"foto.jpg"</span> <span class="at">alt</span>=<span class="st">"Mi foto"</span>&gt;</span>
+          &nbsp;&nbsp;<span class="tg">&lt;br&gt;</span>&nbsp;&nbsp;<span class="tg">&lt;hr&gt;</span></div>
+      </div>
+    </div>
+    <p class="muted frag" style="margin-top:.5em">💡 Regla: si una etiqueta <b>envuelve</b> contenido, lleva cierre. Si es un elemento
+      "único" (imagen, salto, línea), <b>no</b>.</p>
+  </section>
+
+  <!-- 5 · Estructura -->
+  <section class="slide" data-title="Estructura del documento">
+    <div class="kick anim">Estructura</div>
+    <h2 class="anim">El esqueleto de un documento</h2>
+    <div class="grid g21" style="margin-top:.2em">
+      <div class="frag"><pre class="hcode"><code><span class="tg">&lt;!DOCTYPE html&gt;</span>
+<span class="tg">&lt;html <span class="at">lang</span>=<span class="st">"es"</span>&gt;</span>
+<span class="tg">&lt;head&gt;</span>
+  <span class="cm">&lt;!-- info que NO se ve --&gt;</span>
+  <span class="tg">&lt;meta <span class="at">charset</span>=<span class="st">"UTF-8"</span>&gt;</span>
+  <span class="tg">&lt;title&gt;</span>Mi Portafolio<span class="tg">&lt;/title&gt;</span>
+<span class="tg">&lt;/head&gt;</span>
+<span class="tg">&lt;body&gt;</span>
+  <span class="cm">&lt;!-- todo lo que SÍ se ve --&gt;</span>
+<span class="tg">&lt;/body&gt;</span>
+<span class="tg">&lt;/html&gt;</span></code></pre></div>
+      <div class="tree frag">
+        <div class="tnode">&lt;html&gt; <small class="muted">— toda la página</small>
+          <div class="tnode head in">&lt;head&gt; <small class="muted">— no se ve (config)</small></div>
+          <div class="tnode body in">&lt;body&gt; <small class="muted">— lo visible</small></div>
+        </div>
+        <p class="muted" style="margin-top:.6em">💡 En VS Code escribe <code>!</code> + <b>Tab</b> y sale solo.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5b · El DOM (árbol) -->
+  <section class="slide" data-title="El DOM (árbol)">
+    <div class="tag anim">🌳 EL DOM</div>
+    <h2 class="anim">El árbol de elementos (DOM)</h2>
+    <p class="lead anim">El navegador convierte tu HTML en un <b>árbol</b> de elementos: el <b>DOM</b>.
+       Cada elemento es un <b>nodo</b> con padres, hijos y hermanos.</p>
+    <div class="tree frag" style="margin-top:.3em">
+      <div class="tnode">&lt;html&gt;
+        <div class="tnode head in">&lt;head&gt; → &lt;meta&gt;, &lt;title&gt;</div>
+        <div class="tnode body in">&lt;body&gt;
+          <div class="tnode in">&lt;header&gt; → &lt;h1&gt;, &lt;nav&gt;</div>
+          <div class="tnode in">&lt;main&gt; → &lt;section&gt;…</div>
+        </div>
+      </div>
+    </div>
+    <p class="muted frag" style="margin-top:.3em">JavaScript "agarra" estos nodos por el DOM (lo veremos en la Clase 04).</p>
+  </section>
+
+  <!-- 5c · Jerarquía de elementos -->
+  <section class="slide" data-title="Jerarquía de elementos">
+    <div class="kick anim">Relaciones en el árbol</div>
+    <h2 class="anim">Padres, hijos y hermanos</h2>
+    <div class="grid g3" style="margin-top:.2em">
+      <div class="card k frag"><h3>Padre / hijo</h3><p><code>&lt;ul&gt;</code> es el <b>padre</b> de sus <code>&lt;li&gt;</code> (hijos).</p></div>
+      <div class="card k2 frag"><h3>Hermanos</h3><p>Los <code>&lt;li&gt;</code> entre sí son <b>hermanos</b> (mismo padre).</p></div>
+      <div class="card kok frag"><h3>Anidar bien</h3><p>Lo que abres <b>último</b>, ciérralo <b>primero</b>.</p></div>
+    </div>
+    <p class="lead frag" style="margin-top:.4em">Los <b>títulos tienen jerarquía</b>: un solo <code>&lt;h1&gt;</code>, luego <code>&lt;h2&gt;</code>,
+       <code>&lt;h3&gt;</code>… en orden. Importa para <b>SEO</b> y <b>accesibilidad</b>.</p>
+  </section>
+
+  <!-- 6 · Metadatos -->
+  <section class="slide" data-title="Metadatos (head)">
+    <div class="kick anim">Metadatos</div>
+    <h2 class="anim">El &lt;head&gt;: metadatos 🏷️</h2>
+    <p class="lead anim">Datos <b>sobre</b> la página que el navegador y Google leen (no se ven en pantalla).</p>
+    <div class="grid g2" style="margin-top:.5em">
+      <div class="card k frag"><h3><code>&lt;meta charset="UTF-8"&gt;</code></h3><p>Para que los acentos y la ñ se vean bien.</p></div>
+      <div class="card k frag"><h3><code>&lt;meta name="viewport"…&gt;</code></h3><p>Que se vea bien en celular (responsive).</p></div>
+      <div class="card k2 frag"><h3><code>&lt;title&gt;</code></h3><p>El texto de la pestaña del navegador.</p></div>
+      <div class="card k2 frag"><h3><code>&lt;meta name="description"&gt;</code></h3><p>Resumen para Google (SEO).</p></div>
+    </div>
+  </section>
+
+  <!-- 6b · Metadatos importantes -->
+  <section class="slide" data-title="Metadatos importantes">
+    <div class="kick anim">El head a fondo</div>
+    <h2 class="anim">Los metadatos que importan</h2>
+    <div class="frag"><pre class="hcode"><code><span class="tg">&lt;meta <span class="at">charset</span>=<span class="st">"UTF-8"</span>&gt;</span>                  <span class="cm">acentos y ñ</span>
+<span class="tg">&lt;meta <span class="at">name</span>=<span class="st">"viewport"</span> …&gt;</span>           <span class="cm">responsive (celular)</span>
+<span class="tg">&lt;meta <span class="at">name</span>=<span class="st">"description"</span> …&gt;</span>        <span class="cm">resumen para Google</span>
+<span class="tg">&lt;meta <span class="at">name</span>=<span class="st">"author"</span> …&gt;</span>             <span class="cm">autor</span>
+<span class="tg">&lt;meta <span class="at">name</span>=<span class="st">"theme-color"</span> …&gt;</span>        <span class="cm">color de la barra del navegador</span>
+<span class="tg">&lt;meta <span class="at">name</span>=<span class="st">"robots"</span> content=<span class="st">"index,follow"</span>&gt;</span> <span class="cm">indexar</span>
+<span class="tg">&lt;link <span class="at">rel</span>=<span class="st">"icon"</span> href=<span class="st">"favicon.ico"</span>&gt;</span> <span class="cm">iconito de la pestaña</span></code></pre></div>
+    <p class="muted frag" style="margin-top:.3em">💡 <code>keywords</code> ya casi no se usa (Google lo ignora).</p>
+  </section>
+
+  <!-- 6c · SEO / Open Graph -->
+  <section class="slide" data-title="SEO y Open Graph">
+    <div class="tag anim">🔎 SEO</div>
+    <h2 class="anim">Que Google y las redes te muestren bien</h2>
+    <div class="grid g2" style="margin-top:.2em">
+      <div class="card k frag"><h3>SEO básico</h3><p>Un <code>&lt;title&gt;</code> claro, <code>meta description</code>,
+        un solo <code>&lt;h1&gt;</code>, HTML <b>semántico</b> y <code>alt</code> en las imágenes.</p></div>
+      <div class="card k2 frag"><h3>Open Graph (redes)</h3><p>Cómo se ve al compartir el link en WhatsApp/redes:</p>
+        <pre class="hcode"><code><span class="tg">&lt;meta <span class="at">property</span>=<span class="st">"og:title"</span> …&gt;</span>
+<span class="tg">&lt;meta <span class="at">property</span>=<span class="st">"og:image"</span> …&gt;</span>
+<span class="tg">&lt;meta <span class="at">property</span>=<span class="st">"og:description"</span> …&gt;</span></code></pre></div>
+    </div>
+    <p class="muted frag" style="margin-top:.3em">También: <code>&lt;link rel="canonical"&gt;</code> (la URL "oficial") y las <b>Twitter Cards</b>.</p>
+  </section>
+
+  <!-- 7 · Atributos -->
+  <section class="slide" data-title="Atributos">
+    <div class="kick anim">Atributos (propiedades)</div>
+    <h2 class="anim">Atributos: info extra de una etiqueta</h2>
+    <p class="lead anim">Van en la apertura, como <code>nombre="valor"</code>.</p>
+    <div class="grid g3" style="margin-top:.5em">
+      <div class="card k frag"><h3>Comunes</h3><p><code>href</code> (enlace), <code>src</code> (fuente), <code>alt</code> (texto alterno de imagen).</p></div>
+      <div class="card k2 frag"><h3><code>class</code></h3><p>Etiqueta reutilizable: la comparten muchos elementos. Se usa para <b>estilos</b> (CSS).</p></div>
+      <div class="card kok frag"><h3><code>id</code></h3><p><b>Único</b> en toda la página. Sirve de ancla o para JavaScript.</p></div>
+    </div>
+    <div class="frag" style="margin-top:.4em"><pre class="hcode"><code><span class="tg">&lt;p <span class="at">class</span>=<span class="st">"destacado"</span> <span class="at">id</span>=<span class="st">"intro"</span>&gt;</span>Hola<span class="tg">&lt;/p&gt;</span></code></pre></div>
+  </section>
+
+  <!-- 7b · Atributos booleanos -->
+  <section class="slide" data-title="Atributos booleanos">
+    <div class="kick anim">Atributos especiales</div>
+    <h2 class="anim">Atributos booleanos (sí / no)</h2>
+    <p class="lead anim">Con solo <b>estar presentes</b> ya valen "sí" (verdadero). No llevan valor.</p>
+    <div class="frag" style="margin-top:.2em"><pre class="hcode"><code><span class="tg">&lt;input <span class="at">required</span>&gt;</span>                 <span class="cm">obligatorio</span>
+<span class="tg">&lt;button <span class="at">disabled</span>&gt;</span>               <span class="cm">deshabilitado</span>
+<span class="tg">&lt;input type="checkbox" <span class="at">checked</span>&gt;</span>  <span class="cm">marcado</span>
+<span class="tg">&lt;input <span class="at">readonly</span>&gt;</span>                 <span class="cm">solo lectura</span>
+<span class="tg">&lt;div <span class="at">hidden</span>&gt;</span>                     <span class="cm">oculto</span></code></pre></div>
+    <p class="muted frag" style="margin-top:.3em">Otros: <code>selected</code>, <code>autofocus</code>, <code>multiple</code>.</p>
+  </section>
+
+  <!-- 7c · Otros atributos -->
+  <section class="slide" data-title="Otros atributos">
+    <div class="kick anim">Atributos que suman</div>
+    <h2 class="anim">rel, role, aria y más</h2>
+    <div class="grid g2" style="margin-top:.2em">
+      <div class="card k frag"><ul>
+        <li><code>rel</code> — relación de un enlace: <code>noopener</code>, <code>noreferrer</code>, <code>nofollow</code>.</li>
+        <li><code>target</code> — dónde abrir: <code>_blank</code> (otra pestaña).</li>
+        <li><code>download</code> — descargar en vez de abrir.</li>
+        <li><code>title</code> — tooltip al pasar el mouse.</li></ul></div>
+      <div class="card k2 frag"><ul>
+        <li><code>role</code> — el "rol" para accesibilidad (ARIA).</li>
+        <li><code>aria-label</code> — nombre para lectores de pantalla.</li>
+        <li><code>alt</code> — texto alterno de imágenes.</li>
+        <li><code>lang</code>, <code>data-*</code> — idioma y datos propios.</li></ul></div>
+    </div>
+    <p class="muted frag" style="margin-top:.3em">Los <code>role</code> / <code>aria-*</code> ayudan a personas que usan <b>lectores de pantalla</b>.</p>
+  </section>
+
+  <!-- 8 · class vs id -->
+  <section class="slide" data-title="class vs id">
+    <div class="kick anim">Diferencia clave</div>
+    <h2 class="anim">class vs id 🎯</h2>
+    <div class="viz anim">
+      <div class="vp on" style="--c:var(--a)" data-cap="">
+        <div class="vhead"><div><div class="vt">.class</div><div class="vs">se puede repetir en muchos elementos</div></div>
+          <div class="vbadge">para estilos (CSS)</div></div>
+        <div class="vbody">Ej: todas las tarjetas con <code>class="card"</code> comparten el mismo estilo.</div>
+      </div>
+      <div class="vp dim" style="--c:var(--a2)" data-cap="">
+        <div class="vhead"><div><div class="vt">#id</div><div class="vs">único: solo un elemento lo tiene</div></div>
+          <div class="vbadge">anclas / JavaScript</div></div>
+        <div class="vbody">Ej: <code>id="contacto"</code> para saltar a esa sección con <code>href="#contacto"</code>.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9 · Comentarios -->
+  <section class="slide" data-title="Comentarios">
+    <div class="kick anim">Comentarios</div>
+    <h2 class="anim">Comentarios en HTML 💬</h2>
+    <p class="lead anim">Notas para ti (u otro dev) que <b>no se muestran</b> en la página.</p>
+    <div class="frag" style="margin-top:.5em"><pre class="hcode"><code><span class="cm">&lt;!-- Esto es un comentario: el navegador lo ignora --&gt;</span>
+<span class="tg">&lt;section&gt;</span> … <span class="tg">&lt;/section&gt;</span> <span class="cm">&lt;!-- fin de la sección --&gt;</span></code></pre></div>
+    <p class="muted frag" style="margin-top:.5em">Sirven para explicar partes del código o "apagar" algo temporalmente.</p>
+  </section>
+
+  <!-- 10 · Semántico -->
+  <section class="slide" data-title="¿Por qué semántico?">
+    <div class="tag anim">⭐ LO IMPORTANTE</div>
+    <h2 class="anim">¿Por qué HTML semántico?</h2>
+    <div class="viz anim">
+      <div class="vp dim" style="--c:var(--warn)" data-cap="">
+        <div class="vhead"><div><div class="vt">😵 "Sopa de divs"</div><div class="vs">todo con &lt;div&gt;, sin significado</div></div>
+          <div class="vbadge">difícil de entender</div></div>
+        <div class="vbody hcode"><span class="tg">&lt;div class="header"&gt;…&lt;div class="nav"&gt;…</span></div>
+      </div>
+      <div class="vp on" style="--c:var(--ok)" data-cap="">
+        <div class="vhead"><div><div class="vt">✅ Semántico</div><div class="vs">etiquetas que dicen qué son</div></div>
+          <div class="vbadge">claro · SEO · accesible</div></div>
+        <div class="vbody hcode"><span class="tg">&lt;header&gt; &lt;nav&gt; &lt;main&gt; &lt;section&gt; &lt;footer&gt;</span></div>
+      </div>
+    </div>
+    <p class="muted frag" style="margin-top:.5em">Beneficios: <b>Google</b> te entiende (SEO), los <b>lectores de pantalla</b>
+      ayudan a personas ciegas, y tu código se <b>lee solo</b>.</p>
+  </section>
+
+  <!-- 10b · Ejemplo divididitis vs semántico -->
+  <section class="slide" data-title="Ejemplo: div vs semántico">
+    <div class="tag anim">🧪 PRUÉBALO EN CLASE</div>
+    <h2 class="anim">El mismo CSS, dos resultados</h2>
+    <div class="grid g2" style="margin-top:.2em">
+      <div class="card kw frag"><h3>🍝 Divididitis</h3>
+        <pre class="hcode"><code><span class="tg">&lt;div&gt;</span>Mi Blog<span class="tg">&lt;/div&gt;</span>
+<span class="tg">&lt;div&gt;</span> … <span class="tg">&lt;/div&gt;</span></code></pre>
+        <p>El CSS selecciona <code>header</code>, <code>nav</code>… → <b>no aplica</b>. Se ve <b>plano</b>.</p></div>
+      <div class="card kok frag"><h3>✅ Semántico</h3>
+        <pre class="hcode"><code><span class="tg">&lt;header&gt;</span>Mi Blog<span class="tg">&lt;/header&gt;</span>
+<span class="tg">&lt;main&gt;&lt;article&gt;</span>…<span class="tg">&lt;/article&gt;&lt;/main&gt;</span></code></pre>
+        <p>Las <b>mismas</b> reglas <b>sí aplican</b>. Se ve <b>estilizado</b>. ✨</p></div>
+    </div>
+    <p class="lead frag" style="margin-top:.4em">👉 Con <b>solo cambiar las etiquetas</b> (¡mismo CSS!) cambia el <b>estilo</b> Y cómo lo
+       <b>interpreta</b> el navegador (landmarks para Google y lectores de pantalla).</p>
+    <p class="muted frag">Para copiar y probar: <code>codigo/ejemplo-semantico/</code> — abre <code>divititis.html</code> y <code>semantico.html</code>.</p>
+  </section>
+
+  <!-- 11 · Etiquetas semánticas -->
+  <section class="slide" data-title="Etiquetas semánticas">
+    <div class="kick anim">Vocabulario</div>
+    <h2 class="anim">Las etiquetas semánticas</h2>
+    <div class="grid g3" style="margin-top:.3em">
+      <div class="card k frag"><h3><code>&lt;header&gt;</code></h3><p>El encabezado</p></div>
+      <div class="card k frag"><h3><code>&lt;nav&gt;</code></h3><p>El menú</p></div>
+      <div class="card k frag"><h3><code>&lt;main&gt;</code></h3><p>El contenido principal</p></div>
+      <div class="card k2 frag"><h3><code>&lt;section&gt;</code></h3><p>Una sección</p></div>
+      <div class="card k2 frag"><h3><code>&lt;article&gt;</code></h3><p>Un contenido independiente</p></div>
+      <div class="card kok frag"><h3><code>&lt;footer&gt;</code></h3><p>El pie de página</p></div>
+    </div>
+  </section>
+
+  <!-- 11b · Semántico: casos de uso -->
+  <section class="slide" data-title="Semántico: casos de uso">
+    <div class="kick anim">Cada etiqueta, su trabajo</div>
+    <h2 class="anim">Semántico: cuándo usar cuál</h2>
+    <div class="grid g2" style="margin-top:.2em">
+      <div class="card k frag"><ul>
+        <li><code>&lt;header&gt;</code> — cabecera (de la página o de una sección).</li>
+        <li><code>&lt;nav&gt;</code> — un menú de navegación.</li>
+        <li><code>&lt;main&gt;</code> — el contenido principal (uno por página).</li>
+        <li><code>&lt;section&gt;</code> — un bloque temático con su título.</li></ul></div>
+      <div class="card k2 frag"><ul>
+        <li><code>&lt;article&gt;</code> — contenido <b>independiente</b> (un post, una tarjeta de repo).</li>
+        <li><code>&lt;aside&gt;</code> — contenido lateral/relacionado (barra, notas).</li>
+        <li><code>&lt;footer&gt;</code> — pie (de la página o de una sección).</li>
+        <li><code>&lt;figure&gt;/&lt;figcaption&gt;</code> — imagen con leyenda.</li></ul></div>
+    </div>
+    <p class="muted frag" style="margin-top:.3em">Otras útiles: <code>&lt;small&gt;</code> (letra pequeña/legal), <code>&lt;address&gt;</code> (contacto),
+      <code>&lt;time&gt;</code> (fechas), <code>&lt;mark&gt;</code> (resaltar).</p>
+  </section>
+
+  <!-- 12 · Multimedia -->
+  <section class="slide" data-title="Más etiquetas (multimedia)">
+    <div class="kick anim">Más etiquetas</div>
+    <h2 class="anim">Imágenes, video y más 🎬</h2>
+    <div class="grid g2" style="margin-top:.2em">
+      <div class="frag"><pre class="hcode"><code><span class="cm">&lt;!-- imagen (siempre con alt) --&gt;</span>
+<span class="tg">&lt;img <span class="at">src</span>=<span class="st">"foto.jpg"</span> <span class="at">alt</span>=<span class="st">"Mi foto"</span>&gt;</span>
+
+<span class="cm">&lt;!-- video con controles --&gt;</span>
+<span class="tg">&lt;video <span class="at">src</span>=<span class="st">"demo.mp4"</span> controls&gt;&lt;/video&gt;</span>
+
+<span class="cm">&lt;!-- audio --&gt;</span>
+<span class="tg">&lt;audio <span class="at">src</span>=<span class="st">"tema.mp3"</span> controls&gt;&lt;/audio&gt;</span></code></pre></div>
+      <div>
+        <div class="card k frag"><h3>🖼️ Multimedia</h3><p><code>img</code>, <code>video</code>, <code>audio</code>,
+          <code>figure</code> + <code>figcaption</code> (imagen con leyenda).</p></div>
+        <div class="card k2 frag" style="margin-top:.5em"><h3>🔤 Texto y enlaces</h3><p><code>a</code> (enlace),
+          <code>strong</code>/<code>em</code> (énfasis), <code>ul</code>/<code>ol</code>/<code>li</code> (listas),
+          <code>table</code> (tablas).</p></div>
+        <div class="card kw frag" style="margin-top:.5em"><p>⚠️ Sin internet, la imagen/video deben ser <b>archivos locales</b> en tu carpeta.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 12b · El enlace <a> y enlaces especiales -->
+  <section class="slide" data-title="El enlace &lt;a&gt;">
+    <div class="tag anim">🔗 EL ENLACE &lt;a&gt;</div>
+    <h2 class="anim">Anchor y enlaces especiales</h2>
+    <div class="frag" style="margin-top:.2em"><pre class="hcode"><code><span class="tg">&lt;a <span class="at">href</span>=<span class="st">"pagina.html"</span>&gt;</span>Ir<span class="tg">&lt;/a&gt;</span>            <span class="cm">otra página</span>
+<span class="tg">&lt;a <span class="at">href</span>=<span class="st">"#contacto"</span>&gt;</span>…<span class="tg">&lt;/a&gt;</span>              <span class="cm">salta a un id de ESTA página</span>
+<span class="tg">&lt;a <span class="at">href</span>=<span class="st">"mailto:hola@x.com"</span>&gt;</span>…          <span class="cm">abre el correo</span>
+<span class="tg">&lt;a <span class="at">href</span>=<span class="st">"tel:+57300..."</span>&gt;</span>…             <span class="cm">llamar (en el celular)</span>
+<span class="tg">&lt;a <span class="at">href</span>=<span class="st">"cv.pdf"</span> <span class="at">download</span>&gt;</span>…           <span class="cm">descargar</span></code></pre></div>
+    <div class="card kw frag" style="margin-top:.4em"><p>⚠️ Al abrir en otra pestaña, usa <b>siempre</b>:
+      <code>target="_blank" rel="noopener noreferrer"</code> — por <b>seguridad</b> y <b>privacidad</b>.</p></div>
+  </section>
+
+  <!-- 12c · En línea vs bloque -->
+  <section class="slide" data-title="En línea vs bloque">
+    <div class="tag anim">📐 FLUJO</div>
+    <h2 class="anim">Elementos de bloque vs en línea</h2>
+    <div class="grid g2" style="margin-top:.2em">
+      <div class="card k frag"><h3>Bloque (block)</h3><p>Ocupan <b>todo el ancho</b> y empiezan en línea nueva.</p>
+        <div class="chips"><span class="chip">div</span><span class="chip">p</span><span class="chip">section</span><span class="chip">h1</span><span class="chip">ul</span></div></div>
+      <div class="card k2 frag"><h3>En línea (inline)</h3><p>Ocupan <b>solo lo necesario</b>, van seguidos en la misma línea.</p>
+        <div class="chips"><span class="chip">span</span><span class="chip">a</span><span class="chip">strong</span><span class="chip">em</span><span class="chip">img</span></div></div>
+    </div>
+    <p class="muted frag" style="margin-top:.3em"><code>&lt;div&gt;</code> = caja genérica de <b>bloque</b>; <code>&lt;span&gt;</code> = caja genérica <b>en línea</b>. (Con CSS puedes cambiarlo.)</p>
+  </section>
+
+  <!-- 12d · Estilos por defecto y convenciones -->
+  <section class="slide" data-title="Estilos por defecto">
+    <div class="kick anim">Detalles importantes</div>
+    <h2 class="anim">Estilos por defecto y buenas costumbres</h2>
+    <div class="grid g3" style="margin-top:.2em">
+      <div class="card k frag"><h3>Estilos del navegador</h3><p>Ya trae estilos: <code>h1</code> grande y en negrita, listas con viñetas… El CSS los <b>sobrescribe</b>.</p></div>
+      <div class="card k2 frag"><h3>Minúsculas</h3><p>Etiquetas en <b>minúscula</b>: <code>&lt;section&gt;</code>, no <code>&lt;SECTION&gt;</code>.</p></div>
+      <div class="card kw frag"><h3>Evita deprecadas</h3><p><code>&lt;center&gt;</code>, <code>&lt;font&gt;</code> están obsoletas → eso se hace con <b>CSS</b>.</p></div>
+    </div>
+  </section>
+
+  <!-- 12e · Formularios: estructura -->
+  <section class="slide" data-title="Formularios">
+    <div class="tag anim">📝 FORMULARIOS</div>
+    <h2 class="anim">form, fieldset, label, input</h2>
+    <div class="frag" style="margin-top:.2em"><pre class="hcode"><code><span class="tg">&lt;form&gt;</span>
+  <span class="tg">&lt;fieldset&gt;</span>
+    <span class="tg">&lt;legend&gt;</span>Datos<span class="tg">&lt;/legend&gt;</span>
+    <span class="tg">&lt;label <span class="at">for</span>=<span class="st">"correo"</span>&gt;</span>Correo<span class="tg">&lt;/label&gt;</span>
+    <span class="tg">&lt;input <span class="at">id</span>=<span class="st">"correo"</span> <span class="at">type</span>=<span class="st">"email"</span>&gt;</span>
+  <span class="tg">&lt;/fieldset&gt;</span>
+<span class="tg">&lt;/form&gt;</span></code></pre></div>
+    <p class="muted frag" style="margin-top:.3em"><code>label</code> con <code>for</code>=<code>id</code> del input: al hacer clic en el texto se activa el campo (accesibilidad). <code>fieldset</code>+<code>legend</code> agrupan.</p>
+  </section>
+
+  <!-- 12f · Validaciones + datalist -->
+  <section class="slide" data-title="Validaciones">
+    <div class="kick anim">Formularios · validaciones</div>
+    <h2 class="anim">Validar sin JavaScript</h2>
+    <div class="grid g2" style="margin-top:.2em">
+      <div class="card k frag"><h3>Atributos que validan</h3><ul>
+        <li><code>required</code> — obligatorio</li>
+        <li><code>type="email"</code> — formato correo</li>
+        <li><code>minlength</code>, <code>maxlength</code></li>
+        <li><code>min</code>, <code>max</code> (números)</li>
+        <li><code>pattern="…"</code> — expresión regular</li></ul></div>
+      <div class="card k2 frag"><h3>datalist (sugerencias)</h3><pre class="hcode"><code><span class="tg">&lt;input <span class="at">list</span>=<span class="st">"tec"</span>&gt;</span>
+<span class="tg">&lt;datalist <span class="at">id</span>=<span class="st">"tec"</span>&gt;</span>
+  <span class="tg">&lt;option&gt;</span>HTML<span class="tg">&lt;/option&gt;</span>
+<span class="tg">&lt;/datalist&gt;</span></code></pre></div>
+    </div>
+    <p class="muted frag" style="margin-top:.3em">El navegador muestra el error solo, sin escribir JS.</p>
+  </section>
+
+  <!-- 12g · submit vs button -->
+  <section class="slide" data-title="Botones y submit">
+    <div class="kick anim">Enviar</div>
+    <h2 class="anim">input submit vs button</h2>
+    <div class="grid g3" style="margin-top:.2em">
+      <div class="card kok frag"><h3><code>&lt;button&gt;</code></h3><p>El moderno. Puede llevar HTML dentro (iconos). En un form, <code>type="submit"</code> por defecto.</p></div>
+      <div class="card k frag"><h3><code>&lt;input type="submit"&gt;</code></h3><p>El clásico. Solo texto, en el atributo <code>value</code>.</p></div>
+      <div class="card kw frag"><h3>⚠️ type</h3><p><code>&lt;button type="button"&gt;</code> si <b>NO</b> quieres que envíe el formulario.</p></div>
+    </div>
+  </section>
+
+  <!-- 12h · details y dialog -->
+  <section class="slide" data-title="details y dialog">
+    <div class="tag anim">✨ INTERACTIVO NATIVO</div>
+    <h2 class="anim">details (acordeón) y dialog (modal)</h2>
+    <div class="grid g2" style="margin-top:.2em">
+      <div class="card k frag"><h3><code>&lt;details&gt;</code></h3><pre class="hcode"><code><span class="tg">&lt;details&gt;</span>
+  <span class="tg">&lt;summary&gt;</span>Ver más<span class="tg">&lt;/summary&gt;</span>
+  Contenido oculto…
+<span class="tg">&lt;/details&gt;</span></code></pre><p>Acordeón que abre/cierra <b>sin JS</b>.</p></div>
+      <div class="card k2 frag"><h3><code>&lt;dialog&gt;</code></h3><p>Un <b>modal</b> nativo. La ventana ya es HTML; se abre con <code>.showModal()</code> desde JS.</p></div>
+    </div>
+  </section>
+
+  <!-- 12i · iframes y lazy -->
+  <section class="slide" data-title="iframes y lazy">
+    <div class="kick anim">Multimedia +</div>
+    <h2 class="anim">iframes y carga diferida</h2>
+    <div class="grid g2" style="margin-top:.2em">
+      <div class="card k frag"><h3><code>&lt;iframe&gt;</code></h3><p>Incrusta otra página dentro (un mapa, un video de YouTube).</p>
+        <pre class="hcode"><code><span class="tg">&lt;iframe <span class="at">src</span>=<span class="st">"…"</span>&gt;&lt;/iframe&gt;</span></code></pre></div>
+      <div class="card k2 frag"><h3><code>loading="lazy"</code></h3><p>Carga la imagen/iframe <b>solo al acercarse</b> → página más rápida.</p>
+        <pre class="hcode"><code><span class="tg">&lt;img <span class="at">loading</span>=<span class="st">"lazy"</span> …&gt;</span></code></pre></div>
+    </div>
+  </section>
+
+  <!-- 12j · Atributos de listas -->
+  <section class="slide" data-title="Listas (ol, ul)">
+    <div class="kick anim">Listas</div>
+    <h2 class="anim">ol y ul a fondo</h2>
+    <div class="grid g2" style="margin-top:.2em">
+      <div class="card k frag"><h3><code>&lt;ul&gt;</code> — sin orden</h3><p>Con viñetas. Para cosas donde el <b>orden no importa</b>.</p></div>
+      <div class="card k2 frag"><h3><code>&lt;ol&gt;</code> — ordenada</h3><p>Numerada. Atributos: <code>type="A"</code>, <code>start="3"</code>, <code>reversed</code>.</p></div>
+    </div>
+    <p class="muted frag" style="margin-top:.3em">Dentro de ambas: <code>&lt;li&gt;</code> (list item).</p>
+  </section>
+
+  <!-- 13 · Documentación -->
+  <section class="slide" data-title="Documentación">
+    <div class="tag anim">📚 DOCUMENTACIÓN</div>
+    <h2 class="anim">Dónde buscar (la buena)</h2>
+    <p class="lead anim">Ningún dev se sabe todo de memoria. Se <b>consulta</b>. Referencias confiables:</p>
+    <div class="grid g3" style="margin-top:.5em">
+      <div class="card k frag"><h3>MDN ⭐</h3><p><a class="link">developer.mozilla.org/es</a></p>
+        <p>La referencia oficial. Busca "MDN &lt;etiqueta&gt;".</p></div>
+      <div class="card k2 frag"><h3>lenguajehtml.com</h3><p><a class="link">lenguajehtml.com</a></p><p>Curso de HTML en español (Manz), claro y actualizado.</p></div>
+      <div class="card kok frag"><h3>web.dev / Can I use</h3><p><a class="link">web.dev/learn/html</a> · <a class="link">caniuse.com</a></p><p>Curso de Google + soporte en navegadores.</p></div>
+    </div>
+    <p class="muted frag" style="margin-top:.4em">⚠️ Evita <b>W3Schools</b> (a veces desactualizado). 💡 Y tu <b>asistente de IA</b>: "explícame &lt;figure&gt; con un ejemplo".</p>
+  </section>
+
+  <!-- 14 · Práctica -->
+  <section class="slide" data-title="Práctica">
+    <div class="tag anim">✍️ PRÁCTICA</div>
+    <h2 class="anim">Portafolio v1</h2>
+    <div class="grid g2" style="margin-top:.3em">
+      <div class="card k frag"><p>① Estructura con <code>header</code> · <code>nav</code> · <code>main</code> ·
+        <code>section</code> · <code>footer</code>.</p></div>
+      <div class="card k frag"><p>② Agrega <b>tu foto</b> (<code>img</code>), enlaces y un formulario de contacto.</p></div>
+      <div class="card k2 frag"><p>③ Usa <code>class</code> e <code>id</code> en tus secciones.</p></div>
+      <div class="card kw frag"><p>⚠️ Regla de hoy: <b>¡sin CSS!</b> Solo estructura y significado.</p></div>
+    </div>
+    <p class="muted frag" style="margin-top:.5em">Cierra guardando: <code>git add . &amp;&amp; git commit -m "Portafolio v1: HTML"</code></p>
+  </section>
+
+  <!-- 15 · Cierre -->
+  <section class="slide center" data-title="Cierre">
+    <h1 class="anim">¿Preguntas? 🙌</h1>
+    <p class="lead muted anim" style="margin-top:.5em">Siguiente: <span class="a">Clase 03 — CSS</span> (¡a ponerlo bonito!)</p>
+    <p class="muted anim" style="margin-top:1.1em">Pulsa <kbd style="color:var(--a)">O</kbd> para ver todas las diapositivas.</p>
+  </section>
+
+</div>
+
+<div class="grip" id="grip"></div>
+<div class="bar" id="bar"></div>
+<div class="hud"><span id="cur">1</span> / <span id="tot">1</span></div>
+<div class="hint"><kbd>←</kbd> <kbd>→</kbd> avanzar · <kbd>O</kbd> rejilla · clic para seguir</div>
+
+<script>
+(function(){
+  const deck=document.getElementById('deck');
+  const slides=[...deck.querySelectorAll('.slide')];
+  const tot=slides.length;let i=0,f=0;
+  document.getElementById('tot').textContent=tot;
+  const frags=slides.map(s=>[...s.querySelectorAll('.frag')]);
+  const dotsWrap=document.getElementById('dots');
+  slides.forEach((s,k)=>{const b=document.createElement('button');b.className='dot';
+    b.title=s.dataset.title||('Slide '+(k+1));b.onclick=()=>goto(k);dotsWrap.appendChild(b);});
+  const dots=[...dotsWrap.children];
+  function render(){
+    slides.forEach((s,k)=>s.classList.toggle('active',k===i));
+    frags[i].forEach((el,k)=>el.classList.toggle('show',k<f));
+    dots.forEach((d,k)=>{d.classList.toggle('on',k===i);d.classList.toggle('seen',k<i);});
+    document.getElementById('cur').textContent=i+1;
+    const prog=frags[i].length?f/frags[i].length:1;
+    document.getElementById('bar').style.width=((i+prog)/tot*100)+'%';
+  }
+  function goto(n){i=Math.max(0,Math.min(tot-1,n));f=frags[i].length;render();}
+  function next(){if(f<frags[i].length){f++;render();return;}if(i<tot-1){i++;f=0;render();}}
+  function prev(){if(f>0){f--;render();return;}if(i>0){i--;f=frags[i].length;render();}}
+  const grip=document.getElementById('grip');
+  slides.forEach((s,k)=>{const m=document.createElement('div');m.className='mini';
+    m.innerHTML='<span class="n">'+(k+1)+'</span><h4>'+(s.dataset.title||'')+'</h4>';
+    m.onclick=()=>{goto(k);grip.classList.remove('on');};grip.appendChild(m);});
+  deck.addEventListener('click',e=>{
+    const vp=e.target.closest('.vp'); if(!vp)return;
+    const root=vp.closest('.slide');
+    root.querySelectorAll('.vp').forEach(x=>{x.classList.toggle('on',x===vp);x.classList.toggle('dim',x!==vp);});
+    e.stopPropagation();
+  });
+  document.addEventListener('keydown',e=>{
+    if(e.key==='o'||e.key==='O'){grip.classList.toggle('on');return;}
+    if(grip.classList.contains('on')){if(e.key==='Escape')grip.classList.remove('on');return;}
+    if(['ArrowRight',' ','PageDown','Enter'].includes(e.key)){e.preventDefault();next();}
+    else if(['ArrowLeft','PageUp','Backspace'].includes(e.key)){e.preventDefault();prev();}
+    else if(e.key==='Home')goto(0);else if(e.key==='End')goto(tot-1);
+  });
+  document.addEventListener('click',e=>{
+    if(e.target.closest('.vp')||e.target.closest('.grip')||e.target.closest('.dot'))return;
+    if(e.clientX<innerWidth*0.22)prev();else next();
+  });
+  render();
+})();
+</script>
+</body>
+</html>

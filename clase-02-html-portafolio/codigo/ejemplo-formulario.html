@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Formularios y elementos interactivos</title>
+  <!-- Estilos mínimos para que se vea decente (lo importante es el HTML) -->
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 640px; margin: 2rem auto; padding: 0 1rem; color: #1f2937; }
+    fieldset { border: 1px solid #cbd5e1; border-radius: 10px; margin-bottom: 1rem; }
+    legend { font-weight: 700; color: #2563eb; padding: 0 .4rem; }
+    label { display: block; margin: .6rem 0 .2rem; font-weight: 600; }
+    input, select, textarea { width: 100%; padding: .5rem; border: 1px solid #cbd5e1; border-radius: 8px; }
+    button { padding: .6rem 1rem; border: none; border-radius: 8px; background: #2563eb; color: #fff; font-weight: 700; cursor: pointer; }
+    details { background: #f1f5f9; border-radius: 8px; padding: .8rem 1rem; margin: 1rem 0; }
+    summary { cursor: pointer; font-weight: 600; }
+    dialog { border: none; border-radius: 12px; padding: 1.5rem; box-shadow: 0 20px 50px rgba(0,0,0,.25); }
+  </style>
+</head>
+<body>
+
+  <h1>Ejemplo: formularios e interactivos</h1>
+
+  <!-- ===== FORMULARIO con validaciones (¡sin JavaScript!) ===== -->
+  <form>
+    <fieldset>
+      <legend>Datos personales</legend>
+
+      <!-- label con for="id" → al hacer clic en el texto se enfoca el input -->
+      <label for="nombre">Nombre</label>
+      <input id="nombre" name="nombre" type="text" required minlength="3" placeholder="Mínimo 3 letras">
+
+      <label for="correo">Correo</label>
+      <input id="correo" name="correo" type="email" required placeholder="tucorreo@ejemplo.com">
+
+      <label for="edad">Edad</label>
+      <input id="edad" name="edad" type="number" min="14" max="99">
+
+      <label for="tel">Teléfono</label>
+      <!-- pattern: exactamente 10 dígitos -->
+      <input id="tel" name="tel" type="tel" pattern="[0-9]{10}" placeholder="3001234567">
+    </fieldset>
+
+    <fieldset>
+      <legend>Tecnología favorita</legend>
+      <label for="tec">Escribe o elige una</label>
+      <!-- datalist: sugerencias mientras escribes -->
+      <input id="tec" name="tec" list="tecnologias" placeholder="Empieza a escribir…">
+      <datalist id="tecnologias">
+        <option value="HTML"></option>
+        <option value="CSS"></option>
+        <option value="JavaScript"></option>
+        <option value="Python"></option>
+      </datalist>
+    </fieldset>
+
+    <!-- El botón envía el formulario; el navegador valida solo -->
+    <button type="submit">Enviar</button>
+  </form>
+
+  <!-- ===== DETAILS: acordeón nativo (abre/cierra sin JS) ===== -->
+  <details>
+    <summary>¿Cómo se validan estos campos?</summary>
+    <p>El navegador usa los atributos <code>required</code>, <code>type</code>, <code>minlength</code>,
+       <code>min</code>/<code>max</code> y <code>pattern</code>. Si algo está mal, muestra el error solo.</p>
+  </details>
+
+  <!-- ===== DIALOG: modal nativo. Se abre con .showModal() ===== -->
+  <button type="button" onclick="document.querySelector('#modal').showModal()">Abrir modal</button>
+
+  <dialog id="modal">
+    <h2>¡Hola! 👋</h2>
+    <p>Esto es un <code>&lt;dialog&gt;</code>: un modal <strong>nativo</strong> de HTML.</p>
+    <button type="button" onclick="document.querySelector('#modal').close()">Cerrar</button>
+  </dialog>
+
+</body>
+</html>

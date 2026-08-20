@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ejemplo: CSS Grid</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: system-ui, sans-serif; background: #eef2f9; color: #1f2937; padding: 1rem; }
+    h2 { margin: 1.5rem 0 .6rem; }
+
+    /* ============ 1) LAYOUT con grid-template-areas ============ */
+    .layout {
+      display: grid;
+      grid-template-columns: 200px 1fr;          /* 2 columnas */
+      grid-template-areas:
+        "header header"
+        "aside  main"
+        "footer footer";
+      gap: .8rem;
+      min-height: 320px;
+    }
+    .layout > * { border-radius: 10px; padding: 1rem; color: #fff; }
+    .cab   { grid-area: header; background: #2563eb; }
+    .lado  { grid-area: aside;  background: #7c3aed; }
+    .princ { grid-area: main;   background: #0ea5e9; }
+    .pie   { grid-area: footer; background: #334155; }
+
+    /* En celular, todo en una columna */
+    @media (max-width: 560px) {
+      .layout {
+        grid-template-columns: 1fr;
+        grid-template-areas: "header" "main" "aside" "footer";
+      }
+    }
+
+    /* ============ 2) GALERÍA responsiva con auto-fit ============ */
+    .galeria {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); /* la línea mágica */
+      gap: .8rem;
+    }
+    .galeria div {
+      height: 100px; border-radius: 10px;
+      background: linear-gradient(135deg, #2563eb, #7c3aed);
+      display: grid; place-items: center; color: #fff; font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>1) Layout con <code>grid-template-areas</code></h2>
+  <div class="layout">
+    <div class="cab">header</div>
+    <div class="lado">aside</div>
+    <div class="princ">main</div>
+    <div class="pie">footer</div>
+  </div>
+
+  <h2>2) Galería responsiva con <code>auto-fit</code> (cambia el ancho de la ventana)</h2>
+  <div class="galeria">
+    <div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div>
+  </div>
+
+</body>
+</html>
