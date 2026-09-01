@@ -98,7 +98,8 @@ pre code{background:none;padding:0;font-size:clamp(.86rem,1.5vw,1.15rem);line-he
 <div class="top"><div class="brand">Curso <b>ADSO</b> · SENA · Clase 04</div><div class="dots" id="dots"></div></div>
 <div class="deck" id="deck">
 
-  <!-- 1 -->
+  <!-- ===================== BLOQUE A · Introducción ===================== -->
+
   <section class="slide center" data-title="Portada">
     <div class="kick anim">Clase 04 · Frontend · guiada</div>
     <h1 class="anim">JavaScript</h1>
@@ -108,7 +109,6 @@ pre code{background:none;padding:0;font-size:clamp(.86rem,1.5vw,1.15rem);line-he
       <span class="chip">eventos</span><span class="chip">buenas prácticas</span></div>
   </section>
 
-  <!-- 2 · El trío -->
   <section class="slide" data-title="El trío de la web">
     <div class="kick anim">El trío de la web</div>
     <h2 class="anim">HTML + CSS + JavaScript</h2>
@@ -121,7 +121,6 @@ pre code{background:none;padding:0;font-size:clamp(.86rem,1.5vw,1.15rem);line-he
       formularios que validan, cosas que cambian sin recargar.</p>
   </section>
 
-  <!-- 3 · Conectar -->
   <section class="slide" data-title="Cómo se conecta JS">
     <div class="kick anim">Conectar</div>
     <h2 class="anim">Cómo se conecta JS al HTML</h2>
@@ -133,7 +132,6 @@ pre code{background:none;padding:0;font-size:clamp(.86rem,1.5vw,1.15rem);line-he
     <p class="muted frag" style="margin-top:.4em">💡 Mismo principio que el CSS: <b>en un archivo aparte</b>, no mezclado en el HTML.</p>
   </section>
 
-  <!-- 3b · 3 formas de incluir JS -->
   <section class="slide" data-title="3 formas de incluir JS">
     <div class="tag anim">📌 3 FORMAS</div>
     <h2 class="anim">Tres maneras de incluir JavaScript</h2>
@@ -156,7 +154,18 @@ pre code{background:none;padding:0;font-size:clamp(.86rem,1.5vw,1.15rem);line-he
     <p class="muted frag" style="margin-top:.4em">Con <code>type="module"</code> el externo además permite <code>import</code>/<code>export</code> (lo veremos en Nivel PRO).</p>
   </section>
 
-  <!-- 4 · Variables -->
+  <section class="slide" data-title="La consola (F12)">
+    <div class="kick anim">Depurar</div>
+    <h2 class="anim">La consola: tu mejor amiga 🔍</h2>
+    <p class="lead anim">Presiona <code>F12</code> → pestaña <b>Console</b>. Ahí ves errores y mensajes.</p>
+    <div class="frag" style="margin-top:.3em"><pre><code>console.<span class="fn">log</span>(<span class="st">"Llegué hasta aquí"</span>);   <span class="cm">// para ver qué pasa</span>
+console.<span class="fn">log</span>(nombre);                <span class="cm">// ver el valor de una variable</span></code></pre></div>
+    <p class="muted frag" style="margin-top:.4em">Si algo "no funciona", <b>abre la consola</b>: casi siempre el error está ahí escrito.</p>
+  </section>
+
+
+  <!-- ===================== BLOQUE B · Fundamentos del lenguaje ===================== -->
+
   <section class="slide" data-title="Variables y tipos">
     <div class="kick anim">Guardar datos</div>
     <h2 class="anim">Variables y tipos</h2>
@@ -172,7 +181,52 @@ pre code{background:none;padding:0;font-size:clamp(.86rem,1.5vw,1.15rem);line-he
     </div>
   </section>
 
-  <!-- 5 · Condicionales -->
+  <section class="slide" data-title="Objetos (diccionarios)">
+    <div class="tag anim">🗂️ OBJETOS</div>
+    <h2 class="anim">Objetos: diccionarios de datos</h2>
+    <p class="anim muted">Un <b>objeto</b> guarda varios datos con <b>etiqueta</b> (pares <code>clave: valor</code>), como una <b>ficha</b> o un <b>formulario</b>. Tu <code>datos.json</code> es exactamente esto.</p>
+    <div class="grid g21" style="margin-top:.2em">
+      <div class="frag"><pre><code><span class="kw">const</span> persona <span class="op">=</span> {
+  nombre: <span class="st">"Ana"</span>,
+  edad: <span class="nm">20</span>,
+  <span class="fn">saludar</span>() { <span class="kw">return</span> <span class="st">`Hola, soy ${</span>this.nombre<span class="st">}`</span>; }
+};
+
+persona.nombre;      <span class="cm">// "Ana"  (con punto)</span>
+persona[<span class="st">"edad"</span>];     <span class="cm">// 20     (con corchetes)</span></code></pre></div>
+      <div>
+        <div class="card k frag"><h3>Array vs Objeto</h3><p><b>Array</b> <code>[]</code> = lista ordenada. <b>Objeto</b> <code>{}</code> = datos con nombre.</p></div>
+        <div class="card k2 frag" style="margin-top:.5em"><h3>Acceso</h3><p><code>.clave</code> o <code>["clave"]</code>.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-title="Funciones">
+    <div class="tag anim">⚙️ LO MÁS IMPORTANTE</div>
+    <h2 class="anim">Funciones: bloques reutilizables</h2>
+    <div class="anat anim">
+      <span class="kw mark" data-l="palabra clave">function</span>
+      <span class="fn mark" data-l="nombre"> saludar</span><span class="op">(</span><span class="op mark" data-l="parámetro">nombre</span><span class="op">) {</span>
+      <span class="kw"> return</span> <span class="st">"Hola "</span> <span class="op">+</span> nombre<span class="op">;</span> <span class="op">}</span>
+    </div>
+    <p class="lead frag" style="margin-top:1.4em">Una función es una <b>receta</b> con nombre: la escribes una vez y la
+      <span class="a">reutilizas</span> cuantas veces quieras. <b>Evita repetir código.</b></p>
+  </section>
+
+  <section class="slide" data-title="Funciones flecha">
+    <div class="tag anim">🏹 ARROW</div>
+    <h2 class="anim">Funciones flecha (=&gt;)</h2>
+    <div class="frag" style="margin-top:.2em"><pre><code><span class="cm">// función de siempre</span>
+<span class="kw">function</span> <span class="fn">sumar</span>(a, b) { <span class="kw">return</span> a <span class="op">+</span> b; }
+
+<span class="cm">// función flecha: lo mismo, más corto</span>
+<span class="kw">const</span> sumar <span class="op">=</span> (a, b) <span class="op">=&gt;</span> a <span class="op">+</span> b;   <span class="cm">// una línea → return implícito</span>
+
+<span class="cm">// un solo parámetro: sin paréntesis</span>
+<span class="kw">const</span> doble <span class="op">=</span> n <span class="op">=&gt;</span> n <span class="op">*</span> <span class="nm">2</span>;</code></pre></div>
+    <p class="muted frag" style="margin-top:.4em">Son las que usas en <code>addEventListener("click", () =&gt; …)</code> y en <code>.map()</code>. Además, <code>this</code> se comporta de forma predecible.</p>
+  </section>
+
   <section class="slide" data-title="Decisiones (if)">
     <div class="kick anim">Tomar decisiones</div>
     <h2 class="anim">Condicionales: if / else</h2>
@@ -185,7 +239,33 @@ pre code{background:none;padding:0;font-size:clamp(.86rem,1.5vw,1.15rem);line-he
       <code>&gt;</code>, <code>&lt;</code>. <b>Ojo:</b> JS distingue mayúsculas.</p>
   </section>
 
-  <!-- 5b · Evitar if anidados (negación / guardas) -->
+  <section class="slide" data-title="&& || ?: (operadores)">
+    <div class="tag anim">🔀 DECISIONES CORTAS</div>
+    <h2 class="anim">&amp;&amp; · || · ?: (el if corto)</h2>
+    <div class="frag" style="margin-top:.2em"><pre><code><span class="kw">const</span> esMayor <span class="op">=</span> edad <span class="op">&gt;=</span> <span class="nm">18</span>;
+
+<span class="kw">const</span> entra  <span class="op">=</span> tieneBoleto <span class="op">&amp;&amp;</span> esMayor;      <span class="cm">// Y: los DOS verdaderos</span>
+<span class="kw">const</span> nombre <span class="op">=</span> apodo <span class="op">||</span> <span class="st">"invitado"</span>;         <span class="cm">// O: el primero que "sirva"</span>
+<span class="kw">const</span> texto  <span class="op">=</span> esMayor <span class="op">?</span> <span class="st">"Adulto"</span> <span class="op">:</span> <span class="st">"Menor"</span>;  <span class="cm">// ternario = if/else corto</span></code></pre></div>
+    <div class="grid g3 frag" style="margin-top:.5em">
+      <div class="card k"><h3><code>&amp;&amp;</code> Y</h3><p>Verdadero si <b>ambos</b> lo son.</p></div>
+      <div class="card k2"><h3><code>||</code> O</h3><p>El primero que no sea "vacío".</p></div>
+      <div class="card kok"><h3><code>? :</code></h3><p><code>condición ? sí : no</code></p></div>
+    </div>
+  </section>
+
+  <section class="slide" data-title="?? y ?. (seguros)">
+    <div class="tag anim">🛡️ A PRUEBA DE FALLOS</div>
+    <h2 class="anim">?? (nullish) y ?. (opcional)</h2>
+    <div class="frag" style="margin-top:.2em"><pre><code><span class="cm">// ?? usa la derecha SOLO si la izquierda es null o undefined</span>
+<span class="kw">const</span> puntos <span class="op">=</span> usuario.puntos <span class="op">??</span> <span class="nm">0</span>;   <span class="cm">// si puntos es 0, RESPETA el 0</span>
+
+<span class="cm">// ?. no explota si algo intermedio no existe</span>
+<span class="kw">const</span> ciudad <span class="op">=</span> usuario.direccion<span class="op">?.</span>ciudad; <span class="cm">// undefined, no error 💥</span></code></pre></div>
+    <div class="card kw frag" style="margin-top:.5em"><h3>⚠️ <code>??</code> vs <code>||</code></h3>
+      <p><code>||</code> descarta <code>0</code>, <code>""</code> y <code>false</code> (los toma como "vacío"). <code>??</code> solo descarta <code>null</code>/<code>undefined</code>. Para números y textos, <code>??</code> es más seguro.</p></div>
+  </section>
+
   <section class="slide" data-title="Evita los if anidados">
     <div class="tag anim">🧹 BUENA PRÁCTICA</div>
     <h2 class="anim">Negación temprana: adiós a los if anidados</h2>
@@ -213,7 +293,6 @@ pre code{background:none;padding:0;font-size:clamp(.86rem,1.5vw,1.15rem);line-he
     <p class="muted frag" style="margin-top:.4em">Descarta primero lo malo con <code>!</code> (negación) y <code>return</code>. Lo importante queda <b>al final, sin anidar</b>. Es justo lo que hace <code>Contacto.js</code>: <code>if (error) return;</code></p>
   </section>
 
-  <!-- 6 · Bucles y arrays -->
   <section class="slide" data-title="Bucles y arrays">
     <div class="kick anim">Repetir · listas</div>
     <h2 class="anim">Bucles y arreglos</h2>
@@ -226,20 +305,41 @@ pre code{background:none;padding:0;font-size:clamp(.86rem,1.5vw,1.15rem);line-he
     <p class="muted frag" style="margin-top:.4em">Un <b>array</b> guarda varias cosas; un <b>bucle</b> las recorre una por una.</p>
   </section>
 
-  <!-- 7 · Funciones (anatomía) -->
-  <section class="slide" data-title="Funciones">
-    <div class="tag anim">⚙️ LO MÁS IMPORTANTE</div>
-    <h2 class="anim">Funciones: bloques reutilizables</h2>
-    <div class="anat anim">
-      <span class="kw mark" data-l="palabra clave">function</span>
-      <span class="fn mark" data-l="nombre"> saludar</span><span class="op">(</span><span class="op mark" data-l="parámetro">nombre</span><span class="op">) {</span>
-      <span class="kw"> return</span> <span class="st">"Hola "</span> <span class="op">+</span> nombre<span class="op">;</span> <span class="op">}</span>
+  <section class="slide" data-title="Desestructuración">
+    <div class="tag anim">📦 DESEMPACAR</div>
+    <h2 class="anim">Desestructuración</h2>
+    <p class="anim muted">Saca campos de un objeto (o de un array) a variables, de un solo golpe. Como <b>desempacar una maleta</b> y poner cada cosa en su sitio, ya etiquetada.</p>
+    <div class="grid g2" style="margin-top:.2em">
+      <div class="card k frag"><h3>De objetos</h3><pre><code><span class="kw">const</span> persona <span class="op">=</span> { nombre: <span class="st">"Ana"</span>, edad: <span class="nm">20</span> };
+<span class="kw">const</span> { nombre, edad } <span class="op">=</span> persona;
+<span class="cm">// nombre = "Ana", edad = 20</span></code></pre></div>
+      <div class="card k2 frag"><h3>De arrays (por posición)</h3><pre><code><span class="kw">const</span> colores <span class="op">=</span> [<span class="st">"rojo"</span>, <span class="st">"verde"</span>];
+<span class="kw">const</span> [primero, segundo] <span class="op">=</span> colores;
+<span class="cm">// primero = "rojo"</span></code></pre></div>
     </div>
-    <p class="lead frag" style="margin-top:1.4em">Una función es una <b>receta</b> con nombre: la escribes una vez y la
-      <span class="a">reutilizas</span> cuantas veces quieras. <b>Evita repetir código.</b></p>
+    <p class="muted frag" style="margin-top:.4em">Ya la usaste: <code>const { default: confetti } = await import(…)</code> en tu portafolio.</p>
   </section>
 
-  <!-- 8 · El DOM -->
+  <section class="slide" data-title="Spread / rest (...)">
+    <div class="tag anim">✨ EL OPERADOR ...</div>
+    <h2 class="anim">Spread y rest: los tres puntos (...)</h2>
+    <div class="grid g2" style="margin-top:.2em">
+      <div class="card kok frag"><h3>Spread: "esparce"</h3><pre><code><span class="kw">const</span> base <span class="op">=</span> [<span class="st">"html"</span>, <span class="st">"css"</span>];
+<span class="kw">const</span> skills <span class="op">=</span> [<span class="op">...</span>base, <span class="st">"js"</span>];   <span class="cm">// copia + agrega</span>
+
+<span class="kw">const</span> copia <span class="op">=</span> { <span class="op">...</span>persona, edad: <span class="nm">21</span> }; <span class="cm">// copia y cambia</span></code></pre></div>
+      <div class="card k frag"><h3>Rest: "junta"</h3><pre><code><span class="cm">// junta varios argumentos en un array</span>
+<span class="kw">function</span> <span class="fn">sumar</span>(<span class="op">...</span>numeros) {
+  <span class="kw">return</span> numeros.<span class="fn">reduce</span>((a, b) <span class="op">=&gt;</span> a <span class="op">+</span> b, <span class="nm">0</span>);
+}
+<span class="fn">sumar</span>(<span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">3</span>); <span class="cm">// 6</span></code></pre></div>
+    </div>
+    <p class="muted frag" style="margin-top:.4em">Sirve para <b>copiar/combinar sin dañar</b> el original. Lo usas en <code>Contacto.js</code>: <code>{ access_key, ...datos }</code>.</p>
+  </section>
+
+
+  <!-- ===================== BLOQUE C · Interactividad (DOM y eventos) ===================== -->
+
   <section class="slide" data-title="El DOM">
     <div class="kick anim">JS toca el HTML</div>
     <h2 class="anim">El DOM: agarrar elementos</h2>
@@ -250,7 +350,6 @@ titulo.textContent <span class="op">=</span> <span class="st">"¡Cambiado desde 
     <p class="muted frag" style="margin-top:.4em">Puedes cambiar texto, estilos o clases de cualquier elemento.</p>
   </section>
 
-  <!-- 9 · Eventos -->
   <section class="slide" data-title="Eventos">
     <div class="tag anim">🖱️ INTERACCIÓN</div>
     <h2 class="anim">Eventos: reaccionar al usuario</h2>
@@ -263,7 +362,57 @@ boton.<span class="fn">addEventListener</span>(<span class="st">"click"</span>, 
     <p class="muted frag" style="margin-top:.4em"><code>addEventListener</code> = "escucha" un evento (click, submit, teclado…) y responde.</p>
   </section>
 
-  <!-- 10 · Espagueti vs limpio -->
+  <section class="slide" data-title="Práctica: la consola">
+    <div class="tag anim">🖐️ MANOS A LA OBRA</div>
+    <h2 class="anim">La consola es un patio de juegos</h2>
+    <p class="lead anim">La consola no solo muestra errores: es una <b>línea de comandos de JavaScript</b>.
+      Escribes una línea, <kbd style="background:#0d1730;border:1px solid var(--line);border-radius:5px;padding:.05em .4em;color:var(--a)">Enter</kbd>, y te responde al instante.</p>
+    <div class="grid g3 anim" style="margin-top:.4em">
+      <div class="card k"><h3>1️⃣ Abre</h3><p><code>F12</code> → pestaña <b>Console</b>.</p></div>
+      <div class="card k2"><h3>2️⃣ Escribe</h3><p>Cualquier JS, en <b>cualquier</b> página web.</p></div>
+      <div class="card kok"><h3>3️⃣ Observa</h3><p>Funciona <b>en vivo</b>, sin recargar.</p></div>
+    </div>
+    <p class="muted frag" style="margin-top:.5em">Ábrela en <b>tu portafolio</b> (o en cualquier web) y vamos a tocarla juntos. 👇</p>
+  </section>
+
+  <section class="slide" data-title="Consola: seleccionar y modificar">
+    <div class="tag anim">⌨️ ESCRÍBELO TÚ</div>
+    <h2 class="anim">Selecciona y modifica en vivo</h2>
+    <p class="anim muted">Escribe estas líneas <b>una por una</b> en la consola y pulsa Enter tras cada una:</p>
+    <div class="frag" style="margin-top:.3em"><pre><code><span class="cm">// 1) selecciona un elemento (el mismo selector que en CSS)</span>
+document.<span class="fn">querySelector</span>(<span class="st">"h1"</span>);
+
+<span class="cm">// 2) cámbiale el texto</span>
+document.<span class="fn">querySelector</span>(<span class="st">"h1"</span>).textContent <span class="op">=</span> <span class="st">"¡Lo cambié con JS!"</span>;
+
+<span class="cm">// 3) cámbiale el color</span>
+document.<span class="fn">querySelector</span>(<span class="st">"h1"</span>).style.color <span class="op">=</span> <span class="st">"hotpink"</span>;</code></pre></div>
+    <p class="muted frag" style="margin-top:.4em">⚠️ Los cambios son <b>temporales</b>: al <b>recargar</b> se deshacen. Estás editando el <b>DOM vivo</b>, no el archivo. Por eso la consola es perfecta para <b>experimentar sin miedo</b>.</p>
+  </section>
+
+  <section class="slide" data-title="Reto en la consola">
+    <div class="tag anim">🎯 RETO (3 min)</div>
+    <h2 class="anim">Rompe cosas (a propósito) en la consola</h2>
+    <div class="grid g2" style="margin-top:.2em">
+      <div class="card k frag"><h3>Cuenta elementos</h3>
+        <pre><code>document.<span class="fn">querySelectorAll</span>(<span class="st">"a"</span>).length;</code></pre>
+        <p>¿Cuántos enlaces hay en la página?</p></div>
+      <div class="card k2 frag"><h3>Modo fiesta 🎉</h3>
+        <pre><code>document.body.style.background <span class="op">=</span> <span class="st">"black"</span>;</code></pre>
+        <p>Cambia el fondo de toda la página.</p></div>
+      <div class="card kok frag"><h3>Cambia TODOS los subtítulos</h3>
+        <pre><code><span class="kw">for</span> (<span class="kw">const</span> t <span class="kw">of</span> document.<span class="fn">querySelectorAll</span>(<span class="st">"h2"</span>)) {
+  t.style.color <span class="op">=</span> <span class="st">"cyan"</span>;
+}</code></pre></div>
+      <div class="card kw frag"><h3>En una web real 🌐</h3>
+        <p>Abre un periódico online, F12 y cámbiale un titular con <code>textContent</code>. <b>Solo lo ves tú</b> (es tu copia local).</p></div>
+    </div>
+    <p class="muted frag" style="margin-top:.4em">Esto es exactamente lo que hace tu <code>script.js</code>… pero automático. La consola te deja <b>probarlo a mano</b> primero.</p>
+  </section>
+
+
+  <!-- ===================== BLOQUE D · Código de calidad ===================== -->
+
   <section class="slide" data-title="Espagueti vs limpio">
     <div class="tag anim">🍝 vs ✨ CLAVE</div>
     <h2 class="anim">Código espagueti vs código limpio</h2>
@@ -285,7 +434,6 @@ boton.<span class="fn">addEventListener</span>(<span class="st">"click"</span>, 
     <p class="muted frag" style="margin-top:.4em">Si cambia la lógica, en el limpio la tocas <b>en un solo lugar</b>. En el espagueti, en veinte.</p>
   </section>
 
-  <!-- 11 · Buenas prácticas -->
   <section class="slide" data-title="Buenas prácticas">
     <div class="kick anim">Buenas prácticas</div>
     <h2 class="anim">Cómo escribir código limpio</h2>
@@ -304,17 +452,65 @@ boton.<span class="fn">addEventListener</span>(<span class="st">"click"</span>, 
     <p class="muted frag" style="margin-top:.4em">Comenta el <b>por qué</b>, no el <i>qué</i> (el código ya dice el qué).</p>
   </section>
 
-  <!-- 12 · Consola -->
-  <section class="slide" data-title="La consola (F12)">
-    <div class="kick anim">Depurar</div>
-    <h2 class="anim">La consola: tu mejor amiga 🔍</h2>
-    <p class="lead anim">Presiona <code>F12</code> → pestaña <b>Console</b>. Ahí ves errores y mensajes.</p>
-    <div class="frag" style="margin-top:.3em"><pre><code>console.<span class="fn">log</span>(<span class="st">"Llegué hasta aquí"</span>);   <span class="cm">// para ver qué pasa</span>
-console.<span class="fn">log</span>(nombre);                <span class="cm">// ver el valor de una variable</span></code></pre></div>
-    <p class="muted frag" style="margin-top:.4em">Si algo "no funciona", <b>abre la consola</b>: casi siempre el error está ahí escrito.</p>
+  <section class="slide" data-title="Moderno vs antiguo">
+    <div class="tag anim">🕰️ JS DE AYER vs DE HOY</div>
+    <h2 class="anim">Prácticas modernas vs antiguas</h2>
+    <p class="lead anim">JavaScript cambió mucho (sobre todo desde <b>ES6, 2015</b>). En tutoriales viejos verás
+      código que <b>funciona</b>… pero que hoy se escribe <b>mejor</b>. Ejemplo estrella: <b>seleccionar del DOM</b>.</p>
+    <div class="viz anim" style="margin-top:.3em">
+      <div class="vp dim" style="--c:var(--red)">
+        <div class="vhead"><div><div class="vt">👴 Antes</div><div class="vs">un método distinto para cada caso</div></div><div class="vbadge">verboso</div></div>
+        <div class="vbody"><pre><code>document.<span class="fn">getElementById</span>(<span class="st">"titulo"</span>);
+document.<span class="fn">getElementsByClassName</span>(<span class="st">"card"</span>);
+document.<span class="fn">getElementsByTagName</span>(<span class="st">"p"</span>);</code></pre></div>
+      </div>
+      <div class="vp on" style="--c:var(--ok)">
+        <div class="vhead"><div><div class="vt">✨ Ahora</div><div class="vs">UN método, con selectores CSS</div></div><div class="vbadge">unificado</div></div>
+        <div class="vbody"><pre><code>document.<span class="fn">querySelector</span>(<span class="st">"#titulo"</span>);   <span class="cm">// uno (#id, .clase, etiqueta)</span>
+document.<span class="fn">querySelectorAll</span>(<span class="st">".card"</span>); <span class="cm">// todos (y tiene forEach)</span></code></pre></div>
+      </div>
+    </div>
+    <p class="muted frag" style="margin-top:.4em"><code>querySelector</code> usa <b>los mismos selectores que CSS</b>: no memorizas 3 métodos, usas uno. (<code>getElementById</code> no está "mal", pero <code>querySelector</code> lo unifica todo.)</p>
   </section>
 
-  <!-- 13 · Documentación -->
+  <section class="slide" data-title="Antes → Ahora (tabla)">
+    <div class="kick anim">La chuleta</div>
+    <h2 class="anim">De lo viejo a lo moderno</h2>
+    <div class="grid g2" style="margin-top:.2em">
+      <div class="card kr frag"><h3>👴 Antiguo</h3><pre><code><span class="kw">var</span> nombre <span class="op">=</span> <span class="st">"Ana"</span>;
+<span class="st">"Hola "</span> <span class="op">+</span> nombre <span class="op">+</span> <span class="st">"!"</span>;
+btn.onclick <span class="op">=</span> <span class="kw">function</span>(){…};
+el.className <span class="op">+=</span> <span class="st">" activo"</span>;
+<span class="kw">if</span> (a <span class="op">==</span> b) …
+<span class="kw">for</span>(<span class="kw">var</span> i<span class="op">=</span><span class="nm">0</span>;i<span class="op">&lt;</span>a.length;i<span class="op">++</span>)</code></pre></div>
+      <div class="card kok frag"><h3>✨ Moderno (ES6+)</h3><pre><code><span class="kw">const</span> nombre <span class="op">=</span> <span class="st">"Ana"</span>;
+<span class="st">`Hola ${</span>nombre<span class="st">}!`</span>;          <span class="cm">// template literal</span>
+btn.<span class="fn">addEventListener</span>(<span class="st">"click"</span>, () <span class="op">=&gt;</span> …);
+el.classList.<span class="fn">add</span>(<span class="st">"activo"</span>);
+<span class="kw">if</span> (a <span class="op">===</span> b) …            <span class="cm">// estricto</span>
+<span class="kw">for</span> (<span class="kw">const</span> x <span class="kw">of</span> lista) …    <span class="cm">// o .map()</span></code></pre></div>
+    </div>
+    <p class="muted frag" style="margin-top:.4em">Todo esto ya lo usas en tu portafolio. No es "moda": es más <b>corto</b>, más <b>seguro</b> y más <b>fácil de leer</b>.</p>
+  </section>
+
+  <section class="slide" data-title="Adiós jQuery y callbacks">
+    <div class="tag anim">🌐 PEDIR DATOS</div>
+    <h2 class="anim">De callbacks y jQuery… a fetch + async</h2>
+    <div class="grid g2" style="margin-top:.2em">
+      <div class="card kr frag"><h3>👴 Antes</h3>
+        <pre><code><span class="cm">// XMLHttpRequest o jQuery</span>
+$.<span class="fn">ajax</span>({ url, success: <span class="kw">function</span>(d){
+  <span class="fn">hacerAlgo</span>(d, <span class="kw">function</span>(){ … }); <span class="cm">// callbacks anidados 😵</span>
+}});</code></pre></div>
+      <div class="card kok frag"><h3>✨ Ahora</h3>
+        <pre><code><span class="kw">async function</span> <span class="fn">cargar</span>() {
+  <span class="kw">const</span> res <span class="op">=</span> <span class="kw">await</span> <span class="fn">fetch</span>(url);
+  <span class="kw">const</span> datos <span class="op">=</span> <span class="kw">await</span> res.<span class="fn">json</span>();
+}</code></pre></div>
+    </div>
+    <p class="muted frag" style="margin-top:.4em"><b>Hoy casi no necesitas jQuery:</b> lo que antes resolvía (<code>$(".x")</code>, ajax, animaciones) ya lo hace el navegador <b>nativo</b> (<code>querySelector</code>, <code>fetch</code>, CSS). Menos peso, menos dependencias.</p>
+  </section>
+
   <section class="slide" data-title="Documentación">
     <div class="tag anim">📚 DOCUMENTACIÓN</div>
     <h2 class="anim">Dónde aprender más</h2>
@@ -327,7 +523,9 @@ console.<span class="fn">log</span>(nombre);                <span class="cm">// 
     <p class="muted frag" style="margin-top:.4em">JS es grande: nadie lo memoriza. <b>Entender</b> y saber <b>buscar</b> (+ tu asistente de IA para dudas).</p>
   </section>
 
-  <!-- 13b · Peticiones HTTP -->
+
+  <!-- ===================== BLOQUE E · Datos externos y librerías ===================== -->
+
   <section class="slide" data-title="fetch (peticiones HTTP)">
     <div class="tag anim">🌐 PEDIR DATOS A INTERNET</div>
     <h2 class="anim">fetch: peticiones HTTP</h2>
@@ -341,7 +539,6 @@ console.<span class="fn">log</span>(nombre);                <span class="cm">// 
     <p class="muted frag" style="margin-top:.4em">También existe <code>axios</code> (una librería que hace lo mismo, más cómodo). ⚠️ <b>Necesita internet.</b></p>
   </section>
 
-  <!-- 13c · Librerías + API -->
   <section class="slide" data-title="Librerías + API real">
     <div class="tag anim">📦 LIBRERÍAS + API</div>
     <h2 class="anim">Importar librerías y datos reales</h2>
@@ -358,7 +555,37 @@ console.<span class="fn">log</span>(nombre);                <span class="cm">// 
     <p class="muted frag" style="margin-top:.4em">Esto hace que un portafolio se vea <b>profesional</b>. (Funciona con internet / desplegado.)</p>
   </section>
 
-  <!-- 14 · Práctica -->
+  <section class="slide" data-title="anime.js">
+    <div class="tag anim">🎬 LIBRERÍA</div>
+    <h2 class="anim">Animaciones modernas: anime.js</h2>
+    <div class="frag" style="margin-top:.2em"><pre><code><span class="kw">const</span> { <span class="kw">default</span>: anime } <span class="op">=</span> <span class="kw">await</span> <span class="kw">import</span>(<span class="st">"…animejs…"</span>);
+
+<span class="fn">anime</span>({
+  targets: <span class="st">".hero .reveal"</span>,   <span class="cm">// qué animar</span>
+  translateY: [<span class="nm">24</span>, <span class="nm">0</span>],       <span class="cm">// de abajo → a su sitio</span>
+  opacity: [<span class="nm">0</span>, <span class="nm">1</span>],
+  delay: anime.<span class="fn">stagger</span>(<span class="nm">90</span>),  <span class="cm">// en cascada ✨</span>
+  easing: <span class="st">"easeOutCubic"</span>
+});</code></pre></div>
+    <p class="muted frag" style="margin-top:.4em">Ligera y fácil. <code>stagger</code> anima una lista en cascada con una línea. Ya está en tu portafolio.</p>
+  </section>
+
+  <section class="slide" data-title="GSAP">
+    <div class="tag anim">🚀 LIBRERÍA PRO</div>
+    <h2 class="anim">GSAP: timelines de nivel producción</h2>
+    <div class="frag" style="margin-top:.2em"><pre><code><span class="cm">// animar DESDE un estado hasta el actual</span>
+gsap.<span class="fn">from</span>(<span class="st">".hero__title"</span>, { y: <span class="nm">40</span>, opacity: <span class="nm">0</span>, duration: <span class="nm">1</span> });
+
+<span class="cm">// una TIMELINE: animaciones en secuencia</span>
+<span class="kw">const</span> tl <span class="op">=</span> gsap.<span class="fn">timeline</span>();
+tl.<span class="fn">from</span>(<span class="st">".eyebrow"</span>, { opacity: <span class="nm">0</span>, y: <span class="nm">20</span> })
+  .<span class="fn">from</span>(<span class="st">".hero__title"</span>, { opacity: <span class="nm">0</span>, y: <span class="nm">30</span> }, <span class="st">"-=0.3"</span>);</code></pre></div>
+    <p class="muted frag" style="margin-top:.4em">El estándar en portafolios "wow". Tiene <b>ScrollTrigger</b> (animar según el scroll). Regla: la animación <b>decora</b>, no estorba. Respeta <code>prefers-reduced-motion</code>.</p>
+  </section>
+
+
+  <!-- ===================== BLOQUE F · Práctica ===================== -->
+
   <section class="slide" data-title="Práctica v3">
     <div class="tag anim">✍️ PRÁCTICA</div>
     <h2 class="anim">Portafolio v3: ¡con vida!</h2>
@@ -371,11 +598,9 @@ console.<span class="fn">log</span>(nombre);                <span class="cm">// 
     <p class="muted frag" style="margin-top:.4em">Cierra: <code>git commit -m "Portafolio v3: interactividad con JavaScript"</code></p>
   </section>
 
-  <!-- ============================================================
-       PARTE 2 — NIVEL PRO (profundización)
-       ============================================================ -->
 
-  <!-- 15b · Portada Nivel PRO -->
+  <!-- ===================== BLOQUE G · Nivel PRO (arquitectura) ===================== -->
+
   <section class="slide center" data-title="▸ Nivel PRO">
     <div class="kick anim">Segunda mitad · profundizar</div>
     <h1 class="anim">JavaScript PRO</h1>
@@ -385,7 +610,6 @@ console.<span class="fn">log</span>(nombre);                <span class="cm">// 
       <span class="chip">GitHub API</span><span class="chip">correo</span><span class="chip">anime.js · GSAP</span><span class="chip">Node</span></div>
   </section>
 
-  <!-- 15c · El problema del archivo gigante -->
   <section class="slide" data-title="El archivo gigante">
     <div class="tag anim">🍝 EL PROBLEMA</div>
     <h2 class="anim">Un solo <code>script.js</code> de 400 líneas</h2>
@@ -402,7 +626,61 @@ console.<span class="fn">log</span>(nombre);                <span class="cm">// 
     <p class="muted frag" style="margin-top:.4em">Analogía: no necesitas un cajón más grande; necesitas <b>cajones etiquetados</b>.</p>
   </section>
 
-  <!-- 15c2 · ANTES vs DESPUÉS -->
+  <section class="slide" data-title="POO: clases (moldes)">
+    <div class="tag anim">🧬 POO</div>
+    <h2 class="anim">Clases: moldes de galletas</h2>
+    <div class="grid g21" style="margin-top:.2em">
+      <div class="frag"><pre><code><span class="kw">class</span> <span class="fn">Perro</span> {
+  <span class="fn">constructor</span>(nombre) {   <span class="cm">// al crear el objeto</span>
+    <span class="kw">this</span>.nombre <span class="op">=</span> nombre; <span class="cm">// propiedad</span>
+  }
+  <span class="fn">ladrar</span>() {              <span class="cm">// método</span>
+    console.<span class="fn">log</span>(<span class="st">`${</span>this.nombre<span class="st">} ¡Guau!`</span>);
+  }
+}
+<span class="kw">const</span> firu <span class="op">=</span> <span class="kw">new</span> <span class="fn">Perro</span>(<span class="st">"Firulais"</span>);
+firu.<span class="fn">ladrar</span>();  <span class="cm">// Firulais ¡Guau!</span></code></pre></div>
+      <div>
+        <div class="card k frag"><h3><code>class</code> = molde</h3><p>Qué datos guarda y qué sabe hacer.</p></div>
+        <div class="card k2 frag" style="margin-top:.5em"><h3><code>new Perro()</code> = objeto</h3><p>Una galleta hecha con el molde.</p></div>
+        <div class="card kok frag" style="margin-top:.5em"><h3><code>this</code></h3><p>"<b>este</b> objeto en particular".</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-title="Una clase, un tema">
+    <div class="kick anim">Separación de responsabilidades</div>
+    <h2 class="anim">Una clase = un archivo = un tema</h2>
+    <div class="grid g3" style="margin-top:.3em">
+      <div class="card k frag"><h3>🌗 Tema</h3><p><code>js/Tema.js</code> — modo claro/oscuro.</p></div>
+      <div class="card k2 frag"><h3>📄 Portafolio</h3><p><code>js/Portafolio.js</code> — lee el JSON y pinta.</p></div>
+      <div class="card kok frag"><h3>🐙 GitHubAPI</h3><p><code>js/GitHubAPI.js</code> — datos reales.</p></div>
+      <div class="card kw frag"><h3>✉️ Contacto</h3><p><code>js/Contacto.js</code> — valida y envía.</p></div>
+      <div class="card k frag"><h3>🎬 Animaciones</h3><p><code>js/Animaciones.js</code> — movimiento.</p></div>
+      <div class="card k2 frag"><h3>🎼 main.js</h3><p>El director: importa y arranca todo.</p></div>
+    </div>
+    <p class="muted frag" style="margin-top:.4em">Si el formulario falla, sabes <b>exactamente</b> qué archivo abrir.</p>
+  </section>
+
+  <section class="slide" data-title="Módulos import/export">
+    <div class="tag anim">📦 MÓDULOS</div>
+    <h2 class="anim">import / export: un archivo por tema</h2>
+    <div class="grid g2" style="margin-top:.2em">
+      <div class="frag"><pre><code><span class="cm">// Tema.js — lo compartimos</span>
+<span class="kw">export class</span> <span class="fn">Tema</span> { … }
+
+<span class="cm">// main.js — lo usamos</span>
+<span class="kw">import</span> { Tema } <span class="kw">from</span> <span class="st">"./Tema.js"</span>;</code></pre>
+      <p class="muted" style="margin-top:.3em">En el HTML, un solo enlace:</p>
+      <pre><code><span class="op">&lt;script type=<span class="st">"module"</span> src=<span class="st">"js/main.js"</span>&gt;&lt;/script&gt;</span></code></pre></div>
+      <div class="card kw frag"><h3>⚠️ REGLA DE ORO</h3>
+        <p>Los módulos y <code>fetch("datos.json")</code> <b>NO</b> funcionan con doble clic
+          (<code>file://</code>). El navegador los bloquea.</p>
+        <p style="margin-top:.4em"><b>Ábrelo con Live Server</b> (clic derecho → <i>Open with Live Server</i>).
+          Es el error #1 de esta clase. 📌</p></div>
+    </div>
+  </section>
+
   <section class="slide" data-title="Antes vs Después">
     <div class="tag anim">🔍 MISMO RESULTADO</div>
     <h2 class="anim">El mismo portafolio, dos formas</h2>
@@ -429,65 +707,6 @@ console.<span class="fn">log</span>(nombre);                <span class="cm">// 
     <p class="muted frag" style="margin-top:.4em">Se ven <b>idénticos</b> en pantalla. Lo que cambia es cómo está <b>organizado</b> por dentro: eso es lo profesional. Ábrelos lado a lado en VS Code.</p>
   </section>
 
-  <!-- 15d · POO: clases -->
-  <section class="slide" data-title="POO: clases (moldes)">
-    <div class="tag anim">🧬 POO</div>
-    <h2 class="anim">Clases: moldes de galletas</h2>
-    <div class="grid g21" style="margin-top:.2em">
-      <div class="frag"><pre><code><span class="kw">class</span> <span class="fn">Perro</span> {
-  <span class="fn">constructor</span>(nombre) {   <span class="cm">// al crear el objeto</span>
-    <span class="kw">this</span>.nombre <span class="op">=</span> nombre; <span class="cm">// propiedad</span>
-  }
-  <span class="fn">ladrar</span>() {              <span class="cm">// método</span>
-    console.<span class="fn">log</span>(<span class="st">`${</span>this.nombre<span class="st">} ¡Guau!`</span>);
-  }
-}
-<span class="kw">const</span> firu <span class="op">=</span> <span class="kw">new</span> <span class="fn">Perro</span>(<span class="st">"Firulais"</span>);
-firu.<span class="fn">ladrar</span>();  <span class="cm">// Firulais ¡Guau!</span></code></pre></div>
-      <div>
-        <div class="card k frag"><h3><code>class</code> = molde</h3><p>Qué datos guarda y qué sabe hacer.</p></div>
-        <div class="card k2 frag" style="margin-top:.5em"><h3><code>new Perro()</code> = objeto</h3><p>Una galleta hecha con el molde.</p></div>
-        <div class="card kok frag" style="margin-top:.5em"><h3><code>this</code></h3><p>"<b>este</b> objeto en particular".</p></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 15e · Separación de responsabilidades -->
-  <section class="slide" data-title="Una clase, un tema">
-    <div class="kick anim">Separación de responsabilidades</div>
-    <h2 class="anim">Una clase = un archivo = un tema</h2>
-    <div class="grid g3" style="margin-top:.3em">
-      <div class="card k frag"><h3>🌗 Tema</h3><p><code>js/Tema.js</code> — modo claro/oscuro.</p></div>
-      <div class="card k2 frag"><h3>📄 Portafolio</h3><p><code>js/Portafolio.js</code> — lee el JSON y pinta.</p></div>
-      <div class="card kok frag"><h3>🐙 GitHubAPI</h3><p><code>js/GitHubAPI.js</code> — datos reales.</p></div>
-      <div class="card kw frag"><h3>✉️ Contacto</h3><p><code>js/Contacto.js</code> — valida y envía.</p></div>
-      <div class="card k frag"><h3>🎬 Animaciones</h3><p><code>js/Animaciones.js</code> — movimiento.</p></div>
-      <div class="card k2 frag"><h3>🎼 main.js</h3><p>El director: importa y arranca todo.</p></div>
-    </div>
-    <p class="muted frag" style="margin-top:.4em">Si el formulario falla, sabes <b>exactamente</b> qué archivo abrir.</p>
-  </section>
-
-  <!-- 15f · Módulos -->
-  <section class="slide" data-title="Módulos import/export">
-    <div class="tag anim">📦 MÓDULOS</div>
-    <h2 class="anim">import / export: un archivo por tema</h2>
-    <div class="grid g2" style="margin-top:.2em">
-      <div class="frag"><pre><code><span class="cm">// Tema.js — lo compartimos</span>
-<span class="kw">export class</span> <span class="fn">Tema</span> { … }
-
-<span class="cm">// main.js — lo usamos</span>
-<span class="kw">import</span> { Tema } <span class="kw">from</span> <span class="st">"./Tema.js"</span>;</code></pre>
-      <p class="muted" style="margin-top:.3em">En el HTML, un solo enlace:</p>
-      <pre><code><span class="op">&lt;script type=<span class="st">"module"</span> src=<span class="st">"js/main.js"</span>&gt;&lt;/script&gt;</span></code></pre></div>
-      <div class="card kw frag"><h3>⚠️ REGLA DE ORO</h3>
-        <p>Los módulos y <code>fetch("datos.json")</code> <b>NO</b> funcionan con doble clic
-          (<code>file://</code>). El navegador los bloquea.</p>
-        <p style="margin-top:.4em"><b>Ábrelo con Live Server</b> (clic derecho → <i>Open with Live Server</i>).
-          Es el error #1 de esta clase. 📌</p></div>
-    </div>
-  </section>
-
-  <!-- 15g · Datos desde JSON -->
   <section class="slide" data-title="Datos desde JSON">
     <div class="tag anim">🗂️ DATOS APARTE</div>
     <h2 class="anim">El contenido vive en datos.json</h2>
@@ -510,7 +729,6 @@ lista.innerHTML <span class="op">=</span> datos.skills
     <p class="muted frag" style="margin-top:.4em">Para actualizar tu portafolio <b>editas el JSON</b>, no el código. Datos ≠ presentación.</p>
   </section>
 
-  <!-- 15h · GitHub API -->
   <section class="slide" data-title="GitHub real (API)">
     <div class="tag anim">🐙 API REAL</div>
     <h2 class="anim">Tus datos reales de GitHub</h2>
@@ -525,7 +743,6 @@ lista.innerHTML <span class="op">=</span> datos.skills
       ⚠️ Sin token: ~<b>60 peticiones/hora</b> (suficiente). Nunca pongas tokens en el navegador.</p>
   </section>
 
-  <!-- 15i · LinkedIn -->
   <section class="slide" data-title="LinkedIn: la verdad">
     <div class="tag anim">💼 SÉ HONESTO</div>
     <h2 class="anim">LinkedIn no tiene API libre</h2>
@@ -540,7 +757,6 @@ lista.innerHTML <span class="op">=</span> datos.skills
     <p class="muted frag" style="margin-top:.4em">Lección dev: antes de programar contra un servicio, revisa si <b>tiene API</b> y si está <b>permitida</b>.</p>
   </section>
 
-  <!-- 15j · Correo gratis -->
   <section class="slide" data-title="Enviar correos (gratis)">
     <div class="tag anim">✉️ FORMULARIO REAL</div>
     <h2 class="anim">Que el formulario envíe correos</h2>
@@ -558,37 +774,6 @@ lista.innerHTML <span class="op">=</span> datos.skills
     <p class="muted frag" style="margin-top:.3em">Siempre <b>valida antes</b> (nombre, <code>@</code>, largo). Las keys de <i>form</i> sí van al frontend; un token secreto <b>no</b>.</p>
   </section>
 
-  <!-- 15k · anime.js -->
-  <section class="slide" data-title="anime.js">
-    <div class="tag anim">🎬 LIBRERÍA</div>
-    <h2 class="anim">Animaciones modernas: anime.js</h2>
-    <div class="frag" style="margin-top:.2em"><pre><code><span class="kw">const</span> { <span class="kw">default</span>: anime } <span class="op">=</span> <span class="kw">await</span> <span class="kw">import</span>(<span class="st">"…animejs…"</span>);
-
-<span class="fn">anime</span>({
-  targets: <span class="st">".hero .reveal"</span>,   <span class="cm">// qué animar</span>
-  translateY: [<span class="nm">24</span>, <span class="nm">0</span>],       <span class="cm">// de abajo → a su sitio</span>
-  opacity: [<span class="nm">0</span>, <span class="nm">1</span>],
-  delay: anime.<span class="fn">stagger</span>(<span class="nm">90</span>),  <span class="cm">// en cascada ✨</span>
-  easing: <span class="st">"easeOutCubic"</span>
-});</code></pre></div>
-    <p class="muted frag" style="margin-top:.4em">Ligera y fácil. <code>stagger</code> anima una lista en cascada con una línea. Ya está en tu portafolio.</p>
-  </section>
-
-  <!-- 15l · GSAP -->
-  <section class="slide" data-title="GSAP">
-    <div class="tag anim">🚀 LIBRERÍA PRO</div>
-    <h2 class="anim">GSAP: timelines de nivel producción</h2>
-    <div class="frag" style="margin-top:.2em"><pre><code><span class="cm">// animar DESDE un estado hasta el actual</span>
-gsap.<span class="fn">from</span>(<span class="st">".hero__title"</span>, { y: <span class="nm">40</span>, opacity: <span class="nm">0</span>, duration: <span class="nm">1</span> });
-
-<span class="cm">// una TIMELINE: animaciones en secuencia</span>
-<span class="kw">const</span> tl <span class="op">=</span> gsap.<span class="fn">timeline</span>();
-tl.<span class="fn">from</span>(<span class="st">".eyebrow"</span>, { opacity: <span class="nm">0</span>, y: <span class="nm">20</span> })
-  .<span class="fn">from</span>(<span class="st">".hero__title"</span>, { opacity: <span class="nm">0</span>, y: <span class="nm">30</span> }, <span class="st">"-=0.3"</span>);</code></pre></div>
-    <p class="muted frag" style="margin-top:.4em">El estándar en portafolios "wow". Tiene <b>ScrollTrigger</b> (animar según el scroll). Regla: la animación <b>decora</b>, no estorba. Respeta <code>prefers-reduced-motion</code>.</p>
-  </section>
-
-  <!-- 15m · Buenas prácticas PRO -->
   <section class="slide" data-title="Buenas prácticas PRO">
     <div class="kick anim">Checklist profesional</div>
     <h2 class="anim">Cómo escribe código un dev pro</h2>
@@ -607,7 +792,9 @@ tl.<span class="fn">from</span>(<span class="st">".eyebrow"</span>, { opacity: <
     <p class="muted frag" style="margin-top:.4em"><b>Mantra:</b> código que no entiendes = código que no sirve. Si la IA te da algo, pídele que te lo <b>explique</b>.</p>
   </section>
 
-  <!-- 15n · Node.js -->
+
+  <!-- ===================== BLOQUE H · Cierre ===================== -->
+
   <section class="slide" data-title="Adelanto: Node.js">
     <div class="tag anim">🟩 ADELANTO</div>
     <h2 class="anim">Node.js: JavaScript fuera del navegador</h2>
@@ -629,7 +816,6 @@ $ node saludo.js Ana
     <p class="muted frag" style="margin-top:.4em">El <b>mismo</b> JS del portafolio te sirve para <b>backend</b>. Eso es ser <span class="a">full-stack</span>.</p>
   </section>
 
-  <!-- 15 · Cierre -->
   <section class="slide center" data-title="Cierre">
     <h1 class="anim">¡Portafolio PRO terminado! 🎉</h1>
     <p class="lead muted anim" style="margin-top:.5em">HTML + CSS + JS modular: POO, datos en JSON, GitHub real, correo y animaciones.</p>

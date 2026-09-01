@@ -25,17 +25,23 @@
 
 ## Índice
 1. [¿Qué es JavaScript?](#1-que-es-js)
-2. [Cómo se conecta al HTML](#2-conectar)
+2. [Cómo se conecta al HTML (3 formas)](#2-conectar)
 3. [La consola: tu mejor amiga (F12)](#3-consola)
 4. [Variables: `let` y `const`](#4-variables)
 5. [Tipos básicos de datos](#5-tipos)
+   - 5.b [Objetos: diccionarios de datos](#5b-objetos)
 6. [Funciones](#6-funciones)
+   - 6.b [Funciones flecha (`=>`)](#6b-flecha)
 7. [Condicionales: `if` / `else`](#7-condicionales)
+   - 7.b [Evita los `if` anidados (guardas)](#7b-guardas)
+   - 7.c [Operadores: `&&` `||` `?:` · `??` · `?.`](#7c-operadores)
 8. [Un bucle simple: `for`](#8-for)
+   - 8.b [Desestructuración y spread/rest (`...`)](#8b-desestructuracion)
 9. [El DOM: tocar la página con `querySelector`](#9-dom)
 10. [Eventos: reaccionar con `addEventListener`](#10-eventos)
 11. [Práctica guiada: Portafolio v3](#11-practica)
-12. [Cierre, Git y actividad](#12-cierre)
+12. [Ejercicios de refuerzo y trabajo](#12-ejercicios)
+13. [Cierre, Git y actividad](#13-cierre)
 
 ---
 
@@ -196,6 +202,53 @@ const esEstudiante = true;      // booleano: verdadero o falso
 
 ---
 
+## 5.b Objetos: diccionarios de datos <a name="5b-objetos"></a>
+
+> **Explica:** hasta ahora guardamos **un** dato por variable. Un **objeto** guarda **varios datos
+> relacionados** bajo un mismo nombre, cada uno con su **etiqueta**. Es como una **ficha** o un
+> **formulario**: nombre, edad, ciudad… todo junto y ordenado.
+
+Un objeto se escribe con llaves `{ }` y pares `clave: valor`:
+
+```js
+const persona = {
+  nombre: "Ana",          // clave "nombre" → valor "Ana"
+  edad: 20,
+  ciudad: "Bucaramanga"
+};
+```
+
+Para **leer** o **cambiar** un dato usamos el punto (o corchetes):
+
+```js
+console.log(persona.nombre);   // "Ana"   (con punto)
+console.log(persona["edad"]);  // 20      (con corchetes: útil si la clave es variable)
+persona.edad = 21;             // cambiar un valor
+```
+
+Un objeto también puede tener **funciones adentro** (se llaman **métodos**):
+
+```js
+const persona = {
+  nombre: "Ana",
+  saludar() { return "Hola, soy " + this.nombre; }   // this = "este objeto"
+};
+persona.saludar();   // "Hola, soy Ana"
+```
+
+> **Array vs Objeto (no los confundas):**
+> - **Array** `[]` → una **lista ordenada**; accedes por **posición**: `colores[0]`.
+> - **Objeto** `{}` → datos con **nombre**; accedes por **clave**: `persona.nombre`.
+
+> **Conexión con el portafolio:** tu archivo `datos.json` **es un objeto gigante** (con arrays y objetos
+> adentro). Por eso, cargarlo y leer `datos.perfil.nombre` es exactamente esto.
+
+> 🏋️ **Ejercicio de refuerzo.** Crea un objeto `curso` con las claves `nombre`, `ficha` y `activo`
+> (booleano). Imprime en consola una frase como *"El curso ADSO (ficha 2926567) está activo: true"*
+> usando sus valores. Luego agrégale un método `resumen()` que devuelva esa misma frase.
+
+---
+
 ## 6. Funciones <a name="6-funciones"></a>
 
 > **Explica:** una **función** es una **receta**: un bloque de pasos con nombre que puedes **usar cuando
@@ -224,6 +277,46 @@ saludarA("María");    // imprime: Hola, María
 
 > **Analogía:** una función es como el botón de "licuar" de la licuadora: no te importa qué hace por
 > dentro, lo aprietas y hace su trabajo. La escribes una vez y la reutilizas.
+
+---
+
+## 6.b Funciones flecha (`=>`) <a name="6b-flecha"></a>
+
+> **Explica:** las funciones flecha son una forma **más corta** de escribir funciones. Hacen **lo
+> mismo**, solo cambia cómo se escriben. Las verás por todas partes en el código moderno.
+
+```js
+// Función de siempre
+function sumar(a, b) {
+  return a + b;
+}
+
+// La misma, como función flecha
+const sumar = (a, b) => a + b;   // una sola línea → el 'return' es automático
+```
+
+Reglas rápidas:
+- Si hay **un solo parámetro**, los paréntesis son opcionales: `n => n * 2`.
+- Si el cuerpo tiene **varias líneas**, usa llaves y `return` como siempre:
+  ```js
+  const saludar = (nombre) => {
+    const mensaje = "Hola " + nombre;
+    return mensaje;
+  };
+  ```
+
+> **¿Dónde las usarás?** En los **eventos** y en métodos de arrays. De hecho ya aparecen en tu portafolio:
+> ```js
+> boton.addEventListener("click", () => document.body.classList.toggle("oscuro"));
+> ```
+> Ese `() => …` es una función flecha **sin nombre** que corre cuando hacen clic.
+
+> **Detalle (no te preocupes hoy):** dentro de una flecha, la palabra `this` se comporta de forma más
+> predecible que en las funciones normales. Lo importante ahora es **reconocerlas** y saber leerlas.
+
+> 🏋️ **Ejercicio de refuerzo.** Reescribe estas dos funciones normales como funciones flecha:
+> `function alCuadrado(n){ return n*n; }` y `function esPar(n){ return n % 2 === 0; }`. Pruébalas en la
+> consola con varios números.
 
 ---
 
@@ -256,7 +349,7 @@ Para **comparar** usamos:
 > **Errores comunes:** confundir `=` (guardar en una variable) con `===` (comparar). Para preguntar "¿son
 > iguales?" **siempre** se usan tres iguales: `===`.
 
-### 7.b Evita los `if` anidados: negación temprana (cláusulas de guarda)
+### 7.b Evita los `if` anidados: negación temprana (cláusulas de guarda) <a name="7b-guardas"></a>
 
 > **Explica:** cuando encadenas condiciones, es tentador meter un `if` **dentro** de otro `if` dentro de
 > otro. El código empieza a formar una "flecha" `→` hacia la derecha y se vuelve difícil de leer.
@@ -300,6 +393,47 @@ La idea: **descarta primero lo que está mal** (con la negación `!` y un `retur
 
 ---
 
+## 7.c Operadores: `&&` `||` `?:` · `??` · `?.` <a name="7c-operadores"></a>
+
+> **Explica:** estos operadores son **atajos** para tomar decisiones en una sola línea, sin escribir un
+> `if` completo. Son cortos, pero muy usados: hay que saber leerlos.
+
+### `&&` (Y), `||` (O) y el ternario `?:`
+
+```js
+const esMayor = edad >= 18;
+
+const puedeEntrar = tieneBoleto && esMayor;   // && (Y): verdadero solo si los DOS lo son
+const nombre      = apodo || "invitado";      // || (O): usa el primero que "sirva"
+const etiqueta    = esMayor ? "Adulto" : "Menor";  // ternario: condición ? siVerdadero : siFalso
+```
+
+- `&&` → verdadero si **ambos** lados lo son. (`true && false` es `false`.)
+- `||` → toma el **primer valor que no esté "vacío"**. Muy usado para **valores por defecto**.
+- `condición ? A : B` → el **ternario**: un `if/else` corto que **devuelve un valor**. Se lee:
+  *"¿condición? entonces A, si no B"*.
+
+### `??` (nullish) y `?.` (encadenamiento opcional)
+
+```js
+const puntos = usuario.puntos ?? 0;         // usa 0 SOLO si puntos es null o undefined
+const ciudad = usuario.direccion?.ciudad;   // no explota si 'direccion' no existe → da undefined
+```
+
+- `??` es como `||` pero **más estricto**: solo reemplaza cuando el valor es `null` o `undefined`.
+  > **Diferencia clave:** `||` también descarta `0`, `""` (texto vacío) y `false` porque los considera
+  > "vacíos". Si `usuario.puntos` es `0`, `usuario.puntos || 10` te daría `10` (¡mal!), pero
+  > `usuario.puntos ?? 10` te respeta el `0`. Para **números y textos**, usa `??`.
+- `?.` te deja pedir algo "por si acaso": si la parte de la izquierda **no existe**, en vez de romper el
+  programa con un error, devuelve `undefined`.
+
+> 🏋️ **Ejercicio de refuerzo.** Tienes `const user = { nombre: "", puntos: 0 };`. Predice qué imprime cada
+> línea **antes** de correrla, y luego compruébalo en consola:
+> `user.nombre || "sin nombre"` · `user.nombre ?? "sin nombre"` · `user.puntos || 100` · `user.puntos ?? 100`.
+> Explica con tus palabras por qué `||` y `??` dan resultados distintos aquí.
+
+---
+
 ## 8. Un bucle simple: `for` <a name="8-for"></a>
 
 > **Explica:** un **bucle** repite una tarea muchas veces sin que tú copies y pegues. El `for` repite un
@@ -319,6 +453,62 @@ El `for` tiene tres partes entre paréntesis:
 
 > **Analogía:** es como hacer 10 sentadillas: haces una, cuentas, y **mientras** no llegues a 10, sigues.
 > El `for` cuenta por ti.
+
+---
+
+## 8.b Desestructuración y spread/rest (`...`) <a name="8b-desestructuracion"></a>
+
+Dos herramientas modernas para trabajar con **objetos y arrays** de forma cómoda.
+
+### Desestructuración: desempacar en variables
+
+> **Explica:** en vez de sacar los datos uno por uno, la desestructuración te deja **desempacar varios de
+> golpe** en variables. Es como abrir una caja y sacar las cosas directo a la mesa, ya etiquetadas.
+
+```js
+const persona = { nombre: "Ana", edad: 20 };
+
+// En vez de: const nombre = persona.nombre; const edad = persona.edad;
+const { nombre, edad } = persona;      // ¡las dos de un golpe!  nombre = "Ana", edad = 20
+```
+
+También funciona con **arrays** (ahí manda la **posición**, no el nombre):
+
+```js
+const colores = ["rojo", "verde", "azul"];
+const [primero, segundo] = colores;    // primero = "rojo", segundo = "verde"
+```
+
+> **Ya la usaste:** `const { default: confetti } = await import("...")` en el portafolio desempaca lo que
+> trae la librería.
+
+### Spread y rest: los tres puntos `...`
+
+**Spread** ("esparcir") copia y combina arrays u objetos **sin dañar el original**:
+
+```js
+const base = ["html", "css"];
+const skills = [...base, "js"];          // ["html", "css", "js"]  (copia + agrega)
+
+const persona = { nombre: "Ana", edad: 20 };
+const mayor = { ...persona, edad: 21 };  // copia persona pero con edad cambiada
+```
+
+**Rest** ("juntar") es lo contrario: recoge **varios argumentos** en un array:
+
+```js
+function sumarTodos(...numeros) {        // numeros = [1, 2, 3]
+  return numeros.reduce((a, b) => a + b, 0);
+}
+sumarTodos(1, 2, 3);   // 6
+```
+
+> **En el portafolio:** `Contacto.js` arma el envío con `{ access_key: this.accessKey, ...datos }`: el
+> `...datos` **esparce** nombre, correo y mensaje dentro del objeto que se manda.
+
+> 🏋️ **Ejercicio de refuerzo.** Dado `const base = { nombre: "Ana", rol: "aprendiz" };` crea con **spread**
+> un nuevo objeto `admin` que copie `base` pero con `rol: "instructor"` y una clave nueva `activo: true`.
+> Verifica en consola que `base` **no cambió**.
 
 ---
 
@@ -561,7 +751,55 @@ formulario.addEventListener("submit", function (evento) {
 
 ---
 
-## 12. Cierre, Git y actividad <a name="12-cierre"></a>
+## 12. Ejercicios de refuerzo y trabajo <a name="12-ejercicios"></a>
+
+> **Para el instructor:** úsalos como quieras — en parejas, individuales, en el tablero o de tarea. La
+> mayoría se resuelven **en la consola** (`F12`), sin tocar el portafolio. Al final hay un **trabajo**
+> (mini-reto) que sí se hace en código. Idea de fondo: **entender**, no copiar.
+
+### A) Repaso rápido (calienta motores) 🔥
+1. Declara `const` para tu nombre y `let` para tu edad; súmale 1 a la edad e imprime ambas.
+2. Crea un array `hobbies` con 3 elementos y recórrelo con `for...of` imprimiendo cada uno.
+3. Crea un objeto `mascota` con `nombre`, `tipo` y un método `sonido()` que devuelva un texto.
+
+### B) Lógica y decisiones 🧠
+4. Escribe una función `clasificarEdad(edad)` que devuelva `"menor"`, `"adulto"` o `"adulto mayor"`
+   usando `if/else`. Reescríbela después con **cláusulas de guarda** (`if (...) return ...`).
+5. Sin `if`: usa el **ternario** para que `const acceso = edad >= 18 ? "pasa" : "no pasa";`.
+6. Predice y comprueba: para `const p = { nombre: "", puntos: 0 }`, ¿qué dan
+   `p.nombre || "anónimo"` vs `p.nombre ?? "anónimo"` y `p.puntos || 5` vs `p.puntos ?? 5`? Explica por qué.
+
+### C) Objetos, arrays y sintaxis moderna 🧩
+7. Dado `const persona = { nombre: "Ana", edad: 20, ciudad: "Bga" }`, usa **desestructuración** para sacar
+   `nombre` y `ciudad` en dos variables.
+8. Con **spread**, crea `personaMayor` copiando `persona` pero con `edad: 21`. Comprueba que `persona` no cambió.
+9. Escribe una función flecha `promedio(...notas)` que reciba varias notas (rest) y devuelva el promedio.
+
+### D) DOM y eventos (en la consola de tu portafolio) 🎯
+10. `document.querySelectorAll("a").length` — ¿cuántos enlaces tiene tu página?
+11. Cambia el texto de tu `h1` y su color con JS desde la consola.
+12. Recorre todos los `h2` con un bucle y ponles un borde: `t.style.border = "2px solid cyan"`.
+
+> **Cómo entregar los ejercicios (opcional):** que peguen en un comentario de su `script.js` el ejercicio y,
+> **con sus palabras**, qué aprendieron. Si lo explican, lo entendieron.
+
+### 🛠️ Trabajo de la clase (mini-reto en código)
+Agrega a tu portafolio una **"Tarjeta de perfil" dinámica**:
+
+1. En tu `script.js`, crea un **objeto** `perfil` con `nombre`, `rol`, `ciudad` y un array `intereses`.
+2. Escribe una **función flecha** `pintarPerfil(p)` que, usando el DOM, muestre esos datos en una sección
+   nueva de tu página (crea un `<div id="tarjeta">` en el HTML).
+3. Usa un **bucle** para pintar la lista de `intereses`.
+4. Aplica **una guarda**: si `perfil.ciudad` no existe, usa `"Colombia"` por defecto (`perfil.ciudad ?? "Colombia"`).
+5. Deja el código **limpio**: nombres claros, `const` por defecto, y un comentario que explique el **porqué**.
+
+> **Se evalúa que lo puedas explicar en voz alta.** Este trabajo junta objetos + funciones + DOM + guardas:
+> justo lo de esta clase. (Versión avanzada del mismo reto, con POO y JSON, en la
+> [guía avanzada](GUIA-AVANZADA.md).)
+
+---
+
+## 13. Cierre, Git y actividad <a name="13-cierre"></a>
 
 ### Cierre Git de la clase 🌿
 Guarda tu avance en el historial:

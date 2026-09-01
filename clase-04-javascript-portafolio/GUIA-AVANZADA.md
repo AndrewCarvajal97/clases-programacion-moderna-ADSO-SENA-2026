@@ -400,6 +400,126 @@ Esto se **evalúa** en la Demo Day: el código limpio **se explica solo**.
 > **Mantra:** *"Código que no entiendes = código que no sirve."* Si le pides algo a la IA, pídele que te
 > lo **explique** y reescríbelo con tus palabras.
 
+### 9.b Prácticas modernas vs antiguas (JS de ayer vs de hoy)
+
+> **Explica:** JavaScript cambió mucho, sobre todo desde **ES6 (2015)**. En tutoriales o respuestas viejas
+> verás código que **funciona**, pero que hoy se escribe **mejor**: más corto, más seguro y más legible.
+> Saber distinguirlo te ahorra copiar malos hábitos.
+
+**Ejemplo estrella — seleccionar del DOM:**
+
+```js
+// 👴 Antiguo: un método distinto para cada caso
+document.getElementById("titulo");
+document.getElementsByClassName("card");   // HTMLCollection (sin forEach cómodo)
+document.getElementsByTagName("p");
+
+// ✨ Moderno: UN método, con selectores CSS (los mismos de tus hojas de estilo)
+document.querySelector("#titulo");    // el primero que coincida
+document.querySelectorAll(".card");   // todos (NodeList: SÍ tiene forEach)
+```
+
+Con `querySelector`/`querySelectorAll` no memorizas tres métodos: usas **el mismo selector que en CSS**
+(`#id`, `.clase`, `etiqueta`, `.a .b`, etc.). `getElementById` no está "mal" (incluso es un pelín más
+rápido), pero `querySelector` **unifica todo** y es el estándar moderno.
+
+**Tabla chuleta — de lo viejo a lo moderno:**
+
+| Tema | 👴 Antiguo | ✨ Moderno (ES6+) | Por qué |
+|------|-----------|-------------------|---------|
+| Variables | `var x` | `const` / `let` | `var` tiene alcance confuso; `const` protege |
+| Seleccionar DOM | `getElementById`, `getElementsByClassName` | `querySelector`, `querySelectorAll` | uno solo, con selectores CSS |
+| Texto + datos | `"Hola " + n + "!"` | `` `Hola ${n}!` `` (template literal) | se lee mejor, sin `+` por todos lados |
+| Eventos | `btn.onclick = fn` / `onclick=""` | `btn.addEventListener("click", fn)` | permite varios listeners; separa HTML y JS |
+| Clases CSS | `el.className += " activo"` | `el.classList.add("activo")` | `add`/`remove`/`toggle`, sin pisar otras clases |
+| Comparar | `==` (con coerción) | `===` (estricto) | `==` da sorpresas (`0 == ""` es `true`) |
+| Recorrer | `for (var i…; i<a.length; i++)` | `for (const x of a)` / `.map()` | menos ruido, menos errores de índice |
+| Funciones | `function(){ var that=this; }` | `() => {}` (arrow) | más corto y `this` predecible |
+| Valor por defecto | `x = x \|\| 10` | `x ?? 10` / parámetros por defecto | `??` no falla con `0` o `""` |
+| Peticiones | `XMLHttpRequest`, `$.ajax`, callbacks | `fetch` + `async/await` | plano, legible, sin "callback hell" |
+| Organizar | todo global / muchos `<script>` | `import`/`export` (módulos) | sin choques de nombres; cada archivo, su tema |
+
+**El caso jQuery.** Durante años, jQuery (`$(".x")`, `$.ajax`, `.fadeIn()`) resolvía lo que el navegador
+hacía mal o distinto en cada versión. **Hoy casi no se necesita:** el navegador ya trae nativo lo mismo
+—`querySelector`, `classList`, `fetch`, y animaciones con **CSS**— así que un sitio moderno pesa menos y
+depende de menos librerías. Si ves un tutorial que empieza con `$(...)`, probablemente es **viejo**.
+
+> **Cómo enseñarlo:** toma una línea de código "vieja" (por ejemplo un `getElementsByClassName` con un `for`
+> clásico) y reescríbanla juntos a la versión moderna (`querySelectorAll` + `for...of`). El "ahá" es ver que
+> **hace lo mismo con la mitad de código**. Todo lo moderno de esta tabla **ya está en `codigo/`**.
+
+### 9.c Sintaxis moderna esencial (chuleta de referencia)
+
+> 📚 **Estos temas se enseñan a fondo, con ejercicios, en la [GUÍA base](GUIA.md)** (§5.b Objetos,
+> §6.b Funciones flecha, §7.c Operadores, §8.b Desestructuración y spread). Aquí los dejamos como
+> **chuleta rápida** para consultar de un vistazo.
+
+> Estas piezas de ES6+ aparecen por todos lados. No hace falta dominarlas de memoria hoy, pero sí
+> **reconocerlas** para no bloquearte al leer código (tuyo, de la IA o de internet).
+
+**Objetos: los "diccionarios" de datos.** Un objeto guarda datos con **etiqueta** (pares `clave: valor`).
+Tu `datos.json` es exactamente un objeto.
+```js
+const persona = {
+  nombre: "Ana",
+  edad: 20,
+  saludar() { return `Hola, soy ${this.nombre}`; }  // un método
+};
+persona.nombre;    // "Ana"  (acceso con punto)
+persona["edad"];   // 20     (acceso con corchetes)
+```
+> **Array vs Objeto:** un **array** `[]` es una lista ordenada (accedes por posición: `lista[0]`); un
+> **objeto** `{}` son datos con nombre (accedes por clave: `persona.nombre`).
+
+**Funciones flecha (`=>`).** La forma corta de escribir funciones:
+```js
+function sumar(a, b) { return a + b; }   // de siempre
+const   sumar = (a, b) => a + b;         // flecha: una línea → return implícito
+const   doble = n => n * 2;              // un solo parámetro: sin paréntesis
+```
+Se usan constantemente en `addEventListener("click", () => …)` y en `.map()`, `.filter()`, etc. Además,
+`this` dentro de una flecha se comporta de forma **predecible** (no cambia como en las funciones normales).
+
+**Operadores lógicos y el "if corto".**
+```js
+const entra  = tieneBoleto && esMayor;         // && (Y): verdadero si AMBOS lo son
+const nombre = apodo || "invitado";            // || (O): el primero que "sirva"
+const texto  = esMayor ? "Adulto" : "Menor";   // ternario: condición ? sí : no
+```
+
+**`??` (nullish) y `?.` (encadenamiento opcional).**
+```js
+const puntos = usuario.puntos ?? 0;        // usa 0 SOLO si puntos es null/undefined (respeta el 0)
+const ciudad = usuario.direccion?.ciudad;  // undefined en vez de reventar si no hay direccion
+```
+> **`??` vs `||`:** `||` descarta también `0`, `""` y `false` (los trata como "vacío"); `??` **solo**
+> descarta `null` y `undefined`. Para números y textos, `??` evita sorpresas.
+
+**Desestructuración: desempacar en variables.**
+```js
+const { nombre, edad } = persona;          // saca campos de un objeto
+const [primero, segundo] = ["rojo","verde"]; // saca de un array por posición
+function saludar({ nombre }) { … }          // desestructurar en los parámetros
+```
+Ya la usas en el portafolio: `const { default: confetti } = await import(…)`.
+
+**Spread y rest: los tres puntos `...`.**
+```js
+// SPREAD: "esparce" los elementos (copiar/combinar SIN dañar el original)
+const skills = [...base, "js"];
+const copia  = { ...persona, edad: 21 };
+// REST: "junta" varios argumentos en un array
+function sumar(...numeros) { return numeros.reduce((a, b) => a + b, 0); }
+```
+Lo usas en `Contacto.js`: `JSON.stringify({ access_key: this.accessKey, ...datos })`.
+
+**Clases e `import` / `export`.** Estas dos ya están explicadas a fondo antes en esta misma guía:
+- **Clases (POO):** ver la sección [2. POO: pensar en "clases"](#2-poo) — `class`, `constructor`, `this`, métodos.
+- **Módulos:** ver la sección [3. Módulos: `import` / `export`](#3-modulos) — compartir y reutilizar entre archivos.
+
+> **Regla para el aula:** no las enseñes todas de corrido como lista. Ve señalándolas **cuando aparezcan
+> en el código del portafolio** ("¿ven este `...`? eso es spread"). Reconocer > memorizar.
+
 ---
 
 ## 10. Adelanto: Node.js (JavaScript en consola y escritorio) <a name="10-node"></a>
@@ -444,6 +564,39 @@ node saludo.js Ana
 > ⚠️ **Ojo con el aula:** no hagas `npm install` en vivo con 30 personas y red débil (ver
 > [CONFIGURACION-OFFLINE.md](../CONFIGURACION-OFFLINE.md)). Para este adelanto basta `node` y un archivo
 > `.js`: **no necesita internet ni instalar nada**.
+
+---
+
+## 10.b Ejercicios de trabajo (Nivel PRO) <a name="10b-ejercicios-pro"></a>
+
+Ejercicios para consolidar POO, módulos, JSON y buenas prácticas. Todos se hacen **sobre `codigo/`** (con
+Live Server). Se evalúa que el estudiante **explique** su solución.
+
+### Refuerzo (uno a uno)
+1. **POO:** crea `js/Reloj.js` con una clase `Reloj` que muestre la hora en el footer y se actualice cada
+   segundo (`setInterval`). Impórtala en `main.js` y arráncala. *(Practica clase + método + módulo.)*
+2. **JSON:** agrega a `datos.json` un array `certificados` (cada uno con `nombre` y `anio`). Crea un método
+   `pintarCertificados()` en `Portafolio.js` que los recorra y los muestre. *(Datos separados de la vista.)*
+3. **Guardas + validación:** en `Contacto.js`, rechaza el envío si el mensaje trae un enlace (`http`),
+   usando una cláusula de guarda (`if (...) return;`).
+4. **API:** en `GitHubAPI.js`, añade un método `obtenerReposPorLenguaje(lang)` que filtre los repos por
+   lenguaje (usa `.filter()`).
+5. **Refactor:** busca en el código un `+` de concatenación (`"Hola " + x`) y cámbialo por un **template
+   literal**; busca un `if` anidado y aplánalo con guardas.
+
+### Trabajo grande (proyecto de la clase) 🛠️
+Crea una **nueva clase con su módulo** que aporte una función real a tu portafolio. Elige una:
+
+- **`Filtro`** — filtra las tarjetas de repos por lenguaje con botones (usa `datos`/DOM/eventos).
+- **`Tema` mejorado** — recuerda el tema y además detecta la hora: de noche arranca en oscuro.
+- **`Galeria`** — lee un array de proyectos del JSON y arma una galería con un método por tarjeta.
+
+**Requisitos (rúbrica):** (a) una **clase** en su **propio archivo**, exportada e importada en `main.js`;
+(b) datos desde **`datos.json`**, no clavados; (c) al menos una **guarda** y un **método** claro;
+(d) código **limpio** (nombres, `const`, comentar el porqué); (e) saber **explicarlo en voz alta**.
+
+> **Enlázalo con la evaluación:** este trabajo prepara para la **actividad evaluativa**
+> (`actividad-evaluativa-clase04.docx`) y para la **Demo Day**.
 
 ---
 
