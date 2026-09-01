@@ -1,0 +1,46 @@
+{
+  "perfil": {
+    "nombre": "Tu Nombre",
+    "titulo": "Desarrollador de Software en formación",
+    "eyebrow": "Aprendiz ADSO · SENA Bucaramanga",
+    "resumen": "Construyo interfaces limpias y aprendo algo nuevo todos los días. Este portafolio se arma solo leyendo un archivo de datos.",
+    "ubicacion": "Bucaramanga, Colombia",
+    "correo": "tucorreo@ejemplo.com"
+  },
+
+  "sobreMi": [
+    "Escribe un párrafo real sobre ti: qué te trajo al desarrollo, qué te apasiona y a dónde quieres llegar.",
+    "Ahora mismo aprendo HTML, CSS y JavaScript. Este portafolio crece conmigo: para actualizarlo, solo edito este archivo datos.json."
+  ],
+
+  "skills": [
+    { "nombre": "HTML",          "nivel": 90, "icono": "fa-brands fa-html5" },
+    { "nombre": "CSS",           "nivel": 80, "icono": "fa-brands fa-css3-alt" },
+    { "nombre": "JavaScript",    "nivel": 65, "icono": "fa-brands fa-js" },
+    { "nombre": "Git & GitHub",  "nivel": 70, "icono": "fa-brands fa-git-alt" }
+  ],
+
+  "proyectos": [
+    {
+      "nombre": "Mi Portafolio",
+      "descripcion": "Este mismo sitio: HTML, CSS y JavaScript modular con datos desde JSON.",
+      "tags": ["HTML", "CSS", "JS"],
+      "enlace": "#",
+      "repo": "https://github.com/tu-usuario/portafolio"
+    },
+    {
+      "nombre": "Proyecto de equipo",
+      "descripcion": "Reemplaza esto por un proyecto real tuyo. Cuenta qué problema resuelve.",
+      "tags": ["En progreso"],
+      "enlace": "#",
+      "repo": "#"
+    }
+  ],
+
+  "redes": {
+    "github": "octocat",
+    "linkedin": "https://www.linkedin.com/in/tu-usuario",
+    "linkedinUsuario": "tu-usuario",
+    "correo": "tucorreo@ejemplo.com"
+  }
+}

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Portafolio de Tu Nombre — versión de UN SOLO archivo (el 'antes').">
+  <title>Tu Nombre · Dev (versión antes)</title>
+
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Sora:wght@500;700;800&family=JetBrains+Mono:wght@500&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <!-- Confeti por CDN (script clásico): queda como variable global 'confetti' -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+</head>
+<body>
+
+  <!--
+    ⚠️ ESTA ES LA VERSIÓN "ANTES" (para comparar en clase):
+    - TODO el contenido está clavado aquí en el HTML (nombre, skills…).
+    - TODO el JavaScript vive en UN SOLO script.js, con variables globales.
+    Funciona igual que la versión modular… pero es más difícil de mantener.
+    Compárala con la carpeta ../codigo (misma página, código profesional).
+  -->
+
+  <button id="btn-tema" class="theme-toggle" aria-label="Cambiar tema">
+    <i class="fa-solid fa-moon"></i>
+  </button>
+
+  <nav class="nav" id="nav" aria-label="Principal">
+    <a href="#inicio" class="nav__logo">&lt;/&gt;</a>
+    <ul class="nav__links">
+      <li><a href="#sobre-mi">Sobre mí</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#github">GitHub</a></li>
+      <li><a href="#contacto">Contacto</a></li>
+    </ul>
+  </nav>
+
+  <!-- ===== HERO (contenido clavado en el HTML) ===== -->
+  <header class="hero" id="inicio">
+    <div class="hero__aurora" aria-hidden="true"></div>
+    <div class="hero__inner">
+      <p class="eyebrow reveal">Aprendiz ADSO · SENA Bucaramanga</p>
+      <h1 class="hero__title reveal">
+        Hola, soy <span class="grad">Tu Nombre</span><span class="cursor">_</span>
+      </h1>
+      <p class="hero__lead reveal">
+        Desarrollador de software en formación. Construyo interfaces limpias y aprendo
+        algo nuevo todos los días.
+      </p>
+      <div class="hero__cta reveal">
+        <a href="#github" class="btn btn--primary"><i class="fa-brands fa-github"></i> Ver mi trabajo</a>
+        <a href="#contacto" class="btn btn--ghost">Contáctame</a>
+      </div>
+    </div>
+    <a href="#sobre-mi" class="hero__scroll" aria-hidden="true"><i class="fa-solid fa-chevron-down"></i></a>
+  </header>
+
+  <main>
+    <!-- ===== SOBRE MÍ ===== -->
+    <section class="section" id="sobre-mi">
+      <p class="eyebrow reveal">01 — Quién soy</p>
+      <div class="about reveal">
+        <figure class="about__photo">
+          <img id="gh-avatar" src="https://avatars.githubusercontent.com/u/0" alt="Foto de Tu Nombre">
+        </figure>
+        <div class="about__text">
+          <h2>Sobre mí</h2>
+          <p>Escribe un párrafo real sobre ti: qué te trajo al desarrollo, qué te
+             <strong>apasiona</strong> y a dónde quieres llegar.</p>
+          <p class="muted">Ahora mismo aprendo <code>HTML</code>, <code>CSS</code> y <code>JavaScript</code>.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== SKILLS (clavados en el HTML) ===== -->
+    <section class="section" id="skills">
+      <p class="eyebrow reveal">02 — Lo que sé hacer</p>
+      <h2 class="reveal">Skills</h2>
+      <ul class="skills reveal">
+        <li class="skill"><span><i class="fa-brands fa-html5"></i> HTML</span>
+          <div class="bar"><i style="--pct:90%"></i></div></li>
+        <li class="skill"><span><i class="fa-brands fa-css3-alt"></i> CSS</span>
+          <div class="bar"><i style="--pct:80%"></i></div></li>
+        <li class="skill"><span><i class="fa-brands fa-js"></i> JavaScript</span>
+          <div class="bar"><i style="--pct:65%"></i></div></li>
+        <li class="skill"><span><i class="fa-brands fa-git-alt"></i> Git &amp; GitHub</span>
+          <div class="bar"><i style="--pct:70%"></i></div></li>
+      </ul>
+    </section>
+
+    <!-- ===== GITHUB ===== -->
+    <section class="section" id="github">
+      <p class="eyebrow reveal">03 — Datos reales</p>
+      <h2 class="reveal"><i class="fa-brands fa-github"></i> Mi GitHub</h2>
+      <div class="stats reveal">
+        <div class="stat"><span class="stat__num" id="stat-repos">0</span><span class="stat__label">Repositorios</span></div>
+        <div class="stat"><span class="stat__num" id="stat-followers">0</span><span class="stat__label">Seguidores</span></div>
+        <div class="stat"><span class="stat__num" id="stat-following">0</span><span class="stat__label">Siguiendo</span></div>
+      </div>
+      <div class="repos reveal" id="gh-repos"><p class="muted">Cargando repositorios…</p></div>
+    </section>
+
+    <!-- ===== CONTACTO ===== -->
+    <section class="section" id="contacto">
+      <p class="eyebrow reveal">04 — Hablemos</p>
+      <h2 class="reveal">Contacto</h2>
+      <form id="form-contacto" class="form reveal">
+        <div class="form__row">
+          <label>Nombre <input type="text" name="nombre" placeholder="¿Cómo te llamas?"></label>
+          <label>Correo <input type="email" name="correo" placeholder="tucorreo@ejemplo.com"></label>
+        </div>
+        <label>Mensaje <textarea name="mensaje" rows="4" placeholder="Cuéntame…"></textarea></label>
+        <p id="form-msg" class="form__msg" role="status"></p>
+        <button type="submit" class="btn btn--primary"><i class="fa-solid fa-paper-plane"></i> Enviar mensaje</button>
+      </form>
+      <address class="social">
+        <a href="https://github.com/tu-usuario" target="_blank" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+        <a href="https://www.linkedin.com/in/tu-usuario" target="_blank" aria-label="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
+        <a href="mailto:tucorreo@ejemplo.com" aria-label="Correo"><i class="fa-solid fa-envelope"></i></a>
+      </address>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>Hecho con <span class="grad">HTML · CSS · JS</span> en el curso de ADSO · SENA</p>
+    <p class="muted">Versión "antes" (un solo archivo) · © 2026 Tu Nombre</p>
+  </footer>
+
+  <!-- Un solo script clásico, con TODO adentro -->
+  <script src="script.js"></script>
+</body>
+</html>
