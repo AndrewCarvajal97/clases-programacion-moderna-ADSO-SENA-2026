@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guía visual — Desplegar paso a paso</title>
+<style>
+:root{--ink:#1f2937;--mut:#6b7280;--line:#e5e7eb;--a:#2563eb;--ok:#059669;--bg:#ffffff;--soft:#f8fafc;--code:#f1f5f9;--mono:'Consolas','JetBrains Mono',monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;color:var(--ink);background:#eef2f7;line-height:1.55;padding:2rem 1rem}
+.page{max-width:900px;margin:0 auto;background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:clamp(1.4rem,4vw,3rem);box-shadow:0 20px 50px -30px rgba(0,0,0,.3)}
+h1{font-size:clamp(1.7rem,5vw,2.4rem);letter-spacing:-.02em}
+h2{font-size:clamp(1.25rem,3.5vw,1.7rem);margin:2rem 0 .4rem;padding-top:1.2rem;border-top:2px solid var(--line);color:#111827}
+h2:first-of-type{border-top:none;padding-top:0}
+h3{font-size:1.05rem;margin:.2rem 0}
+p{margin:.5rem 0}.mut{color:var(--mut)}
+a{color:var(--a)}
+.sub{color:var(--mut);font-size:1.05rem;margin-top:.3rem}
+.tag{display:inline-block;background:var(--a);color:#fff;font-weight:700;border-radius:999px;padding:.15em .9em;font-size:.8rem;margin-bottom:.5rem}
+.callout{background:var(--soft);border:1px solid var(--line);border-left:5px solid var(--a);border-radius:10px;padding:1rem 1.2rem;margin:1rem 0}
+.callout.ok{border-left-color:var(--ok)}
+.docs{background:#f0f7ff;border:1px solid #cfe0ff;border-radius:10px;padding:1rem 1.2rem;margin:1rem 0}
+.docs ul{margin:.4rem 0 0 1.2rem}.docs li{margin:.25rem 0}
+code{font-family:var(--mono);background:var(--code);padding:.1em .4em;border-radius:5px;font-size:.9em}
+pre{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:1rem 1.2rem;overflow:auto;margin:.6rem 0;font-family:var(--mono);font-size:.85rem;line-height:1.6}
+.step{display:grid;grid-template-columns:2.2rem 1fr;gap:.9rem;align-items:start;margin:.9rem 0}
+.n{width:2.2rem;height:2.2rem;border-radius:50%;background:var(--a);color:#fff;font-weight:800;display:grid;place-items:center}
+.step.ok .n{background:var(--ok)}
+/* Mockup de ventana */
+.win{border:1px solid var(--line);border-radius:10px;overflow:hidden;margin:.7rem 0;box-shadow:0 8px 24px -18px rgba(0,0,0,.4)}
+.win .h{background:#f3f4f6;border-bottom:1px solid var(--line);padding:.45rem .8rem;display:flex;gap:.4rem;align-items:center;font-size:.8rem;color:var(--mut)}
+.win .h i{width:10px;height:10px;border-radius:50%;display:inline-block}
+.win .b{padding:.9rem 1.1rem;font-size:.92rem}
+.row{display:flex;justify-content:space-between;align-items:center;gap:1em;padding:.4rem 0;border-bottom:1px solid #f0f1f4}
+.row:last-child{border-bottom:none}
+.sel{background:#eef4ff;border:1px solid #cfe0ff;border-radius:7px;padding:.1em .6em;color:var(--a);font-family:var(--mono);font-size:.85em}
+.btn{background:var(--ok);color:#fff;border-radius:7px;padding:.2em .8em;font-weight:700;font-size:.85em}
+.url{color:var(--a);font-family:var(--mono)}
+table{width:100%;border-collapse:collapse;margin:.6rem 0;font-size:.9rem}
+th,td{border:1px solid var(--line);padding:.5rem .7rem;text-align:left}
+th{background:var(--soft)}
+.foot{margin-top:2rem;padding-top:1rem;border-top:2px solid var(--line);color:var(--mut);font-size:.85rem;text-align:center}
+@media print{body{background:#fff;padding:0}.page{border:none;box-shadow:none;border-radius:0;max-width:none}a{color:#111}.win,.callout,.docs{break-inside:avoid}h2{break-after:avoid}}
+</style>
+</head>
+<body>
+<div class="page">
+  <span class="tag">Clase 05 · Handout</span>
+  <h1>Guía visual: desplegar paso a paso 🚀</h1>
+  <p class="sub">GitHub Pages · Netlify · conectar un dominio · CI/CD con GitHub Actions.</p>
+
+  <div class="docs">
+    <b>📸 ¿Y las capturas reales?</b> La interfaz de GitHub/Netlify cambia seguido, así que aquí usamos
+    <b>esquemas</b> (mockups) de cada pantalla para que no queden viejos. Las <b>capturas reales y al día</b>
+    están siempre en la <b>documentación oficial</b> (¡y en español!):
+    <ul>
+      <li>GitHub Pages — <a href="https://docs.github.com/es/pages/quickstart">docs.github.com/es/pages/quickstart</a></li>
+      <li>GitHub Actions — <a href="https://docs.github.com/es/actions/get-started/quickstart">docs.github.com/es/actions</a></li>
+      <li>Netlify — <a href="https://docs.netlify.com/">docs.netlify.com</a> · Vercel — <a href="https://vercel.com/docs">vercel.com/docs</a></li>
+    </ul>
+  </div>
+
+  <!-- A · GitHub Pages -->
+  <h2>A · Publicar en GitHub Pages</h2>
+  <div class="step"><div class="n">1</div><div>
+    <h3>Sube tu portafolio a un repositorio</h3>
+    <pre>git add .
+git commit -m "Portafolio listo para publicar"
+git push</pre>
+  </div></div>
+  <div class="step"><div class="n">2</div><div>
+    <h3>En el repo (web de GitHub): Settings → Pages</h3>
+    <div class="win">
+      <div class="h"><i style="background:#ff5f56"></i><i style="background:#ffbd2e"></i><i style="background:#27c93f"></i> &nbsp;GitHub · Settings › Pages</div>
+      <div class="b">
+        <div class="row"><span>Source</span><span class="sel">Deploy from a branch</span></div>
+        <div class="row"><span>Branch</span><span class="sel">main / (root)</span><span class="btn">Save</span></div>
+      </div>
+    </div>
+  </div></div>
+  <div class="step ok"><div class="n">3</div><div>
+    <h3>Espera ~1 min: tu sitio queda publicado</h3>
+    <div class="win">
+      <div class="h"><i style="background:#ff5f56"></i><i style="background:#ffbd2e"></i><i style="background:#27c93f"></i> &nbsp;GitHub Pages</div>
+      <div class="b"><span style="color:var(--ok);font-weight:700">✔ Your site is live at</span><br>
+        <span class="url">https://tu-usuario.github.io/mi-portafolio</span></div>
+    </div>
+  </div></div>
+  <div class="callout"><b>Error común:</b> "404" al abrir → tu archivo principal debe llamarse
+    <code>index.html</code> y estar en la <b>raíz</b> del repo. La primera vez puede tardar 1–2 minutos.</div>
+
+  <!-- B · Netlify -->
+  <h2>B · Publicar en Netlify (aún más fácil)</h2>
+  <div class="step"><div class="n">1</div><div>
+    <h3>Entra a Netlify y arrastra tu carpeta</h3>
+    <p class="mut">En "Sites" hay una zona que dice "arrastra tu carpeta aquí". Sueltas la carpeta del
+      portafolio y ya está online. (También puedes <b>conectar tu repo de GitHub</b> para que se
+      redeploye en cada push.)</p>
+    <div class="win">
+      <div class="h"><i style="background:#ff5f56"></i><i style="background:#ffbd2e"></i><i style="background:#27c93f"></i> &nbsp;Netlify · Sites</div>
+      <div class="b" style="text-align:center;border:2px dashed #cbd5e1;border-radius:10px;color:var(--mut);padding:1.4rem">
+        ⬆️ Arrastra la carpeta de tu sitio aquí para desplegar
+      </div>
+    </div>
+  </div></div>
+  <div class="step ok"><div class="n">2</div><div>
+    <h3>Te da una URL al instante</h3>
+    <div class="win"><div class="h">Netlify</div><div class="b"><span style="color:var(--ok);font-weight:700">Published</span>
+      &nbsp; <span class="url">https://tu-sitio.netlify.app</span></div></div>
+  </div></div>
+
+  <!-- C · Dominio -->
+  <h2>C · Conectar un dominio (apuntar el DNS)</h2>
+  <p class="mut">Un dominio (<code>tuweb.com</code>) se conecta creando <b>registros DNS</b> que apuntan al host.</p>
+  <div class="step"><div class="n">1</div><div>
+    <h3>En el panel DNS de tu dominio, crea los registros</h3>
+    <div class="win">
+      <div class="h"><i style="background:#ff5f56"></i><i style="background:#ffbd2e"></i><i style="background:#27c93f"></i> &nbsp;DNS · tuweb.com</div>
+      <div class="b">
+        <div class="row"><span><b>Tipo</b></span><span><b>Nombre</b></span><span><b>Valor</b></span></div>
+        <div class="row"><span class="sel">A</span><span>@</span><span class="url">185.199.108.153</span></div>
+        <div class="row"><span class="sel">CNAME</span><span>www</span><span class="url">tu-usuario.github.io</span></div>
+      </div>
+    </div>
+    <p class="mut"><b>A</b> apunta a una IP · <b>CNAME</b> apunta a otro nombre (alias). El host te da los valores exactos.</p>
+  </div></div>
+  <div class="step ok"><div class="n">2</div><div>
+    <h3>En el host, agrega tu dominio y activa HTTPS</h3>
+    <p class="mut">"Custom domain" → escribes <code>tuweb.com</code> → esperas la propagación → 🔒 candado (HTTPS) automático.</p>
+  </div></div>
+
+  <!-- D · CI/CD -->
+  <h2>D · CI/CD con GitHub Actions</h2>
+  <div class="step"><div class="n">1</div><div>
+    <h3>Crea el archivo del workflow</h3>
+    <p class="mut">En tu repo: <code>.github/workflows/deploy.yml</code>. Adáptalo de la
+      <a href="https://github.com/actions/starter-workflows/tree/main/pages">plantilla oficial</a>.</p>
+    <pre>on:
+  push: { branches: [main] }   # al subir a main
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/deploy-pages@v4   # publica en Pages</pre>
+  </div></div>
+  <div class="step ok"><div class="n">2</div><div>
+    <h3>Míralo correr en la pestaña "Actions"</h3>
+    <div class="win">
+      <div class="h"><i style="background:#ff5f56"></i><i style="background:#ffbd2e"></i><i style="background:#27c93f"></i> &nbsp;GitHub · Actions</div>
+      <div class="b">
+        <div class="row"><span>✅ Desplegar sitio</span><span class="mut">hace 30s</span><span style="color:var(--ok);font-weight:700">success</span></div>
+        <div class="row"><span>✅ Desplegar sitio</span><span class="mut">hace 5m</span><span style="color:var(--ok);font-weight:700">success</span></div>
+      </div>
+    </div>
+    <p class="mut">Verde = publicó. Rojo = falló: abre la corrida, lee el paso rojo y búscalo en la doc.</p>
+  </div></div>
+
+  <div class="callout ok"><b>Regla de oro:</b> automatiza (CI/CD), prueba antes de publicar, guarda los
+    <b>secretos</b> fuera del código y usa siempre <b>HTTPS</b>. Y sobre todo: <b>lee la documentación oficial</b>.</div>
+
+  <div class="foot">Guía visual · Clase 05 — Despliegue, CI/CD y la Nube · ADSO · SENA<br>
+    Las capturas reales y actualizadas están en la documentación oficial enlazada arriba.</div>
+</div>
+</body>
+</html>

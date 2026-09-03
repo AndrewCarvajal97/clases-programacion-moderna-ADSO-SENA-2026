@@ -1,0 +1,55 @@
+# ============================================================
+# CI/CD para una APP DINÁMICA (servidor Node + base de datos)
+# ------------------------------------------------------------
+# Ubicación real en tu repo:  .github/workflows/deploy.yml
+# Diferencia con el estático: PRUEBA antes, corre MIGRACIONES y
+# usa SECRETOS. Ejemplo pensado para desplegar en Render/Railway.
+# (Se ve a fondo con el backend, más adelante en el curso.)
+# ============================================================
+
+name: Probar y desplegar app
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  # 1) CI — probar ANTES de publicar
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: "20" }
+      - run: npm ci
+      - run: npm test                 # si las pruebas fallan, NO se despliega
+
+  # 2) CD — publicar (solo si 'test' pasó)
+  deploy:
+    needs: test                       # <-- encadena: depende de que test salga bien
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: "20" }
+      - run: npm ci
+      - run: npm run build --if-present
+
+      # Actualiza la base de datos (los secretos NO van en el código)
+      - name: Migraciones de base de datos
+        run: npm run migrate --if-present
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+
+      # Publica: aquí, avisamos a Render con su "Deploy Hook"
+      # (una URL secreta que dispara el despliegue en su servidor)
+      - name: Desplegar en Render
+        run: curl -fsSL "$RENDER_DEPLOY_HOOK"
+        env:
+          RENDER_DEPLOY_HOOK: ${{ secrets.RENDER_DEPLOY_HOOK }}
+
+# ------------------------------------------------------------
+# Los secretos (DATABASE_URL, RENDER_DEPLOY_HOOK) se guardan en:
+#   repo → Settings → Secrets and variables → Actions → New secret
+# NUNCA se escriben en este archivo ni en el código.
+# ------------------------------------------------------------

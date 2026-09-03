@@ -1,0 +1,60 @@
+# ============================================================
+# CI/CD para un SITIO ESTÁTICO (tu portafolio) → GitHub Pages
+# ------------------------------------------------------------
+# Ubicación real en tu repo:  .github/workflows/deploy.yml
+# Este es el patrón OFICIAL de GitHub para publicar en Pages.
+# Léelo, entiéndelo y ADÁPTALO (no lo pegues a ciegas).
+# Doc: https://docs.github.com/es/pages
+# ============================================================
+
+name: Desplegar sitio estático en Pages
+
+# CUÁNDO: en cada push a la rama main
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:            # también permite lanzarlo a mano
+
+# PERMISOS que necesita el deploy a Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Evita que dos despliegues choquen
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  # 1) CONSTRUIR: prepara los archivos a publicar
+  build:
+    runs-on: ubuntu-latest       # runner: máquina gratis de GitHub
+    steps:
+      - name: Traer el código
+        uses: actions/checkout@v4
+
+      # Si tu sitio usa Vite/Astro/React, descomenta el build:
+      # - uses: actions/setup-node@v4
+      #   with: { node-version: "20" }
+      # - run: npm ci && npm run build      # genera la carpeta dist/
+
+      - name: Preparar Pages
+        uses: actions/configure-pages@v5
+
+      - name: Empaquetar el sitio
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: "."                # carpeta a publicar ("." = raíz; usa "./dist" si hay build)
+
+  # 2) PUBLICAR: sube lo construido a GitHub Pages
+  deploy:
+    needs: build                   # solo si build salió bien
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Publicar en Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
