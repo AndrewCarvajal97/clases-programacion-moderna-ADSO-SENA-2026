@@ -793,7 +793,54 @@ lista.innerHTML <span class="op">=</span> datos.skills
   </section>
 
 
-  <!-- ===================== BLOQUE H · Cierre ===================== -->
+  <!-- ===================== BLOQUE H · Cómo viaja la web (HTTP) ===================== -->
+
+  <section class="slide" data-title="Protocolos">
+    <div class="tag anim">🌐 PUENTE A LA WEB</div>
+    <h2 class="anim">Protocolos: cómo se hablan las máquinas</h2>
+    <p class="lead anim">Un <b>protocolo</b> es un conjunto de <b>reglas</b> para que dos computadores se entiendan: quién habla, cómo y en qué orden.</p>
+    <div class="grid g3 anim" style="margin-top:.3em">
+      <div class="card k"><h3>🌍 HTTP/HTTPS</h3><p>La <b>web</b>: pedir y entregar páginas y datos.</p></div>
+      <div class="card k2"><h3>📖 DNS</h3><p>Traduce <b>nombres</b> (web.com) a <b>IP</b> (números).</p></div>
+      <div class="card kok"><h3>✉️ SMTP</h3><p>Enviar <b>correo</b> electrónico.</p></div>
+      <div class="card k"><h3>📁 FTP</h3><p>Transferir <b>archivos</b>.</p></div>
+      <div class="card k2"><h3>⚡ WebSocket</h3><p>Datos en <b>tiempo real</b> (chats, juegos).</p></div>
+      <div class="card kok"><h3>🧱 TCP/IP</h3><p>La <b>base</b> sobre la que viajan casi todos.</p></div>
+    </div>
+    <p class="muted frag" style="margin-top:.4em">Analogía: como el "aló" y los turnos de una llamada. Tu <code>fetch</code> ya usaba <b>HTTP</b> por debajo; hoy le ponemos nombre.</p>
+  </section>
+
+  <section class="slide" data-title="HTTP: pedir y responder">
+    <div class="tag anim">🔁 HTTP</div>
+    <h2 class="anim">HTTP: petición y respuesta</h2>
+    <p class="lead anim">El navegador (<b>cliente</b>) hace una <b>petición</b>; el servidor devuelve una <b>respuesta</b>. <b>HTTPS</b> = HTTP + cifrado 🔒 (el candado).</p>
+    <div class="grid g2 anim" style="margin-top:.2em">
+      <div class="card k"><h3>📤 Petición (request)</h3><p>Método + URL + cabeceras (+ datos). Ej: <code>GET /users/octocat</code>.</p></div>
+      <div class="card k2"><h3>📥 Respuesta (response)</h3><p><b>Código</b> de estado + cabeceras + cuerpo (el JSON/HTML).</p></div>
+    </div>
+    <div class="grid g4 frag" style="margin-top:.5em">
+      <div class="card kok"><h3>GET</h3><p>pedir datos</p></div>
+      <div class="card k"><h3>POST</h3><p>enviar / crear</p></div>
+      <div class="card k2"><h3>PUT / PATCH</h3><p>actualizar</p></div>
+      <div class="card kr"><h3>DELETE</h3><p>borrar</p></div>
+    </div>
+    <p class="muted frag" style="margin-top:.4em">En tu <code>fetch</code>: <code>fetch(url)</code> es <b>GET</b> por defecto; enviar el formulario sería <b>POST</b>.</p>
+  </section>
+
+  <section class="slide" data-title="Códigos de estado HTTP">
+    <div class="tag anim">🔢 CÓDIGOS DE ESTADO</div>
+    <h2 class="anim">Códigos: qué respondió el servidor</h2>
+    <p class="anim">Cada respuesta trae un número de 3 cifras. La <b>primera cifra</b> dice la categoría:</p>
+    <div class="grid g4 anim" style="margin-top:.3em">
+      <div class="card kok"><h3>2xx ✅ Éxito</h3><p><b>200</b> OK<br><b>201</b> Creado</p></div>
+      <div class="card k2"><h3>3xx ↪️ Redirección</h3><p><b>301 / 302</b><br>se movió a otra URL</p></div>
+      <div class="card kw"><h3>4xx 🙈 Error del cliente</h3><p><b>400</b> mal · <b>401/403</b> sin permiso<br><b>404</b> no existe · <b>429</b> demasiadas</p></div>
+      <div class="card kr"><h3>5xx 💥 Error del servidor</h3><p><b>500</b> falló<br><b>503</b> no disponible</p></div>
+    </div>
+    <p class="muted frag" style="margin-top:.4em">En tu código, <code>if (!res.ok)</code> detecta 4xx/5xx. El <b>403</b> de GitHub = pasaste el <b>límite</b> de peticiones. (Bonus real del estándar: <b>418</b> "soy una tetera" 🫖.)</p>
+  </section>
+
+  <!-- ===================== BLOQUE I · Cierre ===================== -->
 
   <section class="slide" data-title="Adelanto: Node.js">
     <div class="tag anim">🟩 ADELANTO</div>

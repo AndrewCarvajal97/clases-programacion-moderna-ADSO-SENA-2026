@@ -39,6 +39,7 @@
    - 8.b [Desestructuración y spread/rest (`...`)](#8b-desestructuracion)
 9. [El DOM: tocar la página con `querySelector`](#9-dom)
 10. [Eventos: reaccionar con `addEventListener`](#10-eventos)
+    - 10.d [HTTP, protocolos y códigos de estado](#10d-http)
 11. [Práctica guiada: Portafolio v3](#11-practica)
 12. [Ejercicios de refuerzo y trabajo](#12-ejercicios)
 13. [Cierre, Git y actividad](#13-cierre)
@@ -654,6 +655,69 @@ El `codigo/` de esta clase trae el portafolio **completo y funcional**:
 > ⚠️ El `fetch` y las librerías por CDN **usan internet**: funcionan normal (el SENA tiene internet); si
 > la red se cae en ese momento, el resto del portafolio sigue viéndose y el código tiene una **guarda**
 > (`try/catch`) para no romperse.
+
+---
+
+## 10.d HTTP, protocolos y códigos de estado <a name="10d-http"></a>
+
+> **Explica:** cuando hiciste `fetch("https://api.github.com/…")`, por debajo hablaste **HTTP**. Vale la
+> pena entender qué es, porque es la base de **toda** la web (y el puente a la Clase 05, el despliegue).
+
+### ¿Qué es un protocolo?
+Un **protocolo** es un conjunto de **reglas** para que dos computadores se **entiendan**: quién habla,
+cómo y en qué orden. Como el "aló" y los turnos de una llamada telefónica.
+
+| Protocolo | Para qué sirve |
+|-----------|----------------|
+| **HTTP / HTTPS** | La **web**: pedir y entregar páginas y datos. |
+| **DNS** | Traduce **nombres** (`web.com`) a **IP** (números). |
+| **SMTP** | Enviar **correo** electrónico. |
+| **FTP** | Transferir **archivos**. |
+| **WebSocket** | Datos en **tiempo real** (chats, juegos). |
+| **TCP/IP** | La **base** sobre la que viajan casi todos. |
+
+### HTTP: petición y respuesta
+El navegador (**cliente**) hace una **petición** (*request*) y el servidor devuelve una **respuesta**
+(*response*).
+
+- **Petición:** un **método** + la **URL** + cabeceras (+ datos si envías algo).
+- **Respuesta:** un **código de estado** + cabeceras + el **cuerpo** (el JSON o el HTML).
+- **HTTPS** = HTTP + **cifrado** 🔒 (el candado del navegador). Hoy todo debería ser HTTPS.
+
+**Métodos (verbos) más comunes:**
+
+| Método | Qué hace |
+|--------|----------|
+| **GET** | Pedir datos (es lo que hace `fetch(url)` por defecto). |
+| **POST** | Enviar / crear (p. ej. enviar el formulario de contacto). |
+| **PUT / PATCH** | Actualizar algo que ya existe. |
+| **DELETE** | Borrar. |
+
+```js
+// GET (por defecto): pedir datos
+const res = await fetch("https://api.github.com/users/octocat");
+
+// POST: enviar datos (así envía el correo tu Contacto.js)
+await fetch(url, { method: "POST", body: JSON.stringify(datos) });
+```
+
+### Códigos de estado (los "números" del protocolo)
+Cada respuesta trae un número de **3 cifras**. La **primera cifra** dice la categoría:
+
+| Rango | Significa | Ejemplos |
+|-------|-----------|----------|
+| **2xx** ✅ | Éxito | **200** OK · **201** Creado |
+| **3xx** ↪️ | Redirección | **301 / 302** se movió a otra URL |
+| **4xx** 🙈 | Error del **cliente** (tú) | **400** petición mal hecha · **401 / 403** sin permiso · **404** no existe · **429** demasiadas peticiones |
+| **5xx** 💥 | Error del **servidor** | **500** falló · **503** no disponible |
+
+> **En tu propio código ya lo usaste:** `if (!res.ok) { ... }` es verdadero cuando el código es **4xx o
+> 5xx**. Y el error **403** que a veces da GitHub es el **límite** de peticiones por hora (sin token, ~60).
+> Dato curioso real del estándar: el código **418** es *"I'm a teapot"* (soy una tetera 🫖).
+
+> 🏋️ **Ejercicio de refuerzo.** En la consola, corre
+> `fetch("https://api.github.com/users/esteusuarionoexiste123").then(r => console.log(r.status, r.ok))`.
+> ¿Qué código sale y por qué? Prueba también con un usuario real y compara. Explica qué categoría es cada uno.
 
 ---
 
